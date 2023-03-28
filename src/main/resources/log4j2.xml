@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~  Copyright (c) 2023 University of Padua, Italy
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~       https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  ~
+  ~ Authors:
+  ~ Omer Cem Tabar(oemercem.tabar@studenti.unipd.it)
+  ~ Merve Ofluoglu(merve.ofluoglu@studenti.unipd.it)
+  ~ Ismail Deha Kose(ismaildeha.kose@studenti.unipd.it)
+  ~ Adnan Kerem Aksoy(adnankerem.aksoy@studenti.unipd.it)
+  ~ Ayse Kilic(ayse.kilic@studenti.unipd.it)
+  ~ Anil Ozfirat(anil.oezfirat@studenti.unipd.it)
+  ~ Mehmet Sanisoglu(mehmet.sanisoglu@studenti.unipd.it)
+  ~ Gorkem Yilmaz(gorkem.yilmaz@studenti.unipd.it)
+  ~ Isil Atabek(isil.atabek@studenti.unipd.it)
+  ~ Sametcan Ozturk(sametcan.ozturk@studenti.unipd.it)
+  ~ @version 1.00
+  ~ @since 1.00
+  ~
+  ~
+  -->
+
+<Configuration status="INFO" monitorInterval="0" name="log4j2-config">
+    <Appenders>
+        <RollingRandomAccessFile name="RFILE" fileName="${sys:catalina.base}/webapps/my-logs/employee-servlet-jdbc.log" filePattern="${sys:catalina.base}/webapps/my-logs/$${date:yyyy-MM}/employee-servlet-jdbc-%d{yyyyMMdd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%date{DEFAULT} %level [%thread] %class{1}.%method(%file:%line)%n\tIP = %MDC{IP}; USER = %MDC{USER}; ACTION = %MDC{ACTION}; RESOURCE = %MDC{RESOURCE}%n\t%message%n\t%throwable%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%date{DEFAULT} %level [%thread] %class{1}.%method(%file:%line)%n\tIP = %MDC{IP}; USER = %MDC{USER}; ACTION = %MDC{ACTION}; RESOURCE = %MDC{RESOURCE}%n\t%message%n\t%throwable%n</Pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="RFILE" level="INFO"/>
+            <AppenderRef ref="STDOUT" level="INFO"/>
+        </Root>
+    </Loggers>
+</Configuration>
