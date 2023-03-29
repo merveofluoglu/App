@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>damacanan.webapplicationproject</groupId>
+    <artifactId>damacanan</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Project description elements -->
+    <name>damacaNaN Web Application Course Project</name>
+
+    <description>Fully responsive student marketplace web application course project</description>
+
+    <url>https://bitbucket.org/upd-dei-stud-prj/damacanan</url>
+
+    <inceptionYear>2023</inceptionYear>
+
+    <developers>
+        <developer>
+            <id>developerOne</id>
+            <name>Omer Cem Tabar</name>
+            <email>oemercem.tabar@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerTwo</id>
+            <name>Merve Ofluoglu</name>
+            <email>merve.ofluoglu@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerThree</id>
+            <name>Ismail Deha Kose</name>
+            <email>ismaildeha.kose@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerFour</id>
+            <name>Adnan Kerem Aksoy</name>
+            <email>adnankerem.aksoy@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerFive</id>
+            <name>Ayse Kilic</name>
+            <email>ayse.kilic@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerSix</id>
+            <name>Anil Ozfirat</name>
+            <email>anil.oezfirat@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerSeven</id>
+            <name>Mehmet Sanisoglu</name>
+            <email>mehmet.sanisoglu@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerEight</id>
+            <name>Gorkem Yilmaz</name>
+            <email>gorkem.yilmaz@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerNine</id>
+            <name>Isil Atabek</name>
+            <email>isil.atabek@studenti.unipd.it</email>
+        </developer>
+        <developer>
+            <id>developerTen</id>
+            <name>Sametcan Ozturk</name>
+            <email>sametcan.ozturk@studenti.unipd.it</email>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Department of Information Engineering (DEI), University of Padua, Italy</name>
+        <url>http://www.dei.unipd.it/en/</url>
+    </organization>
+
+    <!-- Configuration of the default build lifecycle -->
+    <build>
+        <defaultGoal>compile</defaultGoal>
+
+        <!-- source code folder -->
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+
+        <!-- compiled code folder -->
+        <directory>${basedir}/target</directory>
+
+        <!-- name of the generated package -->
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
+        <!-- configuration of the plugins for the different goals -->
+        <plugins>
+
+            <!-- compiler plugin: source and target code is for Java 1.8 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <!-- javadoc plugin: output in the javadoc folder -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <reportOutputDirectory>${basedir}/javadoc</reportOutputDirectory>
+                    <author>true</author>
+                    <nosince>false</nosince>
+                    <show>protected</show>
+                    <source>${java.version}</source>
+                    <doctitle>${project.name} ${project.version} - Web Applications Code Examples</doctitle>
+                    <windowtitle>${project.artifactId} ${project.version}</windowtitle>
+                    <bottom>Copyright &#169; ${project.inceptionYear}&#x2013;{currentYear}
+                        <![CDATA[<a href="https://www.unipd.it/en/" target="_blank">University of Padua</a>, Italy. All rights reserved.]]>
+                        <![CDATA[<i>Web Applications</i> is a course of the <a href="https://degrees.dei.unipd.it/master-degrees/computer-engineering/" target="_blank">Master Degree in Computer Engineering</a> of the <a href="https://www.dei.unipd.it/en/" target="_blank">Department of Information Engineering</a>.]]>
+                        <![CDATA[<i>Web Applications</i> is part of the teaching activities of the <a href="http://iiia.dei.unipd.it/" target="_blank">Intelligent Interactive Information Access (IIIA) Hub</a>.]]>
+                    </bottom>
+                    <detectJavaApiLink>true</detectJavaApiLink>
+                    <detectLinks>true</detectLinks>
+                    <validateLinks>true</validateLinks>
+                </configuration>
+            </plugin>
+
+            <!-- packager plugin: create a WAR file to be deployed -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+    <!-- Dependencies -->
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.5.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>10.1.7</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>
