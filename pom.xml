@@ -187,8 +187,6 @@
             <version>10.1.7</version>
             <scope>provided</scope>
         </dependency>
-        
-
     </dependencies>
 
 </project>
