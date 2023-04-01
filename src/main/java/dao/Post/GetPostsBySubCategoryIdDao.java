@@ -1,5 +1,6 @@
 package dao.Post;
 
+import dao.AbstractDAO;
 import resource.Post;
 import utils.ResourceNotFoundException;
 
@@ -10,14 +11,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetPostsBySubCategoryIdDao {
+public class GetPostsBySubCategoryIdDao extends AbstractDAO {
 
     private static final String STATEMENT = "SELECT * FROM post WHERE subcategory_id = ? AND is_deleted = false";
 
-    private final Connection con;
+    /**
+     * Creates a new DAO object.
+     *
+     * @param con the connection to be used for accessing the database.
+     */
+    protected GetPostsBySubCategoryIdDao(Connection con) {
+        super(con);
+    }
 
-    public GetPostsBySubCategoryIdDao(Connection con) {
-        this.con = con;
+    @Override
+    protected void doAccess() throws Exception {
+
     }
 
     public List<Post> getPostsBySubCategoryId(long id) throws SQLException, ResourceNotFoundException {

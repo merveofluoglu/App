@@ -1,21 +1,30 @@
 package dao.Post;
 
+import dao.AbstractDAO;
 import resource.Post;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class CreatePostDao {
+public class CreatePostDao extends AbstractDAO {
 
     private static final String STATEMENT = "INSERT INTO post (" +
             "name, description, user_id, customer_id, price, status, start_date, end_date, is_deleted," +
             "is_sold, update_date, category_id, subcategory_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private final Connection con;
+    /**
+     * Creates a new DAO object.
+     *
+     * @param con the connection to be used for accessing the database.
+     */
+    protected CreatePostDao(Connection con) {
+        super(con);
+    }
 
-    public CreatePostDao(Connection con) {
-        this.con = con;
+    @Override
+    protected void doAccess() throws Exception {
+
     }
 
     public String createPost(Post post) throws SQLException {

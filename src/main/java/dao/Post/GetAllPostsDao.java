@@ -1,5 +1,6 @@
 package dao.Post;
 
+import dao.AbstractDAO;
 import resource.Post;
 import utils.ResourceNotFoundException;
 
@@ -10,14 +11,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetAllPostsDao {
+public class GetAllPostsDao extends AbstractDAO {
 
     private static final String STATEMENT = "SELECT * FROM post WHERE is_deleted = false";
 
-    private final Connection con;
-
-    public GetAllPostsDao(Connection con) {
-        this.con = con;
+    /**
+     * Creates a new DAO object.
+     *
+     * @param con the connection to be used for accessing the database.
+     */
+    protected GetAllPostsDao(Connection con) {
+        super(con);
     }
 
     public List<Post> getAllPosts () throws SQLException, ResourceNotFoundException {
@@ -68,4 +72,8 @@ public class GetAllPostsDao {
         return posts;
     }
 
+    @Override
+    protected void doAccess() throws Exception {
+
+    }
 }

@@ -1,5 +1,6 @@
 package dao.Post;
 
+import dao.AbstractDAO;
 import resource.Post;
 import utils.ResourceNotFoundException;
 
@@ -10,14 +11,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetPostsByCustomerFavouritesDao {
+public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
 
     private static final String STATEMENT = "SELECT post_id FROM favourites WHERE user_id = ?";
 
-    private final Connection con;
-
-    public GetPostsByCustomerFavouritesDao(Connection con) {
-        this.con = con;
+    /**
+     * Creates a new DAO object.
+     *
+     * @param con the connection to be used for accessing the database.
+     */
+    protected GetPostsByCustomerFavouritesDao(Connection con) {
+        super(con);
     }
 
     public List<Post> getPostsByCustomerFavourites(long id) throws SQLException, ResourceNotFoundException {
@@ -56,5 +60,10 @@ public class GetPostsByCustomerFavouritesDao {
         }
 
         return posts;
+    }
+
+    @Override
+    protected void doAccess() throws Exception {
+
     }
 }

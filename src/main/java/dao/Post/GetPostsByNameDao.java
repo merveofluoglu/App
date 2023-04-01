@@ -1,5 +1,6 @@
 package dao.Post;
 
+import dao.AbstractDAO;
 import resource.Post;
 import utils.ResourceNotFoundException;
 
@@ -10,14 +11,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetPostsByNameDao {
+public class GetPostsByNameDao extends AbstractDAO {
 
     private static final String STATEMENT = "SELECT * FROM post WHERE name ILIKE ? AND is_deleted = false";
 
-    private final Connection con;
-
-    public GetPostsByNameDao(Connection con) {
-        this.con = con;
+    /**
+     * Creates a new DAO object.
+     *
+     * @param con the connection to be used for accessing the database.
+     */
+    protected GetPostsByNameDao(Connection con) {
+        super(con);
     }
 
     public List<Post> getPostsByName(String name) throws SQLException, ResourceNotFoundException {
@@ -67,4 +71,8 @@ public class GetPostsByNameDao {
         return posts;
     }
 
+    @Override
+    protected void doAccess() throws Exception {
+
+    }
 }
