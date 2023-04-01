@@ -58,4 +58,15 @@ public class PostFiles {
     public void setFile_path(String file_path) {
         this.file_path = file_path;
     }
+
+    @Override
+    public String toString() {
+        return "PostFiles{" +
+                "file_id=" + file_id +
+                ", post_id=" + post_id +
+                ", file_type='" + file_type + '\'' +
+                ", file_size=" + file_size +
+                ", file_path='" + file_path + '\'' +
+                '}';
+    }
 }
