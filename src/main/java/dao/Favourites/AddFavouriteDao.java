@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class AddFavouriteDao extends AbstractDAO {
 
-    private static final String STATEMENT = "INSERT INTO favourites ( user_id, post_id)" +
+    private static final String STATEMENT = "INSERT INTO favourites ( user_id, post_id )" +
             " VALUES(?, ?)";
 
     /**
@@ -34,6 +34,12 @@ public class AddFavouriteDao extends AbstractDAO {
 
             pstmt.setLong(1, fav.getUser_id());
             pstmt.setLong(2, fav.getPost_id());
+
+            rs = pstmt.executeUpdate();
+
+            if (rs != 1) {
+                throw new SQLException("Creation failed!");
+            }
 
         } finally {
             if (pstmt != null) {
