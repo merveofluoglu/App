@@ -1,4 +1,4 @@
-package dao.user;
+package dao.User;
 
 public class GetUserByNameAndSurnameDAO {
 }

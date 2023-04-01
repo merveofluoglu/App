@@ -1,21 +1,25 @@
 package dao.Post;
 
+import dao.AbstractDAO;
 import resource.Post;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdatePostByIdDao {
+public class UpdatePostByIdDao extends AbstractDAO {
 
     private static final String STATEMENT =
             "UPDATE post SET name = ?, description = ?, customer_id = ?, price = ?, status = ?, is_deleted = ?, is_sold = ?," +
                     "sold_date = ?, update_date = ?, category_id = ?, subcategory_id = ?";
 
-    private final Connection con;
-
-    public UpdatePostByIdDao(Connection con) {
-        this.con = con;
+    /**
+     * Creates a new DAO object.
+     *
+     * @param con the connection to be used for accessing the database.
+     */
+    protected UpdatePostByIdDao(Connection con) {
+        super(con);
     }
 
     public int updatePostById(Post post) throws SQLException {
@@ -52,5 +56,10 @@ public class UpdatePostByIdDao {
         }
 
         return affectedRows;
+    }
+
+    @Override
+    protected void doAccess() throws Exception {
+
     }
 }
