@@ -25,39 +25,39 @@ public class GetSystemLogDao extends AbstractDAO {
 
     public List<ActionLog> getSystemLog() throws SQLException {
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement _pstmt = null;
+        ResultSet _rs = null;
 
-        List<ActionLog> systemLogs = new ArrayList<>();
+        List<ActionLog> _systemLogs = new ArrayList<>();
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
-            rs = pstmt.executeQuery();
+            _pstmt = con.prepareStatement(STATEMENT);
+            _rs = _pstmt.executeQuery();
 
-            if(!rs.isBeforeFirst()) {
+            if(!_rs.isBeforeFirst()) {
                 throw new SQLException("No System Logs to Show!");
             }
 
-            while (rs.next()) {
-                systemLogs.add( new ActionLog(
-                        rs.getLong("action_id"),
-                        rs.getBoolean("is_user_act"),
-                        rs.getBoolean("is_system_act"),
-                        rs.getString("description"),
-                        rs.getTimestamp("action_date"),
-                        rs.getLong("user_id")
+            while (_rs.next()) {
+                _systemLogs.add( new ActionLog(
+                        _rs.getLong("action_id"),
+                        _rs.getBoolean("is_user_act"),
+                        _rs.getBoolean("is_system_act"),
+                        _rs.getString("description"),
+                        _rs.getTimestamp("action_date"),
+                        _rs.getLong("user_id")
                 ));
             }
 
         } finally {
-            if(pstmt != null) {
-                pstmt.close();
+            if(_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
 
-        return systemLogs;
+        return _systemLogs;
     }
 
     @Override

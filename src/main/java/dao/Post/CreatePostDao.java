@@ -29,36 +29,36 @@ public class CreatePostDao extends AbstractDAO {
 
     public String createPost(Post post) throws SQLException {
 
-        PreparedStatement pstmt = null;
-        int rs;
+        PreparedStatement _pstmt = null;
+        int _rs;
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
+            _pstmt = con.prepareStatement(STATEMENT);
 
-            pstmt.setString(1, post.getName());
-            pstmt.setString(2, post.getDescription());
-            pstmt.setLong(3, post.getUser_id());
-            pstmt.setLong(4, post.getCustomer_id());
-            pstmt.setDouble(5, post.getPrice());
-            pstmt.setString(6, post.getStatus());
-            pstmt.setTimestamp(7, post.getStart_date());
-            pstmt.setTimestamp(8, post.getEnd_date());
-            pstmt.setBoolean(9, post.isIs_deleted());
-            pstmt.setBoolean(10, post.isIs_sold());
-            pstmt.setTimestamp(11, post.getSold_date());
-            pstmt.setTimestamp(12, post.getUpdate_date());
-            pstmt.setLong(13, post.getCategory_id());
-            pstmt.setLong(14, post.getSubcategory_id());
+            _pstmt.setString(1, post.getName());
+            _pstmt.setString(2, post.getDescription());
+            _pstmt.setLong(3, post.getUser_id());
+            _pstmt.setLong(4, post.getCustomer_id());
+            _pstmt.setDouble(5, post.getPrice());
+            _pstmt.setString(6, post.getStatus());
+            _pstmt.setTimestamp(7, post.getStart_date());
+            _pstmt.setTimestamp(8, post.getEnd_date());
+            _pstmt.setBoolean(9, post.isIs_deleted());
+            _pstmt.setBoolean(10, post.isIs_sold());
+            _pstmt.setTimestamp(11, post.getSold_date());
+            _pstmt.setTimestamp(12, post.getUpdate_date());
+            _pstmt.setLong(13, post.getCategory_id());
+            _pstmt.setLong(14, post.getSubcategory_id());
 
-            rs = pstmt.executeUpdate();
+            _rs = _pstmt.executeUpdate();
 
-            if (rs != 1) {
+            if (_rs != 1) {
                 throw new SQLException("Creation failed!");
             }
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }

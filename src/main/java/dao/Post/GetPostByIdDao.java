@@ -25,51 +25,51 @@ public class GetPostByIdDao extends AbstractDAO {
 
     public Post getPostById(long id) throws SQLException, ResourceNotFoundException {
 
-        PreparedStatement pstmt = null;
-        ResultSet rs =null;
-        Post post = null;
+        PreparedStatement _pstmt = null;
+        ResultSet _rs =null;
+        Post _post = null;
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setObject(1, id);
-            rs= pstmt.executeQuery();
+            _pstmt = con.prepareStatement(STATEMENT);
+            _pstmt.setObject(1, id);
+            _rs= _pstmt.executeQuery();
 
-            if(!rs.isBeforeFirst()) {
+            if(!_rs.isBeforeFirst()) {
                 throw new ResourceNotFoundException("Couldn't found such post!");
             }
 
-            if(rs.next()) {
-                post = new Post(
-                        rs.getLong("post_id"),
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getLong("user_id"),
-                        rs.getLong("customer_id"),
-                        rs.getDouble("price"),
-                        rs.getString("status"),
-                        rs.getTimestamp("start_date"),
-                        rs.getTimestamp("end_date"),
-                        rs.getBoolean("is_deleted"),
-                        rs.getBoolean("is_sold"),
-                        rs.getTimestamp("sold_date"),
-                        rs.getTimestamp("update_date"),
-                        rs.getLong("category_id"),
-                        rs.getLong("subcategory_id")
+            if(_rs.next()) {
+                _post = new Post(
+                        _rs.getLong("post_id"),
+                        _rs.getString("name"),
+                        _rs.getString("description"),
+                        _rs.getLong("user_id"),
+                        _rs.getLong("customer_id"),
+                        _rs.getDouble("price"),
+                        _rs.getString("status"),
+                        _rs.getTimestamp("start_date"),
+                        _rs.getTimestamp("end_date"),
+                        _rs.getBoolean("is_deleted"),
+                        _rs.getBoolean("is_sold"),
+                        _rs.getTimestamp("sold_date"),
+                        _rs.getTimestamp("update_date"),
+                        _rs.getLong("category_id"),
+                        _rs.getLong("subcategory_id")
                 );
             }
 
         } finally {
-            if (rs != null) {
-                rs.close();
+            if (_rs != null) {
+                _rs.close();
             }
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
 
-        return post;
+        return _post;
     }
 
     @Override

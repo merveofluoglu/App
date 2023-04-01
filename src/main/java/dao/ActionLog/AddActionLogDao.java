@@ -23,28 +23,28 @@ public class AddActionLogDao extends AbstractDAO {
 
     public String addActionLog(ActionLog actionLog) throws SQLException
     {
-        PreparedStatement pstmt = null;
+        PreparedStatement _pstmt = null;
 
-        int rs = 0;
+        int _rs = 0;
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setBoolean(1, actionLog.isIs_user_act());
-            pstmt.setBoolean(2, actionLog.isIs_system_act());
-            pstmt.setString(3, actionLog.getDescription());
-            pstmt.setTimestamp(4, actionLog.getAction_date());
-            pstmt.setLong(5, actionLog.getUser_id());
+            _pstmt = con.prepareStatement(STATEMENT);
+            _pstmt.setBoolean(1, actionLog.isIs_user_act());
+            _pstmt.setBoolean(2, actionLog.isIs_system_act());
+            _pstmt.setString(3, actionLog.getDescription());
+            _pstmt.setTimestamp(4, actionLog.getAction_date());
+            _pstmt.setLong(5, actionLog.getUser_id());
 
-            rs = pstmt.executeUpdate();
+            _rs = _pstmt.executeUpdate();
 
-            if (rs != 1) {
+            if (_rs != 1) {
                 throw new SQLException("Error occurred while adding log!");
             }
 
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
