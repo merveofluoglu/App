@@ -24,38 +24,38 @@ public class UpdatePostByIdDao extends AbstractDAO {
 
     public int updatePostById(Post post) throws SQLException {
 
-        PreparedStatement pstmt = null;
-        int affectedRows = 0;
+        PreparedStatement _pstmt = null;
+        int _affectedRows = 0;
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setString(1, post.getName());
-            pstmt.setString(2, post.getDescription());
-            pstmt.setLong(3, post.getCustomer_id());
-            pstmt.setDouble(4, post.getPrice());
-            pstmt.setString(5, post.getStatus());
-            pstmt.setBoolean(6, post.isIs_deleted());
-            pstmt.setBoolean(7, post.isIs_sold());
-            pstmt.setTimestamp(8, post.getSold_date());
-            pstmt.setTimestamp(9, post.getUpdate_date());
-            pstmt.setLong(10, post.getCategory_id());
-            pstmt.setLong(11, post.getSubcategory_id());
+            _pstmt = con.prepareStatement(STATEMENT);
+            _pstmt.setString(1, post.getName());
+            _pstmt.setString(2, post.getDescription());
+            _pstmt.setLong(3, post.getCustomer_id());
+            _pstmt.setDouble(4, post.getPrice());
+            _pstmt.setString(5, post.getStatus());
+            _pstmt.setBoolean(6, post.isIs_deleted());
+            _pstmt.setBoolean(7, post.isIs_sold());
+            _pstmt.setTimestamp(8, post.getSold_date());
+            _pstmt.setTimestamp(9, post.getUpdate_date());
+            _pstmt.setLong(10, post.getCategory_id());
+            _pstmt.setLong(11, post.getSubcategory_id());
 
-            affectedRows = pstmt.executeUpdate();
+            _affectedRows = _pstmt.executeUpdate();
 
-            if (affectedRows != 1) {
+            if (_affectedRows != 1) {
                 throw new SQLException("Update Failed!");
             }
 
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
 
-        return affectedRows;
+        return _affectedRows;
     }
 
     @Override

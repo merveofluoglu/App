@@ -1,10 +1,17 @@
 package dao.Review;
 
 import dao.AbstractDAO;
+import resource.Reviews;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class UpdateReviewDao extends AbstractDAO {
+
+    private static final String STATEMENT =
+            "UPDATE reviews SET user_id = ?, seller_id = ?, post_id = ?, " +
+            "point_scale = ?, description = ?, create_date = ?, is_deleted = ?";
 
     /**
      * Creates a new DAO object.
@@ -13,6 +20,39 @@ public class UpdateReviewDao extends AbstractDAO {
      */
     protected UpdateReviewDao(Connection con) {
         super(con);
+    }
+
+    public int updateReview(Reviews review) throws SQLException {
+
+        PreparedStatement _pstmt = null;
+        int _affectedRows = 0;
+
+        try {
+
+            _pstmt = con.prepareStatement(STATEMENT);
+
+            _pstmt.setLong(1, review.getUser_id());
+            _pstmt.setLong(2, review.getSeller_id());
+            _pstmt.setLong(3, review.getPost_id());
+            _pstmt.setDouble(4, review.getPoint_scale());
+            _pstmt.setString(5, review.getDescription());
+            _pstmt.setTimestamp(6, review.getCreate_date());
+            _pstmt.setBoolean(7, review.isIs_deleted());
+
+            _affectedRows = _pstmt.executeUpdate();
+
+            if(_affectedRows != 1) {
+                throw new SQLException("Error occurred while updating review!");
+            }
+
+        } finally {
+            if (_pstmt != null) {
+                _pstmt.close();
+            }
+            con.close();
+        }
+
+        return _affectedRows;
     }
 
     @Override

@@ -21,28 +21,28 @@ public class RemoveFavouriteDao extends AbstractDAO {
 
     public int removeFavourite(long post_id) throws SQLException {
 
-        PreparedStatement pstmt = null;
-        int affectedRows = 0;
+        PreparedStatement _pstmt = null;
+        int _affectedRows = 0;
 
         try {
-            pstmt = con.prepareStatement(STATEMENT);
+            _pstmt = con.prepareStatement(STATEMENT);
 
-            pstmt.setLong(1, post_id);
+            _pstmt.setLong(1, post_id);
 
-            affectedRows = pstmt.executeUpdate();
+            _affectedRows = _pstmt.executeUpdate();
 
-            if (affectedRows != 1) {
+            if (_affectedRows != 1) {
                 throw new SQLException("Remove Failed!");
             }
 
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
 
-        return affectedRows;
+        return _affectedRows;
     }
 
     @Override

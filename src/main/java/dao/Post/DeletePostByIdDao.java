@@ -26,25 +26,25 @@ public class DeletePostByIdDao extends AbstractDAO {
 
     public int deletePost(long id) throws SQLException {
 
-        PreparedStatement pstmt = null;
-        int affectedRows = 0;
+        PreparedStatement _pstmt = null;
+        int _affectedRows = 0;
 
         try {
-            pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setObject(1, id);
+            _pstmt = con.prepareStatement(STATEMENT);
+            _pstmt.setObject(1, id);
 
-            affectedRows = pstmt.executeUpdate();
+            _affectedRows = _pstmt.executeUpdate();
 
-            if(affectedRows != 1) {
+            if(_affectedRows != 1) {
                 throw new SQLException("Delete Failed");
             }
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
 
-        return affectedRows;
+        return _affectedRows;
     }
 }

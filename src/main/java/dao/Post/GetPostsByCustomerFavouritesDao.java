@@ -26,40 +26,40 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
 
     public List<Post> getPostsByCustomerFavourites(long id) throws SQLException, ResourceNotFoundException {
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<Post> posts = new ArrayList<>();
-        Long postId = null;
+        PreparedStatement _pstmt = null;
+        ResultSet _rs = null;
+        List<Post> _posts = new ArrayList<>();
+        Long _postId = null;
 
         GetPostByIdDao getPosts = null;
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setObject(1,id);
-            rs = pstmt.executeQuery();
+            _pstmt = con.prepareStatement(STATEMENT);
+            _pstmt.setObject(1,id);
+            _rs = _pstmt.executeQuery();
 
-            if (!rs.isBeforeFirst()) {
+            if (!_rs.isBeforeFirst()) {
                 throw new ResourceNotFoundException("No Favourites Yet!");
             }
 
-            if (rs.next()) {
-                postId = rs.getLong("post_id");
+            if (_rs.next()) {
+                _postId = _rs.getLong("post_id");
 
-                posts.add(getPosts.getPostById(postId));
+                _posts.add(getPosts.getPostById(_postId));
             }
 
         } finally {
-            if (rs != null) {
-                rs.close();
+            if (_rs != null) {
+                _rs.close();
             }
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
 
-        return posts;
+        return _posts;
     }
 
     @Override

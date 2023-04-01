@@ -24,26 +24,26 @@ public class AddFavouriteDao extends AbstractDAO {
 
     public String addFavourite(Favourites fav) throws SQLException {
 
-        PreparedStatement pstmt = null;
+        PreparedStatement _pstmt = null;
 
-        int rs = 0;
+        int _rs = 0;
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
+            _pstmt = con.prepareStatement(STATEMENT);
 
-            pstmt.setLong(1, fav.getUser_id());
-            pstmt.setLong(2, fav.getPost_id());
+            _pstmt.setLong(1, fav.getUser_id());
+            _pstmt.setLong(2, fav.getPost_id());
 
-            rs = pstmt.executeUpdate();
+            _rs = _pstmt.executeUpdate();
 
-            if (rs != 1) {
+            if (_rs != 1) {
                 throw new SQLException("Creation failed!");
             }
 
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }

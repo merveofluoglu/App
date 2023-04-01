@@ -25,40 +25,39 @@ public class GetActionLogDao extends AbstractDAO {
 
     public List<ActionLog> getActionLog () throws SQLException {
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement _pstmt = null;
+        ResultSet _rs = null;
 
-        List<ActionLog> actionLogs = new ArrayList<>();
+        List<ActionLog> _actionLogs = new ArrayList<>();
 
         try {
 
-            pstmt = con.prepareStatement(STATEMENT);
-            rs = pstmt.executeQuery();
+            _pstmt = con.prepareStatement(STATEMENT);
+            _rs = _pstmt.executeQuery();
 
-            if (!rs.isBeforeFirst()) {
+            if (!_rs.isBeforeFirst()) {
                 throw new SQLException("No Action Logs!");
             }
 
-            while (rs.next()) {
-                actionLogs.add( new ActionLog(
-                    rs.getLong("action_id"),
-                    rs.getBoolean("is_user_act"),
-                    rs.getBoolean("is_system_act"),
-                    rs.getString("description"),
-                    rs.getTimestamp("action_date"),
-                    rs.getLong("user_id")
+            while (_rs.next()) {
+                _actionLogs.add( new ActionLog(
+                    _rs.getLong("action_id"),
+                    _rs.getBoolean("is_user_act"),
+                    _rs.getBoolean("is_system_act"),
+                    _rs.getString("description"),
+                    _rs.getTimestamp("action_date"),
+                    _rs.getLong("user_id")
                 ));
             }
 
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (_pstmt != null) {
+                _pstmt.close();
             }
             con.close();
         }
 
-        return actionLogs;
-
+        return _actionLogs;
     }
 
     @Override
