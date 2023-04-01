@@ -39,7 +39,7 @@ public class AddActionLogDao extends AbstractDAO {
             rs = pstmt.executeUpdate();
 
             if (rs != 1) {
-                throw new SQLException("Error occured while adding log!");
+                throw new SQLException("Error occurred while adding log!");
             }
 
         } finally {
@@ -49,8 +49,9 @@ public class AddActionLogDao extends AbstractDAO {
             con.close();
         }
 
-        return "Log added successfully";
+        return "Log added successfully!";
     }
+
     @Override
     protected void doAccess() throws Exception {
 
