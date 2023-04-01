@@ -51,6 +51,11 @@ public class CreatePostDao extends AbstractDAO {
             pstmt.setLong(13, post.getCategory_id());
             pstmt.setLong(14, post.getSubcategory_id());
 
+            rs = pstmt.executeUpdate();
+
+            if (rs != 1) {
+                throw new SQLException("Creation failed!");
+            }
         } finally {
             if (pstmt != null) {
                 pstmt.close();
