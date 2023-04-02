@@ -29,7 +29,7 @@ public class GetReviewsByUserIdDao extends AbstractDAO {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
-        List<Reviews> _reviews = new ArrayList<>();
+        List<Reviews> _reviews = new ArrayList<Reviews>();
 
         try {
 
