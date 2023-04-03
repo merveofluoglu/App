@@ -1,41 +1,42 @@
-package dao.User;
+package dao.Role;
+
 import dao.AbstractDAO;
+import resource.Role;
+import resource.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-public class DeleteUserByUseridDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "DELETE FROM user WHERE user_id=?";
+public class UpdateRoleDAO extends AbstractDAO {
 
+    private static final String STATEMENT = "UPDATE role SET role_id = ?, name = ?";
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected DeleteUserByUseridDAO(Connection con) {
+    protected UpdateRoleDAO(Connection con) {
         super(con);
     }
 
-    @Override
-    protected void doAccess() throws Exception {
-
-    }
-
-    public int DeleteUserByUseridDAO(Long user_id) throws SQLException {
+    public int UpdateRoleDAO(Role role) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
+
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, user_id);
+            _pstmt.setLong(1, role.getRole_id());
+            _pstmt.setString(2, role.getName());
 
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {
-                throw new SQLException("Delete Failed");
+                throw new SQLException("Update Failed!");
             }
+
         } finally {
             if (_pstmt != null) {
                 _pstmt.close();
@@ -46,4 +47,8 @@ public class DeleteUserByUseridDAO extends AbstractDAO{
         return _affectedRows;
     }
 
+    @Override
+    protected void doAccess() throws Exception {
+
+    }
 }

@@ -1,4 +1,5 @@
 package dao.User;
+
 import dao.AbstractDAO;
 import resource.User;
 import utils.ResourceNotFoundException;
@@ -9,20 +10,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-public class GetUserByNameAndSurnameDAO extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM user WHERE name name ? AND surname = ?";
+public class GetUserByRoleIdDAO extends AbstractDAO {
+
+    private static final String STATEMENT = "SELECT * FROM user WHERE role_id = ?";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetUserByNameAndSurnameDAO(Connection con) {
+    protected GetUserByRoleIdDAO(Connection con) {
         super(con);
     }
 
-    public List<User> getPostsByName(String name,String surname) throws SQLException, ResourceNotFoundException {
+    public List<User> GetUserByRoleIdDAO(Long role_id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -31,9 +33,7 @@ public class GetUserByNameAndSurnameDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, name);
-            _pstmt.setString(2, surname);
-
+            _pstmt.setLong(1, role_id);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

@@ -1,19 +1,20 @@
-package dao.User;
+package dao.Role;
+
 import dao.AbstractDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-public class DeleteUserByUseridDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "DELETE FROM user WHERE user_id=?";
+public class DeleteRoleByIdDAO extends AbstractDAO {
+    private static final String STATEMENT = "DELETE FROM role WHERE role_id=?";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected DeleteUserByUseridDAO(Connection con) {
+    protected DeleteRoleByIdDAO(Connection con) {
         super(con);
     }
 
@@ -22,14 +23,14 @@ public class DeleteUserByUseridDAO extends AbstractDAO{
 
     }
 
-    public int DeleteUserByUseridDAO(Long user_id) throws SQLException {
+    public int DeleteRoleByIdDAO(Long role_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, user_id);
+            _pstmt.setLong(1, role_id);
 
             _affectedRows = _pstmt.executeUpdate();
 
@@ -45,5 +46,4 @@ public class DeleteUserByUseridDAO extends AbstractDAO{
 
         return _affectedRows;
     }
-
 }
