@@ -1,55 +1,48 @@
 package dao.PostFiles;
 
+import dao.AbstractDAO;
 import resource.PostFiles;
-import utils.ResourceNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GetPostFilesByPostIdDao {
-    // SQL Query to be executed : Get post files from the database with the post id
+public class GetPostFilesByPostIdDao extends AbstractDAO<List<PostFiles>> {
 
-    private static final String STATEMENT = "SELECT f.file_id, f.post_id, f.file_type, f.file_size, f.file_path FROM posts p WHERE p.post_id = ?";
+    private static final String STATEMENT = "SELECT * FROM posts p WHERE p.post_id = ?";
 
-    //Declare and set up a connection in constructor
+    public GetPostFilesByPostIdDao(Connection con) { super(con); }
 
-    private final Connection connection;
+    @Override
+    protected void doAccess() throws SQLException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-    public GetPostFilesByPostIdDao(Connection connection) { this.connection = connection; }
-
-    public PostFiles getPostFilesByPostId(long post_id) throws SQLException, ResourceNotFoundException {
-
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        PostFiles postFiles = null;
+        List<PostFiles> postFiles = new ArrayList<PostFiles>();
 
         try {
-            //Prepare and set the statement object to be executed
-            preparedStatement = connection.prepareStatement(STATEMENT);
-            preparedStatement.setObject(1, post_id);
-            resultSet = preparedStatement.executeQuery();
+            pstmt = con.prepareStatement(STATEMENT);
+            rs = pstmt.executeQuery();
 
-            if(!resultSet.isBeforeFirst()) {
-                throw new ResourceNotFoundException("No such post file found");
-            }
-
-            if(resultSet.next()) {
-                postFiles = new PostFiles(resultSet.getObject("file_id", long.class),
-                    resultSet.getLong("file_id"),
-                    resultSet.getString("file_type"),
-                    resultSet.getDouble("file_size"),
-                    resultSet.getString("file_path")
+            while (rs.next()) {
+                postFiles.add(new PostFiles(
+                        rs.getLong("file_id"),
+                        rs.getLong("post_id"),
+                        rs.getString("file_type"),
+                        rs.getDouble("file_size"),
+                        rs.getString("file_path"))
                 );
             }
+
+            LOGGER.info("Post file(s) successfully listed.");
         } finally {
-            if(resultSet != null) { resultSet.close(); }
-            if(preparedStatement != null) { preparedStatement.close(); }
-            connection.close();
+            if (rs != null) { rs.close(); }
+            if (pstmt != null) { pstmt.close(); }
         }
-        return postFiles;
+        outputParam = postFiles;
     }
 }
 
