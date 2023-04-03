@@ -1,51 +1,62 @@
 package dao.PostFiles;
 
+import dao.AbstractDAO;
 import resource.PostFiles;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UpdateFilesByPostIdDao {
+public class UpdateFilesByPostIdDao extends AbstractDAO<PostFiles> {
 
     private static final String STATEMENT = "UPDATE post_files SET file_id = ?, post_id = ?, file_type = ?, file_size = ?, file_path = ? WHERE post_id = ?";
 
-    private final Connection con;
+    private PostFiles pf;
 
-    public UpdateFilesByPostIdDao(Connection con) {
-        this.con = con;
+    protected UpdateFilesByPostIdDao(Connection con, PostFiles pf) {
+        super(con);
+
+        if (pf == null) {
+            LOGGER.error("The post file cannot be null.");
+            throw new NullPointerException("The post file cannot be null.");
+        }
+
+        this.pf = pf;
     }
 
-    public int updatePostFiles(long post_id, String file_type, double file_size, String file_path) throws SQLException {
+    @Override
+    protected void doAccess() throws SQLException {
         PreparedStatement pstmt = null;
-        int affectedRows = 0;
+        ResultSet rs = null;
+
         PostFiles pf = null;
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setLong(1, post_id);
-            pstmt.setString(2, file_type);
-            pstmt.setDouble(3, file_size);
-            pstmt.setString(4, file_path);
+            pstmt.setLong(1, pf.getFile_id());
+            pstmt.setLong(2, pf.getPost_id());
+            pstmt.setString(3, pf.getFile_type());
+            pstmt.setDouble(4, pf.getFile_size());
+            pstmt.setString(5, pf.getFile_path());
 
-            affectedRows = pstmt.executeUpdate();
+            rs = pstmt.executeQuery();
 
-            if(affectedRows != 1) { throw new SQLException("Update failed."); }
+            if (rs.next()) {
+                pf = new PostFiles(
+                        rs.getLong("file_id"),
+                        rs.getLong("post_id"),
+                        rs.getString("file_type"),
+                        rs.getDouble("file_size"),
+                        rs.getString("file_path")
+                );
+
+                LOGGER.info("Post file %d successfully updated in the database.", pf.getFile_id());
+            }
         } finally {
-            if(pstmt != null) { pstmt.close(); }
-            con.close();
+            if (rs != null) { rs.close(); }
+            if (pstmt != null) { pstmt.close(); }
         }
-        return affectedRows;
+        outputParam = pf;
     }
-
-
-    private long file_id;
-
-    private long post_id;
-
-    private String file_type;
-
-    private double file_size;
-
-    private String file_path;
 }
