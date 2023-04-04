@@ -3,13 +3,16 @@ package servlet;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.StringFormatterMessageFactory;
+import utils.ErrorCode;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -36,6 +39,11 @@ public class AbstractServlet extends HttpServlet {
 
             throw new ServletException("Unable to acquire the connection pool to the database", _e);
         }
+    }
+
+    public void writeError(HttpServletResponse _res, ErrorCode ec) throws IOException, IOException {
+        _res.setStatus(ec.getHTTPCode());
+        _res.getWriter().write(ec.toJSON().toString());
     }
 
     public void destroy() {
