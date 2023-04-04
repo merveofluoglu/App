@@ -41,9 +41,9 @@ public class AbstractServlet extends HttpServlet {
         }
     }
 
-    public void writeError(HttpServletResponse _res, ErrorCode ec) throws IOException, IOException {
-        _res.setStatus(ec.getHTTPCode());
-        _res.getWriter().write(ec.toJSON().toString());
+    public void writeError(HttpServletResponse _res, ErrorCode _ec) throws IOException, IOException {
+        _res.setStatus(_ec.getHTTPCode());
+        _res.getWriter().write(_ec.toJSON().toString());
     }
 
     public void destroy() {
