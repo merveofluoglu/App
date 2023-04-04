@@ -19,7 +19,7 @@ public class PostServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
         String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
 
-        if (_op == "details") {
+        if (_op.contentEquals("details")) {
             getPostDetailsOp(_request, _response);
         }
     }
