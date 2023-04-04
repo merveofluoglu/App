@@ -20,7 +20,7 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetPostsByCustomerFavouritesDao(Connection con) {
+    public GetPostsByCustomerFavouritesDao(Connection con) {
         super(con);
     }
 
