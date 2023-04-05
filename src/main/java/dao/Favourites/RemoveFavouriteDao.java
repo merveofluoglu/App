@@ -15,7 +15,7 @@ public class RemoveFavouriteDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected RemoveFavouriteDao(Connection con) {
+    public RemoveFavouriteDao(Connection con) {
         super(con);
     }
 

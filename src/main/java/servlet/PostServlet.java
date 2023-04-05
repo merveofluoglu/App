@@ -1,6 +1,7 @@
 package servlet;
 
 import dao.Post.CreatePostDao;
+import dao.Post.DeletePostByIdDao;
 import dao.Post.GetPostByIdDao;
 import dao.Post.UpdatePostByIdDao;
 import jakarta.servlet.*;
@@ -43,7 +44,6 @@ public class PostServlet extends AbstractServlet {
             case "protected/delete" :
                 removePost(_request, _response);
                 break;
-            // the requested operation is unknown
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
@@ -88,7 +88,24 @@ public class PostServlet extends AbstractServlet {
     }
 
     private void removePost(HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            long _postId = Long.parseLong(_request.getParameter("post_id"));
 
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new DeletePostByIdDao(getConnection()).deletePost(_postId));
+
+            _response.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
     }
 
     private void addPost(HttpServletRequest _request, HttpServletResponse _response) {

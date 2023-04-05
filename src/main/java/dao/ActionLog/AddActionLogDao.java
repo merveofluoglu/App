@@ -17,7 +17,7 @@ public class AddActionLogDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected AddActionLogDao(Connection con) {
+    public AddActionLogDao(Connection con) {
         super(con);
     }
 
