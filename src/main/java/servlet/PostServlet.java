@@ -78,6 +78,8 @@ public class PostServlet extends AbstractServlet {
 
             _result.put("data", new CreatePostDao(getConnection()).createPost(_post));
 
+            _response.getWriter().write(_result.toString());
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
