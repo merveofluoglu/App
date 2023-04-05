@@ -27,7 +27,7 @@ public class CreatePostDao extends AbstractDAO {
 
     }
 
-    public String createPost(Post post) throws SQLException {
+    public String createPost(Post _post) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _rs;
@@ -36,20 +36,20 @@ public class CreatePostDao extends AbstractDAO {
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setString(1, post.getName());
-            _pstmt.setString(2, post.getDescription());
-            _pstmt.setLong(3, post.getUser_id());
-            _pstmt.setLong(4, post.getCustomer_id());
-            _pstmt.setDouble(5, post.getPrice());
-            _pstmt.setString(6, post.getStatus());
-            _pstmt.setTimestamp(7, post.getStart_date());
-            _pstmt.setTimestamp(8, post.getEnd_date());
-            _pstmt.setBoolean(9, post.isIs_deleted());
-            _pstmt.setBoolean(10, post.isIs_sold());
-            _pstmt.setTimestamp(11, post.getSold_date());
-            _pstmt.setTimestamp(12, post.getUpdate_date());
-            _pstmt.setLong(13, post.getCategory_id());
-            _pstmt.setLong(14, post.getSubcategory_id());
+            _pstmt.setString(1, _post.getName());
+            _pstmt.setString(2, _post.getDescription());
+            _pstmt.setLong(3, _post.getUser_id());
+            _pstmt.setLong(4, _post.getCustomer_id());
+            _pstmt.setDouble(5, _post.getPrice());
+            _pstmt.setString(6, _post.getStatus());
+            _pstmt.setTimestamp(7, _post.getStart_date());
+            _pstmt.setTimestamp(8, _post.getEnd_date());
+            _pstmt.setBoolean(9, _post.isIs_deleted());
+            _pstmt.setBoolean(10, _post.isIs_sold());
+            _pstmt.setTimestamp(11, _post.getSold_date());
+            _pstmt.setTimestamp(12, _post.getUpdate_date());
+            _pstmt.setLong(13, _post.getCategory_id());
+            _pstmt.setLong(14, _post.getSubcategory_id());
 
             _rs = _pstmt.executeUpdate();
 

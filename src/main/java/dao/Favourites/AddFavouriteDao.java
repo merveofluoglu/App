@@ -22,7 +22,7 @@ public class AddFavouriteDao extends AbstractDAO {
         super(con);
     }
 
-    public String addFavourite(Favourites fav) throws SQLException {
+    public String addFavourite(Favourites _fav) throws SQLException {
 
         PreparedStatement _pstmt = null;
 
@@ -32,8 +32,8 @@ public class AddFavouriteDao extends AbstractDAO {
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, fav.getUser_id());
-            _pstmt.setLong(2, fav.getPost_id());
+            _pstmt.setLong(1, _fav.getUser_id());
+            _pstmt.setLong(2, _fav.getPost_id());
 
             _rs = _pstmt.executeUpdate();
 

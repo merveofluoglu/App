@@ -33,14 +33,14 @@ public class ActionLogServlet extends AbstractServlet{
 
             _resp.getWriter().write(_result.toString());
 
-        } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }  catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (NumberFormatException _e) {
+            throw new RuntimeException(_e);
+        } catch (JSONException _e) {
+            throw new RuntimeException(_e);
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        }  catch (IOException _e) {
+            throw new RuntimeException(_e);
         }
 
     }

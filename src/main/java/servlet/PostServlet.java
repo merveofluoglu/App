@@ -2,6 +2,7 @@ package servlet;
 
 import dao.Post.CreatePostDao;
 import dao.Post.GetPostByIdDao;
+import dao.Post.UpdatePostByIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -49,9 +50,45 @@ public class PostServlet extends AbstractServlet {
     }
 
     private void updatePost(HttpServletRequest _request, HttpServletResponse _response) {
+
+        Post _post = null;
+
+        long _postId = Long.parseLong(_request.getParameter("post_id"));
+
+        try {
+            _post.setName(_request.getParameter("name"));
+            _post.setDescription(_request.getParameter("description"));
+            _post.setUser_id(Long.parseLong(_request.getParameter("user_id")));
+            _post.setCustomer_id(Long.parseLong(_request.getParameter("customer_id")));
+            _post.setPrice(Double.parseDouble(_request.getParameter("price")));
+            _post.setStatus(_request.getParameter("status"));
+            _post.setStart_date(new Timestamp(System.currentTimeMillis()));
+            _post.setEnd_date(Timestamp.valueOf(_post.getStart_date().toLocalDateTime().plusDays(15)));
+            _post.setIs_deleted(false);
+            _post.setIs_sold(false);
+            _post.setSold_date(null);
+            _post.setUpdate_date(null);
+            _post.setCategory_id(Long.parseLong(_request.getParameter("category_id")));
+            _post.setSubcategory_id(Long.parseLong(_request.getParameter("subcategory_id")));
+
+            JSONObject _result = new JSONObject();
+
+            _result.put("data", new UpdatePostByIdDao(getConnection()).updatePostById(_post, _postId));
+
+            _response.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+
     }
 
     private void removePost(HttpServletRequest _request, HttpServletResponse _response) {
+
     }
 
     private void addPost(HttpServletRequest _request, HttpServletResponse _response) {
@@ -82,8 +119,8 @@ public class PostServlet extends AbstractServlet {
 
             //After jsp files prepared, request dispatcher will be implemented!!
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception _e) {
+            throw new RuntimeException(_e);
         }
 
     }
