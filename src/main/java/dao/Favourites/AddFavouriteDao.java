@@ -18,7 +18,7 @@ public class AddFavouriteDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected AddFavouriteDao(Connection con) {
+    public AddFavouriteDao(Connection con) {
         super(con);
     }
 

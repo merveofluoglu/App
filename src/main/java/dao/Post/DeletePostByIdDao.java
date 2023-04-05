@@ -15,7 +15,7 @@ public class DeletePostByIdDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected DeletePostByIdDao(Connection con) {
+    public DeletePostByIdDao(Connection con) {
         super(con);
     }
 
