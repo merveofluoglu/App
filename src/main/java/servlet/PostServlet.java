@@ -80,6 +80,8 @@ public class PostServlet extends AbstractServlet {
 
             _response.getWriter().write(_result.toString());
 
+            //After jsp files prepared, request dispatcher will be implemented!!
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
