@@ -18,7 +18,7 @@ public class CreatePostDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected CreatePostDao(Connection con) {
+    public CreatePostDao(Connection con) {
         super(con);
     }
 

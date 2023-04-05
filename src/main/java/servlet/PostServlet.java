@@ -1,15 +1,18 @@
 package servlet;
 
+import dao.Post.CreatePostDao;
 import dao.Post.GetPostByIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
+import resource.Post;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import static java.lang.Long.parseLong;
 
@@ -52,6 +55,35 @@ public class PostServlet extends AbstractServlet {
     }
 
     private void addPost(HttpServletRequest _request, HttpServletResponse _response) {
+
+        Post _post = null;
+
+        try {
+            _post.setName(_request.getParameter("name"));
+            _post.setDescription(_request.getParameter("description"));
+            _post.setUser_id(Long.parseLong(_request.getParameter("user_id")));
+            _post.setCustomer_id(Long.parseLong(_request.getParameter("customer_id")));
+            _post.setPrice(Double.parseDouble(_request.getParameter("price")));
+            _post.setStatus(_request.getParameter("status"));
+            _post.setStart_date(new Timestamp(System.currentTimeMillis()));
+            _post.setEnd_date(Timestamp.valueOf(_post.getStart_date().toLocalDateTime().plusDays(15)));
+            _post.setIs_deleted(false);
+            _post.setIs_sold(false);
+            _post.setSold_date(null);
+            _post.setUpdate_date(null);
+            _post.setCategory_id(Long.parseLong(_request.getParameter("category_id")));
+            _post.setSubcategory_id(Long.parseLong(_request.getParameter("subcategory_id")));
+
+            JSONObject _result = new JSONObject();
+
+            _result.put("data", new CreatePostDao(getConnection()).createPost(_post));
+
+            _response.getWriter().write(_result.toString());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void getPostDetailsOp (HttpServletRequest _request, HttpServletResponse _response) {
