@@ -29,7 +29,7 @@ public class GetPostsBySubCategoryIdDao extends AbstractDAO {
 
     }
 
-    public List<Post> getPostsBySubCategoryId(long id) throws SQLException, ResourceNotFoundException {
+    public List<Post> getPostsBySubCategoryId(long _id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -38,7 +38,7 @@ public class GetPostsBySubCategoryIdDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, id);
+            _pstmt.setObject(1, _id);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

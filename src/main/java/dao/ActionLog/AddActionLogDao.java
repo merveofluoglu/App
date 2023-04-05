@@ -21,7 +21,7 @@ public class AddActionLogDao extends AbstractDAO {
         super(con);
     }
 
-    public String addActionLog(ActionLog actionLog) throws SQLException
+    public String addActionLog(ActionLog _actionLog) throws SQLException
     {
         PreparedStatement _pstmt = null;
 
@@ -30,11 +30,11 @@ public class AddActionLogDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setBoolean(1, actionLog.isIs_user_act());
-            _pstmt.setBoolean(2, actionLog.isIs_system_act());
-            _pstmt.setString(3, actionLog.getDescription());
-            _pstmt.setTimestamp(4, actionLog.getAction_date());
-            _pstmt.setLong(5, actionLog.getUser_id());
+            _pstmt.setBoolean(1, _actionLog.isIs_user_act());
+            _pstmt.setBoolean(2, _actionLog.isIs_system_act());
+            _pstmt.setString(3, _actionLog.getDescription());
+            _pstmt.setTimestamp(4, _actionLog.getAction_date());
+            _pstmt.setLong(5, _actionLog.getUser_id());
 
             _rs = _pstmt.executeUpdate();
 
