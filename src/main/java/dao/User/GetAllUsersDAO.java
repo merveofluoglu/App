@@ -9,35 +9,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-public class GetUserByNameAndSurnameDAO extends AbstractDAO {
+public class GetAllUsersDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM user WHERE name name ? AND surname = ?";
+    private static final String STATEMENT = "SELECT * FROM user WHERE role_id = 1";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetUserByNameAndSurnameDAO(Connection con) {
+    protected GetAllUsersDAO(Connection con) {
         super(con);
     }
 
-    public List<User> getPostsByName(String name,String surname) throws SQLException, ResourceNotFoundException {
+    public List<User> getAllPosts () throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
-        List<User> _user = new ArrayList<>();
+        List<User> _users = new ArrayList<>();
 
         try {
-
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, name);
-            _pstmt.setString(2, surname);
-
             _rs = _pstmt.executeQuery();
 
+            if(!_rs.isBeforeFirst()) {
+                throw new ResourceNotFoundException("There are no post!");
+            }
+
             while (_rs.next()) {
-                _user.add(
+                _users.add(
                         new User(
                                 _rs.getLong("user_id"),
                                 _rs.getString("name"),
@@ -51,7 +51,6 @@ public class GetUserByNameAndSurnameDAO extends AbstractDAO {
                         )
                 );
             }
-
         } finally {
             if (_rs != null) {
                 _rs.close();
@@ -62,7 +61,7 @@ public class GetUserByNameAndSurnameDAO extends AbstractDAO {
             con.close();
         }
 
-        return _user;
+        return _users;
     }
 
     @Override

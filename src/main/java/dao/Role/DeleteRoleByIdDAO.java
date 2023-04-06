@@ -1,4 +1,4 @@
-package dao.Favourites;
+package dao.Role;
 
 import dao.AbstractDAO;
 
@@ -6,35 +6,37 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class RemoveFavouriteDao extends AbstractDAO {
-
-    private static final String STATEMENT = "DELETE FROM favourites WHERE post_id = ?";
+public class DeleteRoleByIdDAO extends AbstractDAO {
+    private static final String STATEMENT = "DELETE FROM role WHERE role_id=?";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public RemoveFavouriteDao(Connection con) {
+    protected DeleteRoleByIdDAO(Connection con) {
         super(con);
     }
 
-    public int removeFavourite(long post_id) throws SQLException {
+    @Override
+    protected void doAccess() throws Exception {
+
+    }
+
+    public int DeleteRoleByIdDAO(Long role_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-
-            _pstmt.setLong(1, post_id);
+            _pstmt.setLong(1, role_id);
 
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {
-                throw new SQLException("Remove Failed!");
+                throw new SQLException("Delete Failed");
             }
-
         } finally {
             if (_pstmt != null) {
                 _pstmt.close();
@@ -43,10 +45,5 @@ public class RemoveFavouriteDao extends AbstractDAO {
         }
 
         return _affectedRows;
-    }
-
-    @Override
-    protected void doAccess() throws Exception {
-
     }
 }
