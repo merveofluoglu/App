@@ -1,8 +1,6 @@
-package dao.Permissions;
+package dao.Permission;
 import dao.AbstractDAO;
 import resource.Permission;
-import resource.Permission;
-import resource.User;
 import utils.ResourceNotFoundException;
 
 
@@ -10,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GetPermissionByIdDao extends AbstractDAO{
 

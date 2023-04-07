@@ -1,8 +1,7 @@
-package dao.Permissions;
+package dao.Permission;
 
 import dao.AbstractDAO;
 import resource.Permission;
-import resource.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

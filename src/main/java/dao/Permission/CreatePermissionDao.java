@@ -1,4 +1,4 @@
-package dao.Permissions;
+package dao.Permission;
 import dao.AbstractDAO;
 import resource.Permission;
 
