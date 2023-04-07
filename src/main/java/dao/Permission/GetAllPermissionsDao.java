@@ -1,7 +1,6 @@
-package dao.Permissions;
+package dao.Permission;
 import dao.AbstractDAO;
 import resource.Permission;
-import resource.User;
 import utils.ResourceNotFoundException;
 
 
