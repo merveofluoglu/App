@@ -24,7 +24,7 @@ public class GetPostsByUserIdDao extends AbstractDAO {
         super(con);
     }
 
-    public List<Post> getPostsByUserId(long id) throws SQLException, ResourceNotFoundException {
+    public List<Post> getPostsByUserId(long _id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -33,7 +33,7 @@ public class GetPostsByUserIdDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, id);
+            _pstmt.setObject(1, _id);
             _rs = _pstmt.executeQuery();
 
             if (!_rs.isBeforeFirst()) {
