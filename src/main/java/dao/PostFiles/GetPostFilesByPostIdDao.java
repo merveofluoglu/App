@@ -2,6 +2,7 @@ package dao.PostFiles;
 
 import dao.AbstractDAO;
 import resource.PostFiles;
+import utils.ResourceNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,21 +11,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetPostFilesByPostIdDao extends AbstractDAO<List<PostFiles>> {
+public class GetPostFilesByPostIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM posts p WHERE p.post_id = ?";
+    private static final String STATEMENT = "SELECT * FROM postfiles p WHERE p.post_id = ?";
 
     public GetPostFilesByPostIdDao(Connection con) { super(con); }
 
-    @Override
-    protected void doAccess() throws SQLException {
+    public List<PostFiles> getPostFilesByPostId(long _id) throws SQLException, ResourceNotFoundException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-
-        List<PostFiles> postFiles = new ArrayList<PostFiles>();
+        List<PostFiles> postFiles = new ArrayList<>();
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
+            pstmt.setObject(1, _id);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -36,13 +36,17 @@ public class GetPostFilesByPostIdDao extends AbstractDAO<List<PostFiles>> {
                         rs.getString("file_path"))
                 );
             }
-
-            LOGGER.info("Post file(s) successfully listed.");
         } finally {
             if (rs != null) { rs.close(); }
             if (pstmt != null) { pstmt.close(); }
+            con.close();
         }
-        outputParam = postFiles;
+        return postFiles;
+    }
+
+    @Override
+    protected void doAccess() throws Exception {
+
     }
 }
 
