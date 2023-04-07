@@ -1,6 +1,9 @@
-package dao.Role;
+package dao.RolePermission;
+
 import dao.AbstractDAO;
+import resource.Post;
 import resource.Role;
+import resource.RolePermission;
 import utils.ResourceNotFoundException;
 
 import java.sql.Connection;
@@ -9,39 +12,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-public class GetAllRolesDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM role";
+public class GetAllRolePermissionsDao extends AbstractDAO {
+
+    private static final String STATEMENT = "SELECT * FROM role_permission";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public GetAllRolesDAO(Connection con) {
+    public GetAllRolePermissionsDao(Connection con) {
         super(con);
     }
 
-    public List<Role> GetAllRoles () throws SQLException, ResourceNotFoundException {
+    public List<RolePermission> getAllRolePermissions () throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
-        List<Role> _roles = new ArrayList<>();
+        List<RolePermission> _role_permissions = new ArrayList<>();
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no roles!");
+                throw new ResourceNotFoundException("There are no Role Permissions!");
             }
 
             while (_rs.next()) {
-                _roles.add(
-                        new Role(
+                _role_permissions.add(
+                        new RolePermission(
+                                _rs.getLong("role_permission_id"),
                                 _rs.getLong("role_id"),
-                                _rs.getString("name")
-
+                                _rs.getLong("permission_id")
                         )
                 );
             }
@@ -55,7 +59,7 @@ public class GetAllRolesDAO extends AbstractDAO{
             con.close();
         }
 
-        return _roles;
+        return _role_permissions;
     }
 
     @Override
