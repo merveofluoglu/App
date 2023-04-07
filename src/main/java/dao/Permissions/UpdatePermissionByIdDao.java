@@ -1,31 +1,27 @@
-package dao.Role;
+package dao.Permissions;
 
 import dao.AbstractDAO;
-import resource.Role;
+import resource.Permission;
 import resource.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdateRoleDAO extends AbstractDAO {
+public class UpdatePermissionByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE role SET name = ? WHERE role_id=?";
-
-    @Override
-    protected void doAccess() throws Exception {
-
-    }
+    private static final String STATEMENT = "UPDATE permission SET name = ?" +
+            "WHERE permission_id =?";
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public UpdateRoleDAO(Connection con) {
+    public UpdatePermissionByIdDao(Connection con) {
         super(con);
     }
 
-    public int updateRoleById(Role role, long role_id) throws SQLException {
+    public int UpdatePermissionById(Permission permission, Long permission_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -33,12 +29,12 @@ public class UpdateRoleDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, role.getName());
-            _pstmt.setLong(2, role_id);
+            _pstmt.setString(1, permission.getName());
+            _pstmt.setLong(2, permission_id);
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {
-                throw new SQLException("Update Failed!");
+                throw new SQLException("Permission Update Failed!");
             }
 
         } finally {
@@ -51,5 +47,8 @@ public class UpdateRoleDAO extends AbstractDAO {
         return _affectedRows;
     }
 
+    @Override
+    protected void doAccess() throws Exception {
 
+    }
 }

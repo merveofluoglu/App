@@ -9,18 +9,18 @@ import java.sql.SQLException;
 public class CreateRoleDAO extends AbstractDAO{
 
     private static final String STATEMENT = "INSERT INTO role (" +
-            "role_id, name"+
-            "VALUES (?, ?)";
+            "name"+
+            "VALUES (?)";
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected CreateRoleDAO(Connection con) {
+    public CreateRoleDAO(Connection con) {
         super(con);
     }
 
-    public String CreateRoleDAO(Role role) throws SQLException {
+    public String createRole(Role role) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _rs;
