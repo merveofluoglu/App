@@ -17,7 +17,7 @@ public class GetUserByUseridDAO extends AbstractDAO{
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetUserByUseridDAO(Connection con) {
+    public GetUserByUseridDAO(Connection con) {
         super(con);
     }
 
