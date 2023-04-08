@@ -26,7 +26,7 @@ public class DeleteSubCategoryDao extends AbstractDAO {
         try {
             //Prepare and set the statement object to be executed
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setObject(1, subcategory_id);
+            pstmt.setObject(1, id);
             affectedRows = pstmt.executeUpdate();
             if (affectedRows != 1) {
                 throw new SQLException("Subcategory Deleting Failed");
