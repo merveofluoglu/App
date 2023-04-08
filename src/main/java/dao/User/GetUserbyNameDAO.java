@@ -20,11 +20,11 @@ public class GetUserbyNameDAO extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetUserbyNameDAO(Connection con) {
+    public GetUserbyNameDAO(Connection con) {
         super(con);
     }
 
-    public List<User> getPostsByName(String name) throws SQLException, ResourceNotFoundException {
+    public List<User> getUserByName(String name) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;

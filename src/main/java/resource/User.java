@@ -43,6 +43,17 @@ public class User {
         this.update_date = update_date;
     }
 
+    public User(Long user_id,String name,String surname,String email,Long role_id,Timestamp creation_date,Timestamp update_date,byte[] pp_path){
+        this.user_id = user_id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.role_id = role_id;
+        this.creation_date = creation_date;
+        this.update_date = update_date;
+        this.pp_path = pp_path;
+    }
+
     public Long getUserID() {
         return user_id;
     }
@@ -129,4 +140,5 @@ public class User {
                 ", update_date=" + update_date +
                 '}';
     }
+
 }

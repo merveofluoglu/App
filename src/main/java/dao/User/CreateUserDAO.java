@@ -26,7 +26,7 @@ public class CreateUserDAO extends AbstractDAO{
      *            the employee to be stored into the database.
      */
 
-    protected CreateUserDAO(final Connection con, final User user) {
+    public CreateUserDAO(final Connection con, final User user) {
         super(con);
 
         if (user == null) {
@@ -42,7 +42,7 @@ public class CreateUserDAO extends AbstractDAO{
 
     }
 
-    public String createUser(User user) throws SQLException {
+    public User createUser(User user) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _rs;
@@ -72,7 +72,7 @@ public class CreateUserDAO extends AbstractDAO{
             con.close();
         }
 
-        return "User Created Successfully!";
+        return user;
     }
 
 }
