@@ -5,58 +5,39 @@ import resource.PostFiles;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UpdateFilesByPostIdDao extends AbstractDAO<PostFiles> {
+public class UpdateFilesByPostIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE post_files SET file_id = ?, post_id = ?, file_type = ?, file_size = ?, file_path = ? WHERE post_id = ?";
+    private static final String STATEMENT = "UPDATE post_files SET file_id = ?, file_type = ?, file_size = ?, file_path = ? WHERE post_id = ?";
 
-    private PostFiles pf;
+    public UpdateFilesByPostIdDao(Connection con) { super(con); }
 
-    protected UpdateFilesByPostIdDao(Connection con, PostFiles pf) {
-        super(con);
-
-        if (pf == null) {
-            LOGGER.error("The post file cannot be null.");
-            throw new NullPointerException("The post file cannot be null.");
-        }
-
-        this.pf = pf;
-    }
-
-    @Override
-    protected void doAccess() throws SQLException {
+    public int updateFilesByPostId(PostFiles pf, long postId) throws SQLException {
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        PostFiles pf = null;
+        int affectedRows = 0;
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
             pstmt.setLong(1, pf.getFile_id());
-            pstmt.setLong(2, pf.getPost_id());
-            pstmt.setString(3, pf.getFile_type());
-            pstmt.setDouble(4, pf.getFile_size());
-            pstmt.setString(5, pf.getFile_path());
+            pstmt.setString(2, pf.getFile_type());
+            pstmt.setDouble(3, pf.getFile_size());
+            pstmt.setString(4, pf.getFile_path());
+            pstmt.setLong(5, postId);
 
-            rs = pstmt.executeQuery();
+            affectedRows = pstmt.executeUpdate();
 
-            if (rs.next()) {
-                pf = new PostFiles(
-                        rs.getLong("file_id"),
-                        rs.getLong("post_id"),
-                        rs.getString("file_type"),
-                        rs.getDouble("file_size"),
-                        rs.getString("file_path")
-                );
+            if (affectedRows != 1) { throw new SQLException("Update Failed!"); }
 
-                LOGGER.info("Post file %d successfully updated in the database.", pf.getFile_id());
-            }
         } finally {
-            if (rs != null) { rs.close(); }
             if (pstmt != null) { pstmt.close(); }
+            con.close();
         }
-        outputParam = pf;
+        return affectedRows;
+    }
+
+    @Override
+    protected void doAccess() throws SQLException {
+
     }
 }

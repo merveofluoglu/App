@@ -2,34 +2,30 @@ package dao.Review;
 
 import dao.AbstractDAO;
 import resource.Reviews;
+import utils.ResourceNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetReviewsByPostId extends AbstractDAO<List<Reviews>> {
+public class GetReviewsByPostIdDao extends AbstractDAO {
 
-    /**
-     * Creates a new DAO object.
-     *
-     * @param con the connection to be used for accessing the database.
-     */
+    private static final String STATEMENT = "SELECT * FROM reviews r WHERE r.post_id = ?";
 
-    private static final String STATEMENT = "SELECT * FROM reviews r WHERE r.review_id = ?";
+    public GetReviewsByPostIdDao(Connection con) { super(con); }
 
-    protected GetReviewsByPostId(Connection con) { super(con); }
-
-    @Override
-    protected void doAccess() throws Exception {
+    public List<Reviews> getReviewsByPostId(long _id) throws SQLException, ResourceNotFoundException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
-        List<Reviews> reviews = new ArrayList<Reviews>();
+        List<Reviews> reviews = new ArrayList<>();
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
+            pstmt.setObject(1, _id);
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -44,12 +40,16 @@ public class GetReviewsByPostId extends AbstractDAO<List<Reviews>> {
                         rs.getBoolean("is_deleted"))
                 );
             }
-
-            LOGGER.info("Review(s) successfully listed.");
         } finally {
             if (rs != null) { rs.close(); }
             if (pstmt != null) { pstmt.close(); }
+            con.close();
         }
-        outputParam = reviews;
+        return reviews;
+    }
+
+    @Override
+    protected void doAccess() throws Exception {
+
     }
 }
