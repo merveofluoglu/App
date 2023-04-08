@@ -40,6 +40,9 @@ public class UpdateSubCategoryDao extends AbstractDAO {
     }
     @Override
     protected void doAccess() throws Exception { }
+
+    public boolean UpdateSubCategoryDao(SubCategory subCategory, long subCategoryId) {
+    }
 }
 
 

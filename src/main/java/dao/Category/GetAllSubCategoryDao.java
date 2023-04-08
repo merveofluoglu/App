@@ -15,7 +15,7 @@ import java.util.List;
 public class GetAllSubCategoryDao extends AbstractDAO {
     private static final String STATEMENT = "SELECT * FROM SubCategory";
 
-    protected GetAllSubCategoryDao(Connection con) {
+    public GetAllSubCategoryDao(Connection con) {
         super(con);
     }
 
@@ -56,5 +56,8 @@ public class GetAllSubCategoryDao extends AbstractDAO {
 
     @Override
     protected void doAccess() throws Exception {
+    }
+
+    public boolean getAllSubCategory(long id) {
     }
 }
