@@ -13,7 +13,7 @@ public class CreateSubCategoryDao extends AbstractDAO{
     private static final String STATEMENT = "INSERT INTO subcategory (subcategory_name) VALUES (?)";
     private Connection con;
 
-    public CreateSubCategoryDao(Connection con) {
+    protected CreateSubCategoryDao(Connection con) {
         super(con);
         this.con = con;
     }
