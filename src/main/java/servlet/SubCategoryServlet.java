@@ -26,9 +26,9 @@ public class SubCategoryServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
         String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
 
-        if (_op.contentEquals("details")) {
+       /* if (_op.contentEquals("details")) {
             getSubCategoryDetailsOp(_request, _response);
-        }
+        }*/
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SubCategoryServlet extends AbstractServlet {
 
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new UpdateSubCategoryDao(getConnection()).UpdateSubCategoryDao(_SubCategory, _SubCategoryId));
+            _result.put("data", new UpdateSubCategoryDao(getConnection()).updateSubCategory(_SubCategory, _SubCategoryId));
 
             _response.getWriter().write(_result.toString());
 
@@ -118,8 +118,8 @@ public class SubCategoryServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         }
 
-    }
-    private void getSubCategoryDetailsOp(HttpServletRequest _request, HttpServletResponse _response){
+    }/*
+    private void getSubCategoryDetailsOp(HttpServletRequest _request, HttpServletResponse _response) {
         try {
             long _id = parseLong(_request.getParameter("subcategory_id"));
             _response.setContentType("application/json");
@@ -132,10 +132,8 @@ public class SubCategoryServlet extends AbstractServlet {
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
-        } catch (ResourceNotFoundException _e) {
-            throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
         }
-    }
+    }*/
 }
