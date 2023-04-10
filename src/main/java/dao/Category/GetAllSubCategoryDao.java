@@ -58,6 +58,4 @@ public class GetAllSubCategoryDao extends AbstractDAO {
     protected void doAccess() throws Exception {
     }
 
-    public boolean getAllSubCategory(long id) {
-    }
 }
