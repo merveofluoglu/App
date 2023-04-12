@@ -20,11 +20,11 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetPostsByCustomerFavouritesDao(Connection con) {
+    public GetPostsByCustomerFavouritesDao(Connection con) {
         super(con);
     }
 
-    public List<Post> getPostsByCustomerFavourites(long id) throws SQLException, ResourceNotFoundException {
+    public List<Post> getPostsByCustomerFavourites(long _id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -36,7 +36,7 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1,id);
+            _pstmt.setObject(1,_id);
             _rs = _pstmt.executeQuery();
 
             if (!_rs.isBeforeFirst()) {

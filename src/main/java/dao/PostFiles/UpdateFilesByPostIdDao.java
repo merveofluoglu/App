@@ -1,51 +1,43 @@
 package dao.PostFiles;
 
+import dao.AbstractDAO;
 import resource.PostFiles;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdateFilesByPostIdDao {
+public class UpdateFilesByPostIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE post_files SET file_id = ?, post_id = ?, file_type = ?, file_size = ?, file_path = ? WHERE post_id = ?";
+    private static final String STATEMENT = "UPDATE post_files SET file_id = ?, file_type = ?, file_size = ?, file_path = ? WHERE post_id = ?";
 
-    private final Connection con;
+    public UpdateFilesByPostIdDao(Connection con) { super(con); }
 
-    public UpdateFilesByPostIdDao(Connection con) {
-        this.con = con;
-    }
-
-    public int updatePostFiles(long post_id, String file_type, double file_size, String file_path) throws SQLException {
+    public int updateFilesByPostId(PostFiles pf, long postId) throws SQLException {
         PreparedStatement pstmt = null;
         int affectedRows = 0;
-        PostFiles pf = null;
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setLong(1, post_id);
-            pstmt.setString(2, file_type);
-            pstmt.setDouble(3, file_size);
-            pstmt.setString(4, file_path);
+            pstmt.setLong(1, pf.getFile_id());
+            pstmt.setString(2, pf.getFile_type());
+            pstmt.setDouble(3, pf.getFile_size());
+            pstmt.setString(4, pf.getFile_path());
+            pstmt.setLong(5, postId);
 
             affectedRows = pstmt.executeUpdate();
 
-            if(affectedRows != 1) { throw new SQLException("Update failed."); }
+            if (affectedRows != 1) { throw new SQLException("Update Failed!"); }
+
         } finally {
-            if(pstmt != null) { pstmt.close(); }
+            if (pstmt != null) { pstmt.close(); }
             con.close();
         }
         return affectedRows;
     }
 
+    @Override
+    protected void doAccess() throws SQLException {
 
-    private long file_id;
-
-    private long post_id;
-
-    private String file_type;
-
-    private double file_size;
-
-    private String file_path;
+    }
 }

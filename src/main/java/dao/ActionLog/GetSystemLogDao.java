@@ -19,7 +19,7 @@ public class GetSystemLogDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetSystemLogDao(Connection con) {
+    public GetSystemLogDao(Connection con) {
         super(con);
     }
 

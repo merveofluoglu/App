@@ -15,7 +15,7 @@ public class DeletePostByIdDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected DeletePostByIdDao(Connection con) {
+    public DeletePostByIdDao(Connection con) {
         super(con);
     }
 
@@ -24,14 +24,14 @@ public class DeletePostByIdDao extends AbstractDAO {
 
     }
 
-    public int deletePost(long id) throws SQLException {
+    public int deletePost(long _id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, id);
+            _pstmt.setObject(1, _id);
 
             _affectedRows = _pstmt.executeUpdate();
 

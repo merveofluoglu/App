@@ -18,9 +18,9 @@ public class User {
 
     private Timestamp update_date;
 
-    private String pp_path;
+    private byte[] pp_path;
 
-    public User(Long user_id,String name,String surname,String email,String password,Long role_id,Timestamp creation_date,Timestamp update_date,String pp_path){
+    public User(Long user_id,String name,String surname,String email,String password,Long role_id,Timestamp creation_date,Timestamp update_date,byte[] pp_path){
         this.user_id = user_id;
         this.name = name;
         this.surname = surname;
@@ -108,7 +108,7 @@ public class User {
         this.update_date = update_date;
     }
 
-    public String getProfile_photo(){
+    public byte[] getProfile_photo(){
         return pp_path;
     }
 

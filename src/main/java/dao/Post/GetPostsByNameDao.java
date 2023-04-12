@@ -24,7 +24,7 @@ public class GetPostsByNameDao extends AbstractDAO {
         super(con);
     }
 
-    public List<Post> getPostsByName(String name) throws SQLException, ResourceNotFoundException {
+    public List<Post> getPostsByName(String _name) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -33,7 +33,7 @@ public class GetPostsByNameDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, "%" + name + "%");;
+            _pstmt.setString(1, "%" + _name + "%");;
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {
