@@ -6,7 +6,7 @@
 
     <groupId>damacanan.webapplicationproject</groupId>
     <artifactId>damacanan</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>war</packaging>
 
     <properties>
@@ -101,7 +101,7 @@
         <directory>${basedir}/target</directory>
 
         <!-- name of the generated package -->
-        <finalName>${project.artifactId}-${project.version}</finalName>
+        <finalName>${project.artifactId}</finalName>
 
         <!-- configuration of the plugins for the different goals -->
         <plugins>
@@ -129,7 +129,7 @@
                     <show>protected</show>
                     <source>${java.version}</source>
                     <doctitle>${project.name} ${project.version} - Web Applications Code Examples</doctitle>
-                    <windowtitle>${project.artifactId} ${project.version}</windowtitle>
+                    <windowtitle>${project.artifactId}</windowtitle>
                     <detectJavaApiLink>true</detectJavaApiLink>
                     <detectLinks>true</detectLinks>
                     <validateLinks>true</validateLinks>
@@ -210,6 +210,16 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>2.0.0</version>
         </dependency>
 
     </dependencies>

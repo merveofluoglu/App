@@ -1,9 +1,6 @@
 package servlet;
 
-import dao.Post.CreatePostDao;
-import dao.Post.DeletePostByIdDao;
-import dao.Post.GetPostByIdDao;
-import dao.Post.UpdatePostByIdDao;
+import dao.Post.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -15,6 +12,7 @@ import utils.ResourceNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import static java.lang.Long.parseLong;
 
@@ -26,6 +24,9 @@ public class PostServlet extends AbstractServlet {
 
         if (_op.contentEquals("details")) {
             getPostDetailsOp(_request, _response);
+        }
+        else {
+            getAllPosts(_request, _response);
         }
     }
 
@@ -46,6 +47,22 @@ public class PostServlet extends AbstractServlet {
                 break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
+        }
+    }
+
+    private void getAllPosts (HttpServletRequest _req, HttpServletResponse _resp) {
+        try {
+            JSONObject _result = new JSONObject();
+
+            _result.put("data", new GetAllPostsDao(getConnection()).getAllPosts());
+
+            _resp.getWriter().write(_result.toString());
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
         }
     }
 
