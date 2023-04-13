@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ReadMessageByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE message SET is_read = true WHERE message_id = ?";
+    private static final String STATEMENT = "UPDATE message SET isRead = true WHERE messageId = ?";
 
     /**
      * Creates a new DAO object.
@@ -31,7 +31,7 @@ public class ReadMessageByIdDao extends AbstractDAO {
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, _message.getMessage_id());
+            _pstmt.setObject(1, _message.getMessageId());
 
             _affectedRows = _pstmt.executeUpdate();
 

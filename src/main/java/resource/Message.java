@@ -4,62 +4,62 @@ import java.sql.Timestamp;
 
 public class Message {
 
-    private long message_id;
-    private long creator_id;
-    private long recipient_id;
-    private long parent_message_id;
+    private long messageId;
+    private long creatorId;
+    private long recipientId;
+    private long parentMessageId;
     private String subject;
-    private String message_body;
-    private boolean is_read;
-    private Timestamp creation_date;
-    private Timestamp expiration_date;
+    private String messageBody;
+    private boolean isRead;
+    private Timestamp creationDate;
+    private Timestamp expirationDate;
 
     public Message(
-            long message_id, long creator_id, long recipient_id, long parent_message_id,
-            String subject, String message_body, boolean is_read,
-            Timestamp creation_date, Timestamp expiration_date){
+            long messageId, long creatorId, long recipientId, long parentMessageId,
+            String subject, String messageBody, boolean isRead,
+            Timestamp creationDate, Timestamp expirationDate){
 
-        this.message_id = message_id;
-        this.creator_id = creator_id;
-        this.recipient_id = recipient_id;
-        this.parent_message_id = parent_message_id;
+        this.messageId = messageId;
+        this.creatorId = creatorId;
+        this.recipientId = recipientId;
+        this.parentMessageId = parentMessageId;
         this.subject = subject;
-        this.message_body = message_body;
-        this.is_read = is_read;
-        this.creation_date = creation_date;
-        this.expiration_date = expiration_date;
+        this.messageBody = messageBody;
+        this.isRead = isRead;
+        this.creationDate = creationDate;
+        this.expirationDate = expirationDate;
     }
 
-    public long getMessage_id() {
-        return message_id;
+    public long getMessageId() {
+        return messageId;
     }
 
-    public void setMessage_id(long message_id) {
-        this.message_id = message_id;
+    public void setMessageId(long message_id) {
+        this.messageId = messageId;
     }
 
-    public long getCreator_id() {
-        return creator_id;
+    public long getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreator_id(long creator_id) {
-        this.creator_id = creator_id;
+    public void setCreatorId(long creatorId) {
+        this.creatorId = creatorId;
     }
 
-    public long getRecipient_id() {
-        return recipient_id;
+    public long getRecipientId() {
+        return recipientId;
     }
 
-    public void setRecipient_id(long recipient_id) {
-        this.recipient_id = recipient_id;
+    public void setRecipientId(long recipientId) {
+        this.recipientId = recipientId;
     }
 
-    public long getParent_message_id() {
-        return parent_message_id;
+    public long getParentMessageId() {
+        return parentMessageId;
     }
 
-    public void setParent_message_id(long parent_message_id) {
-        this.parent_message_id = parent_message_id;
+    public void setParentMessageId(long parentMessageId) {
+        this.parentMessageId = parentMessageId;
     }
 
     public String getSubject() {
@@ -70,35 +70,35 @@ public class Message {
         this.subject = subject;
     }
 
-    public String getMessage_body() {
-        return message_body;
+    public String getMessageBody() {
+        return messageBody;
     }
 
-    public void setMessage_body(String message_body) {
-        this.message_body = message_body;
+    public void setMessageBody(String messageBody) {
+        this.messageBody = messageBody;
     }
 
-    public boolean isIs_read() {
-        return is_read;
+    public boolean getIsRead() {
+        return isRead;
     }
 
-    public void setIs_read(boolean is_read) {
-        this.is_read = is_read;
+    public void setIsRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
-    public Timestamp getCreation_date() {
-        return creation_date;
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 
-    public void setCreation_date(Timestamp creation_date) {
-        this.creation_date = creation_date;
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public Timestamp getExpiration_date() {
-        return expiration_date;
+    public Timestamp getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setExpiration_date(Timestamp expiration_date) {
-        this.expiration_date = expiration_date;
+    public void setExpirationDate(Timestamp expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

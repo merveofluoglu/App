@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class GetMessageById extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM message WHERE message.message_id = ?";
+    private static final String STATEMENT = "SELECT * FROM message WHERE message.messageId = ?";
 
     /**
      * Creates a new DAO object.
@@ -25,14 +25,14 @@ public class GetMessageById extends AbstractDAO {
 
     }
 
-    public String getMessage(long _message_id) throws SQLException {
+    public String getMessage(long messageId) throws SQLException {
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setLong(1, _message_id);
+            _pstmt.setLong(1, messageId);
 
             _affectedRows = _pstmt.executeUpdate();
 
