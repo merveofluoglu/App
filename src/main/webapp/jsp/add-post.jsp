@@ -1,17 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: lenovo
-  Date: 6.04.2023
-  Time: 08:54
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=utf-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Add Post</title>
 </head>
 <body>
-    <form method="post"  action="<c:url value="/post/add"/>">
+    <form method="POST" action="<c:url value="/post/add"/>" enctype="multipart/form-data">
       <label for="name">Name:</label>
       <input id="name" name="name" type="text"/><br/>
 
