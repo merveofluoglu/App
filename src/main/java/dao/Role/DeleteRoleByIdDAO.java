@@ -1,9 +1,12 @@
 package dao.Role;
 
 import dao.AbstractDAO;
+import resource.Role;
+import utils.ResourceNotFoundException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DeleteRoleByIdDAO extends AbstractDAO {
@@ -14,7 +17,7 @@ public class DeleteRoleByIdDAO extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected DeleteRoleByIdDAO(Connection con) {
+    public DeleteRoleByIdDAO(Connection con) {
         super(con);
     }
 
@@ -23,27 +26,35 @@ public class DeleteRoleByIdDAO extends AbstractDAO {
 
     }
 
-    public int DeleteRoleByIdDAO(Long role_id) throws SQLException {
+    public Role deleteRoleById(Long role_id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
-        int _affectedRows = 0;
+        ResultSet _rs = null;
+        Role _role = null;
 
         try {
+
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setLong(1, role_id);
-
-            _affectedRows = _pstmt.executeUpdate();
-
-            if (_affectedRows != 1) {
-                throw new SQLException("Delete Failed");
+            _pstmt.setObject(1, role_id);
+            _rs = _pstmt.executeQuery();
+            if (!_rs.isBeforeFirst() ) {
+                throw new ResourceNotFoundException("There is no such user!");
+            }
+            if (_rs.next()) {
+                _role = new Role(_rs.getLong("role_id"),
+                        _rs.getString("name")
+                );
             }
         } finally {
+            if (_rs != null) {
+                _rs.close();
+            }
             if (_pstmt != null) {
                 _pstmt.close();
             }
             con.close();
         }
 
-        return _affectedRows;
+        return _role;
     }
 }

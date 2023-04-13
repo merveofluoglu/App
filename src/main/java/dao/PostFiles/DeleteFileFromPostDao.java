@@ -1,51 +1,37 @@
 package dao.PostFiles;
 
 import dao.AbstractDAO;
-import resource.PostFiles;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DeleteFileFromPostDao extends AbstractDAO<PostFiles> {
-    private static final String STATEMENT = "DELETE FROM post_files WHERE file_id = ? RETURNING *";
+public class DeleteFileFromPostDao extends AbstractDAO {
+    private static final String STATEMENT = "UPDATE postfiles SET is_deleted = true WHERE file_id = ?";
 
-    private long file_id;
+    public DeleteFileFromPostDao(Connection con) { super(con); }
 
-    public DeleteFileFromPostDao(Connection con, long file_id) {
-        super(con);
-        this.file_id = file_id;
-    }
-
-    @Override
-    protected void doAccess() throws SQLException {
-
+    public int deleteFileFromPost(long _id) throws SQLException {
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        PostFiles pf = null;
+        int affectedRows = 0;
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setLong(1, file_id);
+            pstmt.setObject(1, _id);
 
-            rs = pstmt.executeQuery();
+            affectedRows = pstmt.executeUpdate();
 
-            while(rs.next()) {
-                pf = new PostFiles(
-                        rs.getLong("file_id"),
-                        rs.getLong("post_id"),
-                        rs.getString("file_type"),
-                        rs.getDouble("file_size"),
-                        rs.getString("file_path")
-                );
-                LOGGER.info("Post file %d successfully deleted from the database.", pf.getFile_id());
-            }
+            if(affectedRows != 1) { throw new SQLException("Delete Failed"); }
         } finally {
-            if(rs != null) { rs.close(); }
-            if(pstmt != null) { pstmt.close(); }
+            if (pstmt != null) { pstmt.close(); }
+            con.close();
         }
-        outputParam = pf;
+
+        return affectedRows;
+    }
+
+    @Override
+    protected void doAccess() throws Exception {
+
     }
 }

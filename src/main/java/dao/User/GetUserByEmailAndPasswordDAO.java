@@ -18,11 +18,11 @@ public class GetUserByEmailAndPasswordDAO extends AbstractDAO{
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetUserByEmailAndPasswordDAO(Connection con) {
+    public GetUserByEmailAndPasswordDAO(Connection con) {
         super(con);
     }
 
-    public List<User> getPostsByName(String email,String password) throws SQLException, ResourceNotFoundException {
+    public List<User> getUserByEmailandPassword(String email,String password) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;

@@ -18,11 +18,11 @@ public class GetAllUsersDAO extends AbstractDAO{
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetAllUsersDAO(Connection con) {
+    public GetAllUsersDAO(Connection con) {
         super(con);
     }
 
-    public List<User> getAllPosts () throws SQLException, ResourceNotFoundException {
+    public List<User> getAllUsers () throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;

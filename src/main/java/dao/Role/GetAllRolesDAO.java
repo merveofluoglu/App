@@ -18,7 +18,7 @@ public class GetAllRolesDAO extends AbstractDAO{
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetAllRolesDAO(Connection con) {
+    public GetAllRolesDAO(Connection con) {
         super(con);
     }
 

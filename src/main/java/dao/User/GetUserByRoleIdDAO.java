@@ -20,7 +20,7 @@ public class GetUserByRoleIdDAO extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetUserByRoleIdDAO(Connection con) {
+    public GetUserByRoleIdDAO(Connection con) {
         super(con);
     }
 

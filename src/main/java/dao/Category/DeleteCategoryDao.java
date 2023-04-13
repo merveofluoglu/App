@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class DeleteCategoryDao  extends AbstractDAO {
     private static  final String STATEMENT = "DELETE category WHERE category_id = ?";
 
-    protected DeleteCategoryDao(Connection con) {super(con);}
+    public DeleteCategoryDao(Connection con) {super(con);}
     //Declare and set up a connection in constructor
     @Override
     protected void doAccess() throws Exception {}

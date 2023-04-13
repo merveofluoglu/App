@@ -10,17 +10,22 @@ import java.sql.SQLException;
 
 public class UpdateRoleDAO extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE role SET role_id = ?, name = ?";
+    private static final String STATEMENT = "UPDATE role SET name = ? WHERE role_id=?";
+
+    @Override
+    protected void doAccess() throws Exception {
+
+    }
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected UpdateRoleDAO(Connection con) {
+    public UpdateRoleDAO(Connection con) {
         super(con);
     }
 
-    public int UpdateRoleDAO(Role role) throws SQLException {
+    public int updateRoleById(Role role, long role_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -28,9 +33,8 @@ public class UpdateRoleDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setLong(1, role.getRole_id());
-            _pstmt.setString(2, role.getName());
-
+            _pstmt.setString(1, role.getName());
+            _pstmt.setLong(2, role_id);
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {
@@ -47,8 +51,5 @@ public class UpdateRoleDAO extends AbstractDAO {
         return _affectedRows;
     }
 
-    @Override
-    protected void doAccess() throws Exception {
 
-    }
 }
