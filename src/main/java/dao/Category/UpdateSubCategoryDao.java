@@ -7,21 +7,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdateSubCategoryByIdDao extends AbstractDAO {
-    private static final String STATEMENT = "UPDATE SubCategory Set subcategory_name = ?";
+public class UpdateSubCategoryDao extends AbstractDAO {
+    private static final String STATEMENT = "UPDATE SubCategory Set subcategory_name = ? WHERE subcatgeryId = ?";
 
-    public UpdateSubCategoryByIdDao(Connection con) {
+    public UpdateSubCategoryDao(Connection con) {
         super(con);
-        this.con = con;
     }
 
-    public int updateSubCategoryById(SubCategory subcategory) throws SQLException {
+    public int updateSubCategory(SubCategory subcategory, long _subCategoryId) throws SQLException {
         PreparedStatement pstmt = null;
         int affectedRows = 0;
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
             pstmt.setString(1, subcategory.getSubCategory_name());
+            pstmt.setLong(2, _subCategoryId);
 
             affectedRows = pstmt.executeUpdate();
 
@@ -41,6 +41,9 @@ public class UpdateSubCategoryByIdDao extends AbstractDAO {
     }
     @Override
     protected void doAccess() throws Exception { }
+
+    //public boolean UpdateSubCategoryDao(SubCategory subCategory, long subCategoryId) {
+    //}
 }
 
 

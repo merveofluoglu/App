@@ -10,7 +10,7 @@ public class DeleteSubCategoryDao extends AbstractDAO {
     private static final String STATEMENT = "INSERT INTO subcategory (subcategory_name) VALUES (?)";
     private Connection con;
 
-    protected DeleteSubCategoryDao(Connection con) {
+    public DeleteSubCategoryDao(Connection con) {
         super(con);
         this.con = con;
     }
@@ -26,7 +26,7 @@ public class DeleteSubCategoryDao extends AbstractDAO {
         try {
             //Prepare and set the statement object to be executed
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setObject(1, subcategory_id);
+            pstmt.setObject(1, id);
             affectedRows = pstmt.executeUpdate();
             if (affectedRows != 1) {
                 throw new SQLException("Subcategory Deleting Failed");

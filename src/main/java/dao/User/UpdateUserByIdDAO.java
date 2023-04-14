@@ -10,17 +10,17 @@ import java.sql.SQLException;
 public class UpdateUserByIdDAO extends AbstractDAO{
 
     private static final String STATEMENT = "UPDATE user SET name = ?, surname = ?, email = ?, password = ?, role_id = ?, creation_date = ?, update_date = ?," +
-            "pp_path = ?";
+            "pp_path = ? WHERE user_id=?";
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected UpdateUserByIdDAO(Connection con) {
+    public UpdateUserByIdDAO(Connection con) {
         super(con);
     }
 
-    public int UpdateUserByIdDAO(User user) throws SQLException {
+    public User UpdateUserByIdDAO(Long user_id,User user) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -36,6 +36,7 @@ public class UpdateUserByIdDAO extends AbstractDAO{
             _pstmt.setTimestamp(6, user.getCreation_date());
             _pstmt.setTimestamp(7, user.getUpdate_date());
             _pstmt.setBytes(8, user.getProfile_photo());
+            _pstmt.setLong(9, user_id);
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {
@@ -49,7 +50,7 @@ public class UpdateUserByIdDAO extends AbstractDAO{
             con.close();
         }
 
-        return _affectedRows;
+        return user;
     }
 
     @Override
