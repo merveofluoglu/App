@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetAllCategoriesDao  extends AbstractDAO {
     private static final String STATEMENT = "SELECT * FROM Category";
-    protected GetAllCategoriesDao(Connection con) {
+    public GetAllCategoriesDao(Connection con) {
         super(con);
     }
     public List<Category> getAllCategories () throws SQLException, ResourceNotFoundException {
