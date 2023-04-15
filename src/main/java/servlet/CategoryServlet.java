@@ -1,10 +1,8 @@
 package servlet;
 
-import dao.Category.CreateCategoryDao;
-import dao.Category.DeleteCategoryDao;
-import dao.Category.GetCategoryByIdDao;
+import dao.Category.*;
 
-import dao.Category.UpdateCategoryDao;
+import dao.Category.GetAllCategoriesDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -27,6 +25,9 @@ public class CategoryServlet extends AbstractServlet {
         if (_op.contentEquals("details")) {
             getCategoryDetailsOp(_request, _response);
         }
+        else {
+            getAllCategories(_request, _response);
+        }
     }
 
     @Override
@@ -46,6 +47,21 @@ public class CategoryServlet extends AbstractServlet {
                 break;
             default:
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
+        }
+    }
+    private void getAllCategories (HttpServletRequest _req, HttpServletResponse _resp) {
+        try {
+            JSONObject _result = new JSONObject();
+
+            _result.put("data", new GetAllCategoriesDao(getConnection()).getAllCategories());
+
+            _resp.getWriter().write(_result.toString());
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
         }
     }
 
