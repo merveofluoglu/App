@@ -10,7 +10,7 @@ public class DeleteSubCategoryDao extends AbstractDAO {
     private static final String STATEMENT = "INSERT INTO subcategory (subcategory_name) VALUES (?)";
     private Connection con;
 
-    protected DeleteSubCategoryDao(Connection con) {
+    public DeleteSubCategoryDao(Connection con) {
         super(con);
         this.con = con;
     }

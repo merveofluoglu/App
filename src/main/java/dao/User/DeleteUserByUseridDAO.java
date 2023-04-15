@@ -13,7 +13,7 @@ public class DeleteUserByUseridDAO extends AbstractDAO{
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected DeleteUserByUseridDAO(Connection con) {
+    public DeleteUserByUseridDAO(Connection con) {
         super(con);
     }
 

@@ -17,7 +17,7 @@ public class GetUserByCreationDateDAO extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetUserByCreationDateDAO(Connection con) {
+    public GetUserByCreationDateDAO(Connection con) {
         super(con);
     }
 
