@@ -21,7 +21,7 @@ public class GetReviewsByUserIdDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetReviewsByUserIdDao(Connection con) {
+    public GetReviewsByUserIdDao(Connection con) {
         super(con);
     }
 

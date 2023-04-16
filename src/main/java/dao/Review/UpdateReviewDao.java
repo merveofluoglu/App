@@ -18,7 +18,7 @@ public class UpdateReviewDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected UpdateReviewDao(Connection con) {
+    public UpdateReviewDao(Connection con) {
         super(con);
     }
 
