@@ -10,8 +10,8 @@ import java.sql.SQLException;
 public class CreatePostDao extends AbstractDAO {
 
     private static final String STATEMENT = "INSERT INTO post (" +
-            "name, description, user_id, customer_id, price, status, start_date, end_date, is_deleted," +
-            "is_sold, update_date, category_id, subcategory_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "post_id, name, description, user_id, customer_id, price, status, start_date, end_date, is_deleted," +
+            "is_sold, sold_date, update_date, category_id, subcategory_id) VALUES (nextval('post_seq'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * Creates a new DAO object.

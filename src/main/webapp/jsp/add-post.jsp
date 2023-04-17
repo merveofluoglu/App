@@ -6,7 +6,7 @@
     <title>Add Post</title>
 </head>
 <body>
-    <form method="POST" action="<c:url value="/post/add"/>" enctype="multipart/form-data">
+    <form method="POST" action="<c:url value="/post/add"/>">
       <label for="name">Name:</label>
       <input id="name" name="name" type="text"/><br/>
 

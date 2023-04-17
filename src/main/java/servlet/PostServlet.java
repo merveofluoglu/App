@@ -36,7 +36,7 @@ public class PostServlet extends AbstractServlet {
         String _op = _request.getRequestURI().split("/", 4)[3];
         System.out.println(_op);
         switch (_op) {
-            case "protected/add" :
+            case "add" :
                 addPost(_request, _response);
                 break;
             case "update" :
@@ -127,7 +127,7 @@ public class PostServlet extends AbstractServlet {
 
     private void addPost(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Post _post = null;
+        Post _post = new Post();
 
         try {
             _post.setName(_request.getParameter("name"));
