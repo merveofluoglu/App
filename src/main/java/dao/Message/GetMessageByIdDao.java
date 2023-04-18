@@ -1,13 +1,13 @@
 package dao.Message;
-import resource.Message;
 
 import dao.AbstractDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import utils.ResourceNotFoundException;
 
-public class GetMessageById extends AbstractDAO {
+public class GetMessageByIdDao extends AbstractDAO {
 
     private static final String STATEMENT = "SELECT * FROM message WHERE message.messageId = ?";
 
@@ -16,7 +16,7 @@ public class GetMessageById extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetMessageById(Connection con) {
+    public GetMessageByIdDao(Connection con) {
         super(con);
     }
 
@@ -25,9 +25,9 @@ public class GetMessageById extends AbstractDAO {
 
     }
 
-    public String getMessage(long messageId) throws SQLException {
+    public String getMessageById(long messageId) throws SQLException {
         PreparedStatement _pstmt = null;
-        int _affectedRows = 0;
+        int _affectedRows;
 
         try {
 
@@ -45,7 +45,6 @@ public class GetMessageById extends AbstractDAO {
             }
             con.close();
         }
-
         return "Message Got by ID Successfully!";
     }
 }
