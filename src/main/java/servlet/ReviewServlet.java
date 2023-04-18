@@ -103,7 +103,6 @@ public class ReviewServlet extends AbstractServlet {
         Reviews _review = null;
 
         try {
-            _review.setReview_id(Long.parseLong(_request.getParameter("review_id")));
             _review.setDescription(_request.getParameter("description"));
             _review.setSeller_id(Long.parseLong(_request.getParameter("seller_id")));
             _review.setPoint_scale(Double.parseDouble((_request.getParameter("point_scale"))));
