@@ -3,7 +3,6 @@ package resource;
 import java.sql.Timestamp;
 
 public class Post {
-
     private long post_id;
     private String name;
     private String description;
@@ -38,6 +37,7 @@ public class Post {
         this.subcategory_id = subcategory_id;
     }
 
+    public Post() {}
     public long getPost_id() {
         return post_id;
     }
