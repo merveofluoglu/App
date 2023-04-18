@@ -10,7 +10,7 @@
 	<description>Homework</description>
 
 	<welcome-file-list>
-		<welcome-file>/jsp/Add_Category.jsp</welcome-file>
+		<welcome-file>/jsp/main.jsp</welcome-file>
 	</welcome-file-list>
 
 	<servlet>
