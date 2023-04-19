@@ -36,6 +36,59 @@
     </thead>
 </table>
 
+<!---------ADD POST--------->
+
+<div class="modal fade" id="addPost" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Post</h4>
+                <button type="button" class="btn-close" target="#addEPost" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Name: </label>
+                    <input type="text" name="Name" id="Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <input type="text" name="Description" id="Description" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>User Id:</label>
+                    <input type="number" name="UserId" id="UserId" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Customer Id:</label>
+                    <input type="number" name="CustomerId" id="CustomerId" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Price:</label>
+                    <input type="number" name="Price" id="Price" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <input type="text" name="Status" id="Status" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Category Id:</label>
+                    <input type="number" name="CategoryId" id="CategoryId" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Sub Category Id:</label>
+                    <input type="number" name="SubCategoryId" id="SubCategoryId" class="form-control" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-toolbar" target="#addPost" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addPost()">Add</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!---------EDIT POST--------->
 
 <div class="modal fade" id="editPost" tabindex="-1">
@@ -118,6 +171,34 @@
         });
 
         var table;
+
+        const addPost = () => {
+            const _data = {
+                name: $("#addPost [name='Name']").val(),
+                description: $("#addPost [name='Description']").val(),
+                user_id: $("#addPost [name='UserId']").val(),
+                customer_id: $("#addPost [name='CustomerId']").val(),
+                price: $("#addPost [name='Price']").val(),
+                status: $("#addPost [name='Status']").val(),
+                category_id: $("#addPost [name='CategoryId']").val(),
+                subcategory_id: $("#addPost [name='SubCategoryId']").val()
+            };
+            $.ajax({
+                    url: "${pageContext.request.contextPath}/post/add",
+                    method: "POST",
+                    data: _data,
+                    success: function (response) {
+                        $('#addPost').modal('hide');
+                        table.destroy();
+                        FillDatatable();
+                        toastr.success("Post added succesfully!");
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                }
+            );
+        }
 
         const removePost = (id) => {
             $.ajax({
@@ -237,6 +318,23 @@
                                         $("#editPost [name='SubCategoryId']").val(_selectedSubCategoryId);
                                         $("#editPost").modal('show');
                                     }
+                                }
+                            },
+                            {
+                                text: "Add Post",
+                                atr: {
+                                    id: 'add'
+                                },
+                                action: function () {
+                                    $("#addPost [name='Name']").val("");
+                                    $("#addPost [name='Description']").val("");
+                                    $("#addPost [name='UserId']").val(null);
+                                    $("#addPost [name='CustomerId']").val(null);
+                                    $("#addPost [name='Price']").val(null);
+                                    $("#addPost [name='Status']").val("");
+                                    $("#addPost [name='CategoryId']").val(null);
+                                    $("#addPost [name='SubCategoryId']").val(null);
+                                    $("#addPost").modal('show');
                                 }
                             }
                         ]
