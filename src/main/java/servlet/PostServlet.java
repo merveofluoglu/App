@@ -33,7 +33,7 @@ public class PostServlet extends AbstractServlet {
     @Override
     protected void doPost(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
 
-        String _op = _request.getRequestURI().split("/", 4)[3];
+        String _op = _request.getRequestURI().split("/", 5)[3];
         System.out.println(_op);
         switch (_op) {
             case "add" :
@@ -42,7 +42,7 @@ public class PostServlet extends AbstractServlet {
             case "update" :
                 updatePost(_request, _response);
                 break;
-            case "protected/delete" :
+            case "delete" :
                 removePost(_request, _response);
                 break;
             default :
@@ -54,9 +54,10 @@ public class PostServlet extends AbstractServlet {
         try {
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new GetAllPostsDao(getConnection()).getAllPosts());
+            _result.put("data",new GetAllPostsDao(getConnection()).getAllPosts());
 
             _resp.getWriter().write(_result.toString());
+
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (ResourceNotFoundException _e) {
@@ -68,7 +69,7 @@ public class PostServlet extends AbstractServlet {
 
     private void updatePost(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Post _post = null;
+        Post _post = new Post();
 
         long _postId = Long.parseLong(_request.getParameter("post_id"));
 
@@ -106,7 +107,7 @@ public class PostServlet extends AbstractServlet {
 
     private void removePost(HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _postId = Long.parseLong(_request.getParameter("post_id"));
+            long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
