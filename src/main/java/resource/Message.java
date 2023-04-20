@@ -30,6 +30,8 @@ public class Message {
         this.expirationDate = expirationDate;
     }
 
+    public Message(){}
+
     public long getMessageId() {
         return messageId;
     }

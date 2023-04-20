@@ -2,24 +2,24 @@ package dao.Message;
 
 import dao.AbstractDAO;
 import resource.Message;
-import resource.Post;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class AddMessageDao extends AbstractDAO {
+public class UpdateMessageByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "INSERT INTO message ( messageId, creatorId, recipientId," +
-            "parentMessageId, subject, messageBody, isRead, creationDate, expirationDate )" +
-            " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String STATEMENT = "UPDATE post SET messageId = ?, creatorId = ?, recipientId = ?, " +
+            "parentMessageId = ?, subject = ?, messageBody = ?, isRead = ?, creationDate = ?, expirationDate = ?," +
+            "WHERE messageId = ?";
+
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected AddMessageDao(Connection con) {
+    public UpdateMessageByIdDao(Connection con) {
         super(con);
     }
 
@@ -28,10 +28,9 @@ public class AddMessageDao extends AbstractDAO {
 
     }
 
-    public String addMessage(Message _message) throws SQLException {
-
+    public int updateMessageById(Message _message, long _message_id) throws SQLException {
         PreparedStatement _pstmt = null;
-        int _rs;
+        int _affectedRows = 0;
 
         try {
 
@@ -46,10 +45,12 @@ public class AddMessageDao extends AbstractDAO {
             _pstmt.setBoolean(7, _message.getIsRead());
             _pstmt.setTimestamp(8, _message.getCreationDate());
             _pstmt.setTimestamp(9, _message.getExpirationDate());
-            _rs = _pstmt.executeUpdate();
+            _pstmt.setLong(10, _message_id);
 
-            if (_rs != 1) {
-                throw new SQLException("Creation failed!");
+            _affectedRows = _pstmt.executeUpdate();
+
+            if (_affectedRows != 1) {
+                throw new SQLException("Update Failed!");
             }
         } finally {
             if (_pstmt != null) {
@@ -58,6 +59,6 @@ public class AddMessageDao extends AbstractDAO {
             con.close();
         }
 
-        return "Message Created Successfully!";
+        return _affectedRows;
     }
 }

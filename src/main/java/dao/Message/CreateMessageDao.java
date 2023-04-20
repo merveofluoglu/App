@@ -7,19 +7,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class UpdateMessageDao extends AbstractDAO {
+public class CreateMessageDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE post SET messageId = ?, creatorId = ?, recipientId = ?, " +
-            "parentMessageId = ?, subject = ?, messageBody = ?, isRead = ?, creationDate = ?, expirationDate = ?," +
-            "WHERE messageId = ?";
-
+    private static final String STATEMENT = "INSERT INTO message ( messageId, creatorId, recipientId," +
+            "parentMessageId, subject, messageBody, isRead, creationDate, expirationDate )" +
+            " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected UpdateMessageDao(Connection con) {
+    public CreateMessageDao(Connection con) {
         super(con);
     }
 
@@ -28,9 +27,10 @@ public class UpdateMessageDao extends AbstractDAO {
 
     }
 
-    public String updateMessage(Message _message, long _message_id) throws SQLException {
+    public String createMessage(Message _message) throws SQLException {
+
         PreparedStatement _pstmt = null;
-        int _affectedRows = 0;
+        int _rs;
 
         try {
 
@@ -45,12 +45,10 @@ public class UpdateMessageDao extends AbstractDAO {
             _pstmt.setBoolean(7, _message.getIsRead());
             _pstmt.setTimestamp(8, _message.getCreationDate());
             _pstmt.setTimestamp(9, _message.getExpirationDate());
-            _pstmt.setLong(10, _message_id);
+            _rs = _pstmt.executeUpdate();
 
-            _affectedRows = _pstmt.executeUpdate();
-
-            if (_affectedRows != 1) {
-                throw new SQLException("Update Failed!");
+            if (_rs != 1) {
+                throw new SQLException("Creation failed!");
             }
         } finally {
             if (_pstmt != null) {
@@ -59,6 +57,6 @@ public class UpdateMessageDao extends AbstractDAO {
             con.close();
         }
 
-        return "Message Updated Successfully!";
+        return "Message Created Successfully!";
     }
 }
