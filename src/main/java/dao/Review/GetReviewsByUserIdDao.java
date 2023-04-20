@@ -21,7 +21,7 @@ public class GetReviewsByUserIdDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetReviewsByUserIdDao(Connection con) {
+    public GetReviewsByUserIdDao(Connection con) {
         super(con);
     }
 
@@ -29,7 +29,7 @@ public class GetReviewsByUserIdDao extends AbstractDAO {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
-        List<Reviews> _reviews = new ArrayList<>();
+        List<Reviews> _reviews = new ArrayList<Reviews>();
 
         try {
 

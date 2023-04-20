@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GetSubCategoriesByCategoryIdDao extends AbstractDAO{
     private static final String STATEMENT = "SELECT * FROM SubCategory WHERE category_id = ?";
-    protected GetSubCategoriesByCategoryIdDao(Connection con) {
+    public GetSubCategoriesByCategoryIdDao(Connection con) {
         super(con);
     }
     public List<SubCategory> GetSubCategoriesByCategoryId(long _id) throws SQLException, ResourceNotFoundException {

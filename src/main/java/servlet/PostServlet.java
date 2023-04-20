@@ -1,9 +1,6 @@
 package servlet;
 
-import dao.Post.CreatePostDao;
-import dao.Post.DeletePostByIdDao;
-import dao.Post.GetPostByIdDao;
-import dao.Post.UpdatePostByIdDao;
+import dao.Post.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -15,6 +12,7 @@ import utils.ResourceNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 
 import static java.lang.Long.parseLong;
 
@@ -27,21 +25,24 @@ public class PostServlet extends AbstractServlet {
         if (_op.contentEquals("details")) {
             getPostDetailsOp(_request, _response);
         }
+        else {
+            getAllPosts(_request, _response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
 
-        String _op = _request.getRequestURI().split("/", 4)[3];
+        String _op = _request.getRequestURI().split("/", 5)[3];
         System.out.println(_op);
         switch (_op) {
-            case "protected/add" :
+            case "add" :
                 addPost(_request, _response);
                 break;
             case "update" :
                 updatePost(_request, _response);
                 break;
-            case "protected/delete" :
+            case "delete" :
                 removePost(_request, _response);
                 break;
             default :
@@ -49,9 +50,26 @@ public class PostServlet extends AbstractServlet {
         }
     }
 
+    private void getAllPosts (HttpServletRequest _req, HttpServletResponse _resp) {
+        try {
+            JSONObject _result = new JSONObject();
+
+            _result.put("data",new GetAllPostsDao(getConnection()).getAllPosts());
+
+            _resp.getWriter().write(_result.toString());
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
     private void updatePost(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Post _post = null;
+        Post _post = new Post();
 
         long _postId = Long.parseLong(_request.getParameter("post_id"));
 
@@ -89,7 +107,7 @@ public class PostServlet extends AbstractServlet {
 
     private void removePost(HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _postId = Long.parseLong(_request.getParameter("post_id"));
+            long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
@@ -110,7 +128,7 @@ public class PostServlet extends AbstractServlet {
 
     private void addPost(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Post _post = null;
+        Post _post = new Post();
 
         try {
             _post.setName(_request.getParameter("name"));

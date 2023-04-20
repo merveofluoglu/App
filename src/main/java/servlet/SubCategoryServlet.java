@@ -1,20 +1,20 @@
 package servlet;
 
-import dao.Category.CreateSubCategoryDao;
-import dao.Category.DeleteSubCategoryDao;
-import dao.Category.GetAllSubCategoryDao;
-import dao.Category.UpdateSubCategoryDao;
+import dao.Category.*;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
+import resource.Category;
 import resource.SubCategory;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
+import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 import static java.lang.Long.parseLong;
@@ -26,10 +26,12 @@ public class SubCategoryServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
         String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
 
-       /* if (_op.contentEquals("details")) {
-            getSubCategoryDetailsOp(_request, _response);
-        }*/
+        if (_op.contentEquals("subcategory")) {
+            getSubCategoryIdByCategory(_request, _response);
+        }
+
     }
+
 
     @Override
     protected void doPost(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
@@ -38,7 +40,7 @@ public class SubCategoryServlet extends AbstractServlet {
         System.out.println(_op);
         switch (_op) {
             case "protected/add":
-                addCategory(_request, _response);
+                addSubCategory(_request, _response);
                 break;
             case "update":
                 updateSubCategory(_request, _response);
@@ -50,6 +52,8 @@ public class SubCategoryServlet extends AbstractServlet {
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
     }
+
+
 
     private void updateSubCategory (HttpServletRequest _request, HttpServletResponse _response){
 
@@ -98,7 +102,7 @@ public class SubCategoryServlet extends AbstractServlet {
         }
     }
 
-    private void addCategory (HttpServletRequest _request, HttpServletResponse _response){
+    private void addSubCategory (HttpServletRequest _request, HttpServletResponse _response){
 
         SubCategory _SubCategory = null;
 
@@ -118,7 +122,51 @@ public class SubCategoryServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         }
 
-    }/*
+    }
+
+    private void getSubCategoryIdByCategory(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
+        try {
+            long _id = parseLong((_request.getParameter("subcategory_id")));
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            JSONObject _result = new JSONObject();
+            _result.put("data", new GetSubCategoriesByCategoryIdDao(getConnection()).GetSubCategoriesByCategoryId(_id));
+            _response.getWriter().write(_result.toString());
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
+    /*
+
+    private void getSubCategoriesIdByCategory(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
+
+        try {
+            JSONObject _result = new JSONObject();
+
+            _result.put("data", new GetSubCategoriesByCategoryIdDao(getConnection()).GetSubCategoriesByCategoryId());
+
+            _response.getWriter().write(_result.toString());
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+
+    }
+
+*/
+
+
+    /*
+
     private void getSubCategoryDetailsOp(HttpServletRequest _request, HttpServletResponse _response) {
         try {
             long _id = parseLong(_request.getParameter("subcategory_id"));
