@@ -1,17 +1,14 @@
 package servlet;
 
 import dao.Message.CreateMessageDao;
+import dao.Message.DeleteMessageByIdDao;
 import dao.Message.GetMessageByIdDao;
 import dao.Message.UpdateMessageByIdDao;
-import dao.Post.CreatePostDao;
-import dao.Post.DeletePostByIdDao;
-import dao.Post.UpdatePostByIdDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import resource.Message;
-import resource.Post;
 import utils.ErrorCode;
 
 import java.io.IOException;
@@ -61,6 +58,9 @@ public class MessageServlet extends AbstractServlet {
                 break;
             case "update" :
                 updateMessage(_request, _response);
+                break;
+            case "protected/delete" :
+                removeMessage(_request, _response);
                 break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
@@ -123,5 +123,24 @@ public class MessageServlet extends AbstractServlet {
         }
     }
 
+    private void removeMessage(HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            long _messageId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
 
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_messageId));
+
+            _response.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
 }
