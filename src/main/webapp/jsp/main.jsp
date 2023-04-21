@@ -14,4 +14,8 @@
 <body>
     <br><a href="${pageContext.request.contextPath}/jsp/category.jsp" >View / Edit / Delete / Add Category</a>
 </body>
+
+<body>
+    <br><a href="${pageContext.request.contextPath}/jsp/sub_category.jsp" >View / Edit / Delete / Add SubCategory</a>
+</body>
 </html>
