@@ -13,7 +13,7 @@ import java.util.List;
 
 
 public class GetSubCategoriesByCategoryIdDao extends AbstractDAO{
-    private static final String STATEMENT = "SELECT * FROM SubCategory WHERE category_id = ?";
+    private static final String STATEMENT = "SELECT * FROM sub_category WHERE category_id = ?";
     public GetSubCategoriesByCategoryIdDao(Connection con) {
         super(con);
     }
@@ -29,7 +29,8 @@ public class GetSubCategoriesByCategoryIdDao extends AbstractDAO{
                 _SubCategories.add(
                         new SubCategory(
                                 _rs.getLong("SubCategory_id"),
-                                _rs.getString("SubCategory_name")
+                                _rs.getString("SubCategory_name"),
+                                _rs.getLong("category_id")
                         )
                 );
             }
