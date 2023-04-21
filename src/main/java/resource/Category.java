@@ -8,7 +8,7 @@ public class Category {
         this.category_id=category_id;
         this.category_name=category_name;
     }
-    public Category(){ }
+
     public long getCategory_id() {
         return category_id;
     }
