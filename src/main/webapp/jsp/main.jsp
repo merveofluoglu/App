@@ -11,4 +11,7 @@
 <body>
     <br><a href="${pageContext.request.contextPath}/jsp/upload-file.jsp" >Upload File</a>
 </body>
+<body>
+    <br><a href="${pageContext.request.contextPath}/jsp/category.jsp" >View / Edit / Delete / Add Category</a>
+</body>
 </html>
