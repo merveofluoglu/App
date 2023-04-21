@@ -1,11 +1,5 @@
 <%--suppress ALL --%>
-<%--
-  Created by IntelliJ IDEA.
-  User: lenovo
-  Date: 11.04.2023
-  Time: 10:03
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -13,6 +7,11 @@
 
     <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -30,8 +29,8 @@
         <th id="CustomerId">Customer Id</th>
         <th id="Price">Price</th>
         <th id="Status">Status</th>
-        <th id="CategoryId">Category Id</th>
-        <th id="SubCategoryId">Sub Category Id</th>
+        <th id="CategoryId">Category</th>
+        <th id="SubCategoryId">Sub Category</th>
     </tr>
     </thead>
 </table>
@@ -71,12 +70,12 @@
                     <input type="text" name="Status" id="Status" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label>Category Id:</label>
-                    <input type="number" name="CategoryId" id="CategoryId" class="form-control" />
+                    <label>Category:</label>
+                    <select id="batchSelect" onchange="displaySubCategories()" class="form-control" name="CategoryId" id="CategoryId"></select>
                 </div>
                 <div class="form-group">
-                    <label>Sub Category Id:</label>
-                    <input type="number" name="SubCategoryId" id="SubCategoryId" class="form-control" />
+                    <label>Sub Category:</label>
+                    <select id="batchSubCategory" class="form-control" name="SubCategoryId" id="SubCategoryId"></select>
                 </div>
 
             </div>
@@ -128,12 +127,12 @@
                     <input type="text" name="Status" id="Status" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label>Category Id:</label>
-                    <input type="number" name="CategoryId" id="CategoryId" class="form-control" />
+                    <label>Category:</label>
+                    <select id="batchSelect" onchange="displaySubCategories()" class="form-control" name="CategoryId" id="CategoryId"></select>
                 </div>
                 <div class="form-group">
-                    <label>Sub Category Id:</label>
-                    <input type="number" name="SubCategoryId" id="SubCategoryId" class="form-control" />
+                    <label>Sub Category:</label>
+                    <select id="batchSubCategory" class="form-control" name="SubCategoryId" id="SubCategoryId"></select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -167,10 +166,43 @@
 
     <script>
         $(document).ready(function () {
+            getCategories();
+            getSubCategories();
             FillDatatable();
         });
 
         var table;
+
+        let categories;
+        let subcategories;
+
+        getCategories = () => {
+            $.ajax({
+                method: "GET",
+                url: "${pageContext.request.contextPath}/category/getAll",
+                success: function (response) {
+                    categories = JSON.parse(response).data;
+                    displayCategories();
+                }
+            })
+        }
+
+        getSubCategories = () => {
+            $.ajax({
+                method: "GET",
+                url: "${pageContext.request.contextPath}/subcategory/getAll",
+                success: function (response) {
+                    subcategories = JSON.parse(response).data;
+                }
+            })
+        }
+
+        getCategoryNameById = (id) => {
+            return categories.filter(item => item.category_id == id)[0].category_name;
+        }
+        getSubCategoryNameById = (id) => {
+            return subcategories.filter(item => item.subcategory_id == id)[0].subcategory_name;
+        }
 
         const addPost = () => {
             const _data = {
@@ -183,6 +215,11 @@
                 category_id: $("#addPost [name='CategoryId']").val(),
                 subcategory_id: $("#addPost [name='SubCategoryId']").val()
             };
+
+            if(!checkValidity(_data)) {
+                return;
+            }
+
             $.ajax({
                     url: "${pageContext.request.contextPath}/post/add",
                     method: "POST",
@@ -207,7 +244,7 @@
                     success: function (response) {
                         table.destroy();
                         FillDatatable();
-                        toastr.error("Post deleted succesfully!");
+                        toastr.success("Post deleted succesfully!");
                     },
                     error: function () {
                         alert("error");
@@ -230,6 +267,10 @@
                 subcategory_id: $("#editPost [name='SubCategoryId']").val()
             };
 
+            if(!checkValidity(_data)) {
+                return;
+            }
+
             $.ajax({
                     url: '${pageContext.request.contextPath}/post/update',
                     method: "POST",
@@ -245,6 +286,88 @@
                     }
                 }
             );
+        }
+
+        checkValidity = (data) => {
+
+            if(data.name == "" || data.name == null || data.name == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            if(data.description == "" || data.description == null || data.description == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            if(data.user_id == "" || data.user_id == null || data.user_id == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            if(data.customer_id == "" || data.customer_id == null || data.customer_id == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            if(data.price == "" || data.price == null || data.price == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            if(data.status == "" || data.status == null || data.status == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            if(data.category_id == "" || data.category_id == null || data.category_id == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            if(data.subcategory_id == "" || data.subcategory_id == null || data.subcategory_id == undefined) {
+                toastr.error("Please fill all sections!");
+                return false;
+            }
+
+            return true;
+
+        }
+
+        const displayCategories = () => {
+            const batchTrack = document.getElementById("batchSelect");
+
+            categories.forEach(option => {
+                const newOption = document.createElement("option");
+                console.log(option);
+                newOption.value = option.category_id;
+                newOption.text = option.category_name;
+                newOption.id = "CategoryIdOpt"
+                batchTrack.appendChild(newOption);
+            });
+        };
+
+        const displaySubCategories = () => {
+
+            removeOptions();
+
+            let categoryId = document.getElementById("batchSelect").value;
+            subCat = subcategories.filter(item => item.category_id == categoryId);
+
+            const batchTrack = document.getElementById("batchSubCategory");
+
+            subCat.forEach(option => {
+                const newOption = document.createElement("option");
+                console.log(option);
+                newOption.value = option.subcategory_id;
+                newOption.text = option.subcategory_name;
+                newOption.id = "SubCategoryIdOpt"
+                batchTrack.appendChild(newOption);
+            });
+        };
+
+        const removeOptions = () => {
+            $("#batchSubCategory").empty();
         }
 
         const FillDatatable = () => {
@@ -263,9 +386,17 @@
                 url: '${pageContext.request.contextPath}/post/getAll',
                 method: "GET",
                 success: function (data) {
+                    data = JSON.parse(data).data;
+                    data.forEach(element => {
 
+                        categoryName = getCategoryNameById(element.category_id);
+                        subCategoryName = getSubCategoryNameById(element.subcategory_id);
+
+                        element.category_id = categoryName;
+                        element.subcategory_id = subCategoryName;
+                    })
                     table = $('#Post').DataTable({
-                        data: JSON.parse(data).data,
+                        data: data,
                         bDestroy: true,
                         dom: "Bfrtip",
                         columns: [
