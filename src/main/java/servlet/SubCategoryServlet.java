@@ -42,13 +42,13 @@ public class SubCategoryServlet extends AbstractServlet {
         String _op = _request.getRequestURI().split("/", 4)[3];
         System.out.println(_op);
         switch (_op) {
-            case "protected/add":
+            case "add":
                 addSubCategory(_request, _response);
                 break;
             case "update":
                 updateSubCategory(_request, _response);
                 break;
-            case "protected/delete":
+            case "delete":
                 removeSubCategory(_request, _response);
                 break;
             default:
@@ -127,7 +127,7 @@ public class SubCategoryServlet extends AbstractServlet {
 
         try {
             _SubCategory.setSubcategory_name(_request.getParameter("subcategory_name"));
-            _SubCategory.setSubcategory_id(parseLong(_request.getParameter("subcategory_id")));
+            _SubCategory.setCategory_id(parseLong(_request.getParameter("category_id")));
 
             JSONObject _result = new JSONObject();
 

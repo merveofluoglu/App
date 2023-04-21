@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class CreateSubCategoryDao extends AbstractDAO{
     // SQL Query to be executed : CREATE subcategoryobject in database.
 
-    private static final String STATEMENT = "INSERT INTO sub_category (subcategory_name, category_id) VALUES (?, ?)";
+    private static final String STATEMENT = "INSERT INTO sub_category ( subcategory_id, subcategory_name, category_id) VALUES (nextval('subcategory_seq'), ?, ?)";
     private Connection con;
 
     public CreateSubCategoryDao(Connection con) {

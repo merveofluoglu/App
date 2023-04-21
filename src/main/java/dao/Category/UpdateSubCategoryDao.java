@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class UpdateSubCategoryDao extends AbstractDAO {
-    private static final String STATEMENT = "UPDATE sub_category Set subcategory_name = ? WHERE subcatgeryId = ?";
+    private static final String STATEMENT = "UPDATE sub_category Set subcategory_name = ? WHERE subcategory_id = ?";
 
     public UpdateSubCategoryDao(Connection con) {
         super(con);
