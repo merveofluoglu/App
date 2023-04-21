@@ -1,23 +1,22 @@
 package resource;
 
+import java.io.InputStream;
+import java.util.Arrays;
+
 public class PostFiles {
     private long file_id;
-
     private long post_id;
+    private byte[] file;
+    private boolean is_deleted;
 
-    private String file_type;
-
-    private double file_size;
-
-    private String file_path;
-
-    public PostFiles(long file_id, long post_id, String file_type, double file_size, String file_path) {
+    public PostFiles(long file_id, long post_id, byte[] file, boolean is_deleted) {
         this.file_id = file_id;
         this.post_id = post_id;
-        this.file_type = file_type;
-        this.file_size = file_size;
-        this.file_path = file_path;
+        this.file = file;
+        this.is_deleted = is_deleted;
     }
+
+    public PostFiles() {}
 
     public long getFile_id() {
         return file_id;
@@ -35,38 +34,21 @@ public class PostFiles {
         this.post_id = post_id;
     }
 
-    public String getFile_type() {
-        return file_type;
-    }
+    public byte[] getFile() { return file; }
 
-    public void setFile_type(String file_type) {
-        this.file_type = file_type;
-    }
+    public void setFile(byte[] file) { this.file = file; }
 
-    public double getFile_size() {
-        return file_size;
-    }
+    public boolean isIs_deleted() { return is_deleted; }
 
-    public void setFile_size(double file_size) {
-        this.file_size = file_size;
-    }
-
-    public String getFile_path() {
-        return file_path;
-    }
-
-    public void setFile_path(String file_path) {
-        this.file_path = file_path;
-    }
+    public void setIs_deleted(boolean is_deleted) { this.is_deleted = is_deleted; }
 
     @Override
     public String toString() {
         return "PostFiles{" +
                 "file_id=" + file_id +
                 ", post_id=" + post_id +
-                ", file_type='" + file_type + '\'' +
-                ", file_size=" + file_size +
-                ", file_path='" + file_path + '\'' +
+                ", file=" + Arrays.toString(file) +
+                ", is_deleted=" + is_deleted +
                 '}';
     }
 }

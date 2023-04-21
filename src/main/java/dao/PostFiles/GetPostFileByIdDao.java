@@ -8,39 +8,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class GetPostFilesByPostIdDao extends AbstractDAO {
+public class GetPostFileByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM postfiles p WHERE p.post_id = ?";
+    private static final String STATEMENT =
+            "SELECT * FROM postFiles WHERE postFiles.file_id = ? AND is_deleted = false";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public GetPostFilesByPostIdDao(Connection con) { super(con); }
+    public GetPostFileByIdDao(Connection con) { super(con); }
 
-    public List<PostFiles> getPostFilesByPostId() throws SQLException, ResourceNotFoundException {
+    public PostFiles getPostFileById(long _id) throws SQLException, ResourceNotFoundException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<PostFiles> postFiles = new ArrayList<>();
+        PostFiles postFile = null;
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
-            rs = pstmt.executeQuery();
+            pstmt.setObject(1, _id);
+            rs= pstmt.executeQuery();
 
             if(!rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no post files!");
+                throw new ResourceNotFoundException("Couldn't found such post file!");
             }
 
             while (rs.next()) {
-                postFiles.add(new PostFiles(
+                postFile = new PostFiles(
                         rs.getLong("file_id"),
                         rs.getLong("post_id"),
                         rs.getBytes("file"),
-                        rs.getBoolean("is_deleted"))
+                        rs.getBoolean("is_deleted")
                 );
             }
         } finally {
@@ -48,7 +48,7 @@ public class GetPostFilesByPostIdDao extends AbstractDAO {
             if (pstmt != null) { pstmt.close(); }
             con.close();
         }
-        return postFiles;
+        return postFile;
     }
 
     @Override
@@ -56,15 +56,3 @@ public class GetPostFilesByPostIdDao extends AbstractDAO {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
