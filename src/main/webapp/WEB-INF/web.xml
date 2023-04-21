@@ -24,6 +24,16 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>PostFilesServlet</servlet-name>
+		<servlet-class>servlet.PostFilesServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PostFilesServlet</servlet-name>
+		<url-pattern>/postFiles/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>CategoryServlet</servlet-name>
 		<servlet-class>servlet.CategoryServlet</servlet-class>
 	</servlet>
