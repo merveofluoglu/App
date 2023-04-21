@@ -9,6 +9,11 @@ import java.sql.SQLException;
 public class DeleteFileFromPostDao extends AbstractDAO {
     private static final String STATEMENT = "UPDATE postfiles SET is_deleted = true WHERE file_id = ?";
 
+    /**
+     * Creates a new DAO object.
+     *
+     * @param con the connection to be used for accessing the database.
+     */
     public DeleteFileFromPostDao(Connection con) { super(con); }
 
     public int deleteFileFromPost(long _id) throws SQLException {

@@ -8,4 +8,7 @@
 
     <a href="${pageContext.request.contextPath}/jsp/post.jsp" >View / Edit / Delete / Add Posts</a>
 </body>
+<body>
+    <br><a href="${pageContext.request.contextPath}/jsp/upload-file.jsp" >Upload File</a>
+</body>
 </html>
