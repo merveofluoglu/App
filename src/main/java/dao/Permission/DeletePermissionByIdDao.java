@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class DeletePermissionByIdDao extends AbstractDAO{
 
-    private static final String STATEMENT = "DELETE FROM permission WHERE permission_id=?";
+    private static final String STATEMENT = "UPDATE permission SET is_deleted = true WHERE permission_id=?";
 
     /**
      * Creates a new DAO object.
@@ -24,7 +24,7 @@ public class DeletePermissionByIdDao extends AbstractDAO{
 
     }
 
-    public int DeletePermissionById(Long permission_id) throws SQLException {
+    public int DeletePermissionById(long permission_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
