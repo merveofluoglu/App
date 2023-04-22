@@ -11,7 +11,8 @@ public class CreatePermissionDao extends AbstractDAO{
 
     private static final String STATEMENT = "INSERT INTO permission (" +
             "name"+
-            "VALUES (?)";
+            "is_deleted"+
+            "VALUES (?,?)";
 
 
     /**
@@ -41,6 +42,7 @@ public class CreatePermissionDao extends AbstractDAO{
             _pstmt = con.prepareStatement(STATEMENT);
 
             _pstmt.setString(1, _permission.getName());
+            _pstmt.setBoolean(2, false);
             _rs = _pstmt.executeUpdate();
 
             if (_rs != 1) {
