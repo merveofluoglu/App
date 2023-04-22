@@ -53,6 +53,7 @@ public class SubCategoryServlet extends AbstractServlet {
                 break;
             default:
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
+                break;
         }
     }
 
@@ -82,7 +83,6 @@ public class SubCategoryServlet extends AbstractServlet {
 
         try {
             _SubCategory.setSubcategory_name(_request.getParameter("subcategory_name"));
-            _SubCategory.setSubcategory_id(parseLong(_request.getParameter("subcategory_id")));
 
             JSONObject _result = new JSONObject();
 
