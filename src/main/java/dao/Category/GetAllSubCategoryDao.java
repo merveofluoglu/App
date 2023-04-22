@@ -23,7 +23,6 @@ public class GetAllSubCategoryDao extends AbstractDAO {
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
         List<SubCategory> _SubCategories = new ArrayList<>();
-
         try {
             _pstmt = con.prepareStatement(STATEMENT);
             _rs = _pstmt.executeQuery();

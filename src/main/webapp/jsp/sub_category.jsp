@@ -26,8 +26,8 @@
   <thead>
   <tr>
     <th id="SubCategoryId">Sub Category Id</th>
-    <th id="CategoryId">Category Id</th>
     <th id="SubCategoryName">Sub Category Name</th>
+    <th id="CategoryId">Category Id</th>
   </tr>
   </thead>
 </table>

@@ -18,9 +18,11 @@ public class GetSubCategoriesByCategoryIdDao extends AbstractDAO{
         super(con);
     }
     public List<SubCategory> GetSubCategoriesByCategoryId(long _id) throws SQLException, ResourceNotFoundException {
+
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
         List<SubCategory> _SubCategories = new ArrayList<>();
+
         try {
             _pstmt = con.prepareStatement(STATEMENT);
             _pstmt.setObject(1, _id);
@@ -28,8 +30,8 @@ public class GetSubCategoriesByCategoryIdDao extends AbstractDAO{
             while (_rs.next()) {
                 _SubCategories.add(
                         new SubCategory(
-                                _rs.getLong("SubCategory_id"),
-                                _rs.getString("SubCategory_name"),
+                                _rs.getLong("subcategory_id"),
+                                _rs.getString("subcategory_name"),
                                 _rs.getLong("category_id")
                         )
                 );
