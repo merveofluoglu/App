@@ -53,6 +53,7 @@ public class SubCategoryServlet extends AbstractServlet {
                 break;
             default:
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
+                break;
         }
     }
 

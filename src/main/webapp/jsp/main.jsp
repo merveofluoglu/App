@@ -18,4 +18,8 @@
 <body>
     <br><a href="${pageContext.request.contextPath}/jsp/sub_category.jsp" >View / Edit / Delete / Add SubCategory</a>
 </body>
+
+<body>
+<br><a href="${pageContext.request.contextPath}/jsp/permission.jsp" >View / Edit / Delete / Add Permission</a>
+</body>
 </html>
