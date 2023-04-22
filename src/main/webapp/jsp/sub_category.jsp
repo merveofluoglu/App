@@ -127,7 +127,7 @@
 
   const addSubCategory = () => {
     const _data = {
-      category_id: $("#addCategory [name='CategoryId']").val(),
+      category_id: $("#addSubCategory [name='CategoryId']").val(),
       subcategory_name: $("#addSubCategory [name='SubCategoryName']").val()
     };
     $.ajax({
@@ -258,6 +258,7 @@
           ]
         }).off("select")
                 .on("select", function (e, dt, type, indexes) {
+                  _selectedId = dt.data().subcategory_id;
                   _selectedCategoryId = dt.data().category_id;
                   _selectedSubCategoryId = dt.data().subcategory_id;
                   _selectedSubCategoryName = dt.data().subcategory_name;

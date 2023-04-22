@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DeleteSubCategoryDao extends AbstractDAO {
-    private static final String STATEMENT = "DELETE FROM sub_category (subcategory_name) VALUES (?)";
+    private static final String STATEMENT = "DELETE FROM sub_category WHERE subcategory_id = ?";
     private Connection con;
 
     public DeleteSubCategoryDao(Connection con) {
