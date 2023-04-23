@@ -3,7 +3,6 @@ package dao.PostFiles;
 import dao.AbstractDAO;
 import resource.PostFiles;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

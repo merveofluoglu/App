@@ -1,6 +1,5 @@
 package resource;
 
-import java.io.InputStream;
 import java.util.Arrays;
 
 public class PostFiles {

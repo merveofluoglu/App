@@ -2,22 +2,18 @@ package servlet;
 
 import dao.PostFiles.*;
 
-import dao.User.CreateUserDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import org.apache.logging.log4j.core.util.IOUtils;
 import org.json.JSONObject;
 import resource.PostFiles;
-import resource.User;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Long.parseLong;
 
@@ -56,10 +52,14 @@ public class PostFilesServlet extends AbstractServlet {
     }
 
     private void getAllPostFiles (HttpServletRequest _request, HttpServletResponse _response) {
+
+        List<PostFiles> postFiles = new ArrayList<>();
+        _request.setAttribute("postFiles", postFiles);
+
         try {
             JSONObject _result = new JSONObject();
 
-            _result.put("data",new GetPostFilesByPostIdDao(getConnection()).getPostFilesByPostId());
+            _result.put("data",new GetPostFilesByIdDao(getConnection()).getPostFilesById());
 
             _response.getWriter().write(_result.toString());
 
@@ -135,6 +135,8 @@ public class PostFilesServlet extends AbstractServlet {
 
             _response.getWriter().write(_result.toString());
 
+            _request.getRequestDispatcher("/jsp/upload-file.jsp").forward(_request, _response);
+
             //After jsp files prepared, request dispatcher will be implemented!!
 
         } catch (Exception _e) {
@@ -151,7 +153,7 @@ public class PostFilesServlet extends AbstractServlet {
             _response.setStatus(HttpServletResponse.SC_OK);
 
             JSONObject _result = new JSONObject();
-            _result.put("data", new GetPostFileByIdDao(getConnection()).getPostFileById(_id));
+            _result.put("data", new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(_id));
 
             _response.getWriter().write(_result.toString());
 
