@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 public class DeleteUserByUseridDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "DELETE FROM user WHERE user_id=?";
+    private static final String STATEMENT = "UPDATE users SET is_deleted = true WHERE user_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -22,7 +22,7 @@ public class DeleteUserByUseridDAO extends AbstractDAO{
 
     }
 
-    public int DeleteUserByUseridDAO(Long user_id) throws SQLException {
+    public int DeleteUserByUseridDAO(long user_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;

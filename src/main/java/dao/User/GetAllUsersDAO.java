@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class GetAllUsersDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM user WHERE role_id = 1";
+    private static final String STATEMENT = "SELECT * FROM users WHERE role_id=1 AND is_deleted=false";
 
     /**
      * Creates a new DAO object.
@@ -30,10 +30,11 @@ public class GetAllUsersDAO extends AbstractDAO{
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
+
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no post!");
+                throw new ResourceNotFoundException("There are no users!");
             }
 
             while (_rs.next()) {
@@ -47,7 +48,8 @@ public class GetAllUsersDAO extends AbstractDAO{
                                 _rs.getLong("role_id"),
                                 _rs.getTimestamp("creation_date"),
                                 _rs.getTimestamp("update_date"),
-                                _rs.getBytes("pp_path")
+                                _rs.getBytes("pp_path"),
+                                _rs.getBoolean("is_deleted")
                         )
                 );
             }
@@ -63,6 +65,8 @@ public class GetAllUsersDAO extends AbstractDAO{
 
         return _users;
     }
+
+
 
     @Override
     protected void doAccess() throws Exception {

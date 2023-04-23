@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetUserbyNameDAO extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM user WHERE name = ?";
+    private static final String STATEMENT = "SELECT * FROM users WHERE name = ?";
 
     /**
      * Creates a new DAO object.
@@ -47,7 +47,8 @@ public class GetUserbyNameDAO extends AbstractDAO {
                                 _rs.getLong("role_id"),
                                 _rs.getTimestamp("creation_date"),
                                 _rs.getTimestamp("update_date"),
-                                _rs.getBytes("pp_path")
+                                _rs.getBytes("pp_path"),
+                                _rs.getBoolean("is_deleted")
                         )
                 );
             }

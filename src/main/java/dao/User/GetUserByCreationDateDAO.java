@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GetUserByCreationDateDAO extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM user WHERE creation_date = ?";
+    private static final String STATEMENT = "SELECT * FROM users WHERE creation_date = ?";
 
     /**
      * Creates a new DAO object.
@@ -44,7 +44,8 @@ public class GetUserByCreationDateDAO extends AbstractDAO {
                                 _rs.getLong("role_id"),
                                 _rs.getTimestamp("creation_date"),
                                 _rs.getTimestamp("update_date"),
-                                _rs.getBytes("pp_path")
+                                _rs.getBytes("pp_path"),
+                                _rs.getBoolean("is_deleted")
                         )
                 );
             }
