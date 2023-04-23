@@ -9,19 +9,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GetPostFileByIdDao extends AbstractDAO {
+public class GetPostFileByPostIdDao extends AbstractDAO {
 
     private static final String STATEMENT =
-            "SELECT * FROM postFiles WHERE postFiles.file_id = ? AND is_deleted = false";
+            "SELECT * FROM post_files WHERE post_files.file_id = ? AND is_deleted = false";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public GetPostFileByIdDao(Connection con) { super(con); }
+    public GetPostFileByPostIdDao(Connection con) { super(con); }
 
-    public PostFiles getPostFileById(long _id) throws SQLException, ResourceNotFoundException {
+    public PostFiles getPostFileByPostId(long _id) throws SQLException, ResourceNotFoundException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         PostFiles postFile = null;

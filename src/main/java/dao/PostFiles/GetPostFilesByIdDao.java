@@ -11,18 +11,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetPostFilesByPostIdDao extends AbstractDAO {
+public class GetPostFilesByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM postfiles p WHERE p.post_id = ?";
+    private static final String STATEMENT = "SELECT file_id, post_id, is_deleted, file FROM post_files";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public GetPostFilesByPostIdDao(Connection con) { super(con); }
+    public GetPostFilesByIdDao(Connection con) { super(con); }
 
-    public List<PostFiles> getPostFilesByPostId() throws SQLException, ResourceNotFoundException {
+    public List<PostFiles> getPostFilesById() throws SQLException, ResourceNotFoundException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<PostFiles> postFiles = new ArrayList<>();
