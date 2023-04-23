@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class GetUserByNameAndSurnameDAO extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM user WHERE name name ? AND surname = ?";
+    private static final String STATEMENT = "SELECT * FROM users WHERE name name ? AND surname = ?";
 
     /**
      * Creates a new DAO object.
@@ -47,7 +47,8 @@ public class GetUserByNameAndSurnameDAO extends AbstractDAO {
                                 _rs.getLong("role_id"),
                                 _rs.getTimestamp("creation_date"),
                                 _rs.getTimestamp("update_date"),
-                                _rs.getBytes("pp_path")
+                                _rs.getBytes("pp_path"),
+                                _rs.getBoolean("is_deleted")
                         )
                 );
             }
