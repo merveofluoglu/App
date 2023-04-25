@@ -27,8 +27,6 @@
     <th id="Name">Name</th>
     <th id="Surname">Surname</th>
     <th id="Email">Email</th>
-    <th id="Password">Password</th>
-    <th id="RoleId">Role Id</th>
     <th id="CreationDate">Creation Date</th>
     <th id="UpdateDate">Update Date</th>
   </tr>
@@ -60,10 +58,6 @@
         <div class="form-group">
           <label>Password:</label>
           <input type="password" name="Password" id="Password" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label>Profile Path: </label>
-          <input type="text" name="ProfilePath" id="ProfilePath" class="form-control" />
         </div>
       </div>
       <div class="modal-footer">
@@ -106,8 +100,8 @@
           <input type="password" name="Password" id="Password" class="form-control" />
         </div>
         <div class="form-group">
-          <label>Profile Path:</label>
-          <input type="text" name="ProfilePath" id="ProfilePath" class="form-control"/>
+          <label for="formFile" class="form-label">You can provide a profile photo here:</label>
+          <input class="form-control" type="file" name="ProfilePath" id="ProfilePath" >
         </div>
       </div>
       <div class="modal-footer">
@@ -199,7 +193,6 @@
         surname: $("#addUser [name='Surname']").val(),
         email: $("#addUser [name='Email']").val(),
         password: $("#addUser [name='Password']").val(),
-        pp_path: $("#addUser [name='ProfilePath']").val()
       };
       $.ajax({
                 url: "${pageContext.request.contextPath}/user/register",
@@ -311,8 +304,6 @@
               { title: "Name", data: "name" },
               { title: "Surname", data: "surname" },
               { title: "Email", data: "email" },
-              { title: "Password", data: "password" },
-              { title: "Role Id", data: "role_id" },
               { title: "Creation Date", data: "creation_date" },
               { title: "Update Date", data: "update_date" },
             ],
@@ -349,17 +340,13 @@
                     $("#editUser [name='Surname']").val(_selectedSurname);
                     $("#editUser [name='Email']").val(_selectedEmail);
                     $("#editUser [name='Password']").val(_selectedPassword);
-                    $("#editUser [name='RoleId']").val(1);
-                    $("#editUser [name='CreationDate']").val(_selectedSCreationDate);
-                    $("#editUser [name='UserUpdateDate']").val(_selectedUpdateDate);
-                    $("#editUser [name='UserUpdateDate']").val(_selectedUpdateDate);
                     $("#editUser [name='UserppPath']").val(_selectedProfilePath);
                     $("#editUser").modal('show');
                   }
                 }
               },
               {
-                text: "Add User",
+                text: "Register",
                 atr: {
                   id: 'register'
                 },
@@ -368,7 +355,6 @@
                   $("#addUser [name='Surname']").val("");
                   $("#addUser [name='Email']").val("");
                   $("#addUser [name='Password']").val("");
-                  $("#addUser [name='ProfilePath']").val("");
                   $("#addUser").modal('show');
                 }
               },
