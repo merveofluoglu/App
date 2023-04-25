@@ -31,7 +31,7 @@ public class ReadMessageByIdDao extends AbstractDAO {
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, _message.getMessageId());
+            _pstmt.setObject(1, _message.getMessage_id());
 
             _affectedRows = _pstmt.executeUpdate();
 
