@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class GetRolePermissionByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM role_permission WHERE RolePermission.role_permission = ?";
+    private static final String STATEMENT = "SELECT * FROM role_permission WHERE role_permission = ?";
 
     /**
      * Creates a new DAO object.
@@ -23,7 +23,7 @@ public class GetRolePermissionByIdDao extends AbstractDAO {
         super(con);
     }
 
-    public RolePermission getRolePermissionById(Long _role_permission_id) throws SQLException, ResourceNotFoundException {
+    public RolePermission getRolePermissionById(long _role_permission_id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs =null;
@@ -44,7 +44,6 @@ public class GetRolePermissionByIdDao extends AbstractDAO {
                         _rs.getLong("role_permission_id"),
                         _rs.getLong("role_id"),
                         _rs.getLong("permission_id")
-
                 );
             }
 
