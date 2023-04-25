@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetAllPermissionsDao extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM permission WHERE is_deleted=false";
+    private static final String STATEMENT = "SELECT * FROM permission";
 
     /**
      * Creates a new DAO object.
@@ -42,8 +42,7 @@ public class GetAllPermissionsDao extends AbstractDAO{
                 _permissions.add(
                         new Permission(
                                 _rs.getLong("permission_id"),
-                                _rs.getString("name"),
-                                _rs.getBoolean("is_deleted")
+                                _rs.getString("name")
                         )
                 );
             }
