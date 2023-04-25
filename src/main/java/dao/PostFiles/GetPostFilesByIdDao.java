@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetPostFilesByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT file_id, post_id, is_deleted, file FROM post_files";
+    private static final String STATEMENT = "SELECT * FROM post_files";
 
     /**
      * Creates a new DAO object.
