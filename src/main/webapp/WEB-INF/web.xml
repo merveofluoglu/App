@@ -14,6 +14,16 @@
 	</welcome-file-list>
 
 	<servlet>
+		<servlet-name>MessageServlet</servlet-name>
+		<servlet-class>servlet.MessageServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>MessageServlet</servlet-name>
+		<url-pattern>/message/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>PostServlet</servlet-name>
 		<servlet-class>servlet.PostServlet</servlet-class>
 	</servlet>
@@ -42,5 +52,6 @@
 		<servlet-name>ReviewServlet</servlet-name>
 		<url-pattern>/review/*</url-pattern>
 	</servlet-mapping>
+
 
 </web-app>
