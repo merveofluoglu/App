@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class GetUserByEmailAndPasswordDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM users WHERE email = ? AND password = ?";
+    private static final String STATEMENT = "SELECT * FROM users WHERE email = ? AND password = ? AND is_deleted=false";
 
     /**
      * Creates a new DAO object.
