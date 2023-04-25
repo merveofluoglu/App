@@ -13,7 +13,7 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
-<div class="modal fade" id="addPost" tabindex="-1">
+<div class="modal fade" id="addMessage" tabindex="-1">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -53,15 +53,15 @@
 
 <script>
   const addMessage = () => {
-    console.log("heyy there")
     const _data = {
-      name: $("#addMessage [name='CreatorId']").val(),
-      description: $("#addMessage [name='RecipientId']").val(),
-      user_id: $("#addMessage [name='ParentMessageId']").val(),
-      customer_id: $("#addMessage [name='CustomerId']").val(),
-      price: $("#addMessage [name='Subject']").val(),
-      status: $("#addMessage [name='MessageBody']").val(),
+      creator_id: parseInt($("#addMessage [name='CreatorId']").val()),
+      recipient_id: parseInt($("#addMessage [name='RecipientId']").val()),
+      parent_message_id: parseInt($("#addMessage [name='ParentMessageId']").val()),
+      customer_id: parseInt($("#addMessage [name='CustomerId']").val()),
+      subject: $("#addMessage [name='Subject']").val(),
+      message_body: $("#addMessage [name='MessageBody']").val(),
     };
+    console.log(_data)
     $.ajax({
               url: "${pageContext.request.contextPath}/message/add",
               method: "POST",

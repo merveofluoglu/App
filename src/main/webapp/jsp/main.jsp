@@ -6,6 +6,7 @@
 </head>
 <body>
 
-    <a href="${pageContext.request.contextPath}/jsp/post.jsp" >View / Edit / Delete / Add Posts</a>
+    <a href="${pageContext.request.contextPath}/jsp/post.jsp" >View / Edit / Delete / Add Posts</a><br>
+    <a href="${pageContext.request.contextPath}/jsp/message.jsp" >View / Edit / Delete / Add Message</a>
 </body>
 </html>

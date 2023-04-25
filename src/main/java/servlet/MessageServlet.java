@@ -5,6 +5,7 @@ import dao.Message.DeleteMessageByIdDao;
 import dao.Message.GetMessageByIdDao;
 import dao.Message.UpdateMessageByIdDao;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
@@ -17,8 +18,9 @@ import java.sql.Timestamp;
 
 import static java.lang.Long.parseLong;
 
+@WebServlet(name = "MessageServlet", value = "/MessageServlet")
 public class MessageServlet extends AbstractServlet {
-
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException{
         try{
             String _op = req.getRequestURI().split("/", 4)[3].replace("/", "");
@@ -28,6 +30,26 @@ public class MessageServlet extends AbstractServlet {
             }
         } catch (Exception e){
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
+
+        String _op = _request.getRequestURI().split("/", 4)[3];
+        System.out.println(_op);
+        switch (_op) {
+            case "add" :
+                addMessage(_request, _response);
+                break;
+            case "update" :
+                updateMessage(_request, _response);
+                break;
+            case "delete" :
+                removeMessage(_request, _response);
+                break;
+            default :
+                writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
     }
 
@@ -47,39 +69,19 @@ public class MessageServlet extends AbstractServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-
-        String _op = _request.getRequestURI().split("/", 4)[3];
-        System.out.println(_op);
-        switch (_op) {
-            case "protected/add" :
-                addMessage(_request, _response);
-                break;
-            case "update" :
-                updateMessage(_request, _response);
-                break;
-            case "protected/delete" :
-                removeMessage(_request, _response);
-                break;
-            default :
-                writeError(_response, ErrorCode.OPERATION_UNKNOWN);
-        }
-    }
-
     private void addMessage(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Message _message = null;
+        Message _message = new Message();
 
         try {
-            _message.setCreatorId(Long.parseLong(_request.getParameter("creator_id")));
-            _message.setRecipientId(Long.parseLong(_request.getParameter("recipient_id")));
-            _message.setParentMessageId(Long.parseLong(_request.getParameter("parent_message_id")));
+            _message.setCreator_id(Long.parseLong(_request.getParameter("creator_id")));
+            _message.setRecipient_id(Long.parseLong(_request.getParameter("recipient_id")));
+            _message.setParent_message_id(Long.parseLong(_request.getParameter("parent_message_id")));
             _message.setSubject(_request.getParameter("subject"));
-            _message.setMessageBody(_request.getParameter("message_body"));
+            _message.setMessage_body(_request.getParameter("message_body"));
             _message.setIsRead(false);
-            _message.setCreationDate(new Timestamp(System.currentTimeMillis()));
-            _message.setExpirationDate(Timestamp.valueOf(_message.getCreationDate().toLocalDateTime().plusDays(15)));
+            _message.setCreation_date(new Timestamp(System.currentTimeMillis()));
+            _message.setExpiration_date(Timestamp.valueOf(_message.getCreation_date().toLocalDateTime().plusDays(15)));
 
             JSONObject _result = new JSONObject();
 
@@ -101,11 +103,11 @@ public class MessageServlet extends AbstractServlet {
         long _messageId = Long.parseLong(_request.getParameter("message_id"));
 
         try {
-            _message.setCreatorId(Long.parseLong(_request.getParameter("creator_id")));
-            _message.setRecipientId(Long.parseLong(_request.getParameter("recipient_id")));
-            _message.setParentMessageId(Long.parseLong(_request.getParameter("parent_message_id")));
+            _message.setCreator_id(Long.parseLong(_request.getParameter("creator_id")));
+            _message.setRecipient_id(Long.parseLong(_request.getParameter("recipient_id")));
+            _message.setParent_message_id(Long.parseLong(_request.getParameter("parent_message_id")));
             _message.setSubject(_request.getParameter("subject"));
-            _message.setMessageBody(_request.getParameter("message_body"));
+            _message.setMessage_body(_request.getParameter("message_body"));
             _message.setIsRead(Boolean.parseBoolean(_request.getParameter("is_read")));
 
             JSONObject _result = new JSONObject();
