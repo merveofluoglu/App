@@ -11,12 +11,13 @@ public class RolePermission {
     private Long permission_id;
 
 
-    public RolePermission(Long role_permission_id,Long role_id,Long permission_id){
+
+    public RolePermission(Long role_permission_id,Long role_id,long permission_id){
         this.role_permission_id = role_permission_id;
         this.role_id = role_id;
         this.permission_id = permission_id;
     }
-
+    public RolePermission(){}
     public Long getRole_permission_id() {
         return role_permission_id;
     }
@@ -43,12 +44,4 @@ public class RolePermission {
         this.permission_id = permission_id;
     }
 
-    @Override
-    public String toString() {
-        return "RolePermission{" +
-                "role_permission_id='" + role_permission_id + '\'' +
-                "role_id='" + role_id + '\'' +
-                "permission_id='" + permission_id + '\'' +
-                '}';
-    }
 }

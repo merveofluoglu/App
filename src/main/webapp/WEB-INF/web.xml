@@ -72,6 +72,15 @@
 		<servlet-name>ReviewServlet</servlet-name>
 		<url-pattern>/review/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>FavouritesServlet</servlet-name>
+		<servlet-class>servlet.FavouritesServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FavouritesServlet</servlet-name>
+		<url-pattern>/favourite/*</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>UserServlet</servlet-name>

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class CreateRolePermissionDao extends AbstractDAO {
 
     private static final String STATEMENT = "INSERT INTO role_permission (" +
-            "role_id, permission_id) VALUES (?, ?)";
+            "role_permission_id, role_id, permission_id) VALUES (nextval('rolepermission_seq'),?, ?)";
 
     /**
      * Creates a new DAO object.
