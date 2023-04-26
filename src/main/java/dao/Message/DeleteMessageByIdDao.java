@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class DeleteMessageByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "DELETE FROM message WHERE message_id = ? RETURNING *";
+    private static final String STATEMENT = "DELETE FROM message WHERE message_id = ?";
 
     public DeleteMessageByIdDao(Connection con) { super(con); }
 

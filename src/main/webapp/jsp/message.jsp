@@ -37,7 +37,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">Add Message</h4>
-        <button type="button" class="btn-close" target="#addMessage" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -62,7 +61,6 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-toolbar" target="#addPost" data-bs-dismiss="modal">Close</button>
         <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addMessage()">Add</button>
       </div>
 
@@ -76,7 +74,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">Edit Post</h4>
-        <button type="button" class="btn-close" target="#editPost" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -105,12 +102,32 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-toolbar" target="#editMessage" data-bs-dismiss="modal">Close</button>
         <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="updateMessage()">Edit</button>
       </div>
     </div>
   </div>
   </div>
+</div>
+
+<!---------DELETE MESSAGE--------->
+<div class="modal fade" id="deleteMessage" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Delete Post</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Id:</label>
+          <input type="text" name="MessageId" id="MessageId" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="delete" data-dismiss="modal" onclick="deleteMessage()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 <script>
@@ -163,6 +180,28 @@
                     table.destroy();
                     FillDatatable();
                     toastr.info("Post updated succesfully!");
+                  },
+                  error: function () {
+                    alert("error");
+                  }
+                }
+        );
+      }
+
+      const deleteMessage = () => {
+
+        const _data = {
+          message_id: parseInt($("#deleteMessage [name='MessageId']").val()),
+        };
+        $.ajax({
+                  url: '${pageContext.request.contextPath}/message/delete',
+                  method: "POST",
+                  data: _data,
+                  success: function (response) {
+                    $('#editPost').modal('hide');
+                    table.destroy();
+                    FillDatatable();
+                    toastr.info("Post deleted succesfully!");
                   },
                   error: function () {
                     alert("error");

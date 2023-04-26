@@ -146,7 +146,7 @@ public class MessageServlet extends AbstractServlet {
 
     private void removeMessage(HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _messageId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+            long _messageId = Long.parseLong(_request.getParameter("message_id"));
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
