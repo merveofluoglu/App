@@ -113,6 +113,7 @@ public class UserServlet extends AbstractServlet{
 
             _result.put("affectedRow", new DeleteUserByUseridDAO(getConnection()).DeleteUserByUseridDAO(_userId));
 
+
             _response.getWriter().write(_result.toString());
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -154,10 +155,9 @@ public class UserServlet extends AbstractServlet{
 
             } else {
                 JSONObject _result = new JSONObject();
-                _user = (User) new GetUserByEmailAndPasswordDAO(getConnection()).getUserByEmailandPassword(email, password).get(0);
+                _user = new GetUserByEmailAndPasswordDAO(getConnection()).getUserByEmailandPassword(email, password).get(0);
                 logAccess = true;
             }
-
 
             if (logAccess) {
                 HttpSession session = _request.getSession();
@@ -170,6 +170,7 @@ public class UserServlet extends AbstractServlet{
                 else{
                     session.setAttribute("role", "user");
                 }
+                _response.sendRedirect(_request.getContextPath() + "/jsp/main.jsp");
             } else {
                 _response.setStatus(errorCode.getHTTPCode());
             }
@@ -185,6 +186,8 @@ public class UserServlet extends AbstractServlet{
     private void registerationOperations(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         ErrorCode errorCode = null;
         User newUser = new User();
+        User checkuser = new User();
+        User newmailuser = new User();
         try {
             String name = _request.getParameter("name");
             String surname = _request.getParameter("surname");
@@ -215,18 +218,48 @@ public class UserServlet extends AbstractServlet{
                 _response.setStatus(errorCode.getHTTPCode());
                 writeError(_response, errorCode);
             } else {
-                newUser.setName(_request.getParameter("name"));
-                newUser.setSurname(_request.getParameter("surname"));
-                newUser.setEmail(_request.getParameter("email"));
-                newUser.setPassword(_request.getParameter("password"));
-                newUser.setRole_id(1L);
-                newUser.setCreation_date(new Timestamp(System.currentTimeMillis()));
-                newUser.setUpdate_date(new Timestamp(System.currentTimeMillis()));
-                newUser.setIs_deleted(false);
-                newUser.setProfile_photo(null);
-                JSONObject _result = new JSONObject();
-                _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
-                _response.getWriter().write(_result.toString());
+                int size = new GetUserbyEmailDAO(getConnection()).GetUserbyEmailDAO(email).size();
+                if (size == 0){
+                    newUser.setName(_request.getParameter("name"));
+                    newUser.setSurname(_request.getParameter("surname"));
+                    newUser.setEmail(_request.getParameter("email"));
+                    newUser.setPassword(_request.getParameter("password"));
+                    newUser.setRole_id(1L);
+                    newUser.setCreation_date(new Timestamp(System.currentTimeMillis()));
+                    newUser.setUpdate_date(new Timestamp(System.currentTimeMillis()));
+                    newUser.setIs_deleted(false);
+                    newUser.setProfile_photo(null);
+                    JSONObject _result = new JSONObject();
+                    _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
+                    _response.getWriter().write(_result.toString());
+                }
+                else{
+                    checkuser = new GetUserbyEmailDAO(getConnection()).GetUserbyEmailDAO(email).get(size-1);
+                    if (checkuser.getIsDeleted() == true){
+                        if (checkuser.getPassword() != password){
+                            newUser.setName(_request.getParameter("name"));
+                            newUser.setSurname(_request.getParameter("surname"));
+                            newUser.setEmail(_request.getParameter("email"));
+                            newUser.setPassword(_request.getParameter("password"));
+                            newUser.setRole_id(1L);
+                            newUser.setCreation_date(new Timestamp(System.currentTimeMillis()));
+                            newUser.setUpdate_date(new Timestamp(System.currentTimeMillis()));
+                            newUser.setIs_deleted(false);
+                            newUser.setProfile_photo(null);
+                            JSONObject _result = new JSONObject();
+                            _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
+                            _response.getWriter().write(_result.toString());
+                        }
+                        else{
+                            checkuser.setIs_deleted(false);
+                            JSONObject _result = new JSONObject();
+                            _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(checkuser.getUserID(),checkuser));
+                            _response.getWriter().write(_result.toString());
+                        }
+
+                    }
+                }
+
                 //registrationCheck = true;
             }
         } catch (Exception e) {
@@ -280,7 +313,7 @@ public class UserServlet extends AbstractServlet{
             PrintWriter out = _response.getWriter();
 
             int errorCount = 0;
-            /*
+
             if(imageCheck){
                 byte[] userImage = DatatypeConverter.parseBase64Binary(
                         _request.getParameter("pp_path").split(",")[1]);
@@ -289,7 +322,6 @@ public class UserServlet extends AbstractServlet{
                     System.out.println(errorCount);
                 }
             }
-            */
 
             if (!Validator.isAlphabetical(name)) {
                 errorCount++;

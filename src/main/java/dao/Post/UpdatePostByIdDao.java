@@ -11,7 +11,7 @@ public class UpdatePostByIdDao extends AbstractDAO {
 
     private static final String STATEMENT =
             "UPDATE post SET name = ?, description = ?, customer_id = ?, price = ?, status = ?, is_deleted = ?, is_sold = ?," +
-                    "sold_date = ?, update_date = ?, category_id = ?, subcategory_id = ? WHERE post_id = ?";
+                    "sold_date = ?, update_date = ? WHERE post_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -39,9 +39,7 @@ public class UpdatePostByIdDao extends AbstractDAO {
             _pstmt.setBoolean(7, _post.isIs_sold());
             _pstmt.setTimestamp(8, _post.getSold_date());
             _pstmt.setTimestamp(9, _post.getUpdate_date());
-            _pstmt.setLong(10, _post.getCategory_id());
-            _pstmt.setLong(11, _post.getSubcategory_id());
-            _pstmt.setLong(12, _postId);
+            _pstmt.setLong(10, _postId);
 
             _affectedRows = _pstmt.executeUpdate();
 

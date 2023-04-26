@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: AYŞE KILIÇ
@@ -5,23 +6,35 @@
   Time: 23:51
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
+
 <head>
-<meta charset="ISO-8859-1">
-<title>Home Page</title>
+    <title>Post Files</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+
 <body>
 
-    <form action="${pageContext.request.contextPath}/postFiles/getAllPostFiles" method="get">
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: tomato">
+        <div>
+            <a href="${pageContext.request.contextPath}/jsp/list-file.jsp" class="navbar-brand">Post Files</a>
+        </div>
 
-        Fetch Post Files:<input type="submit" value="Search" />
+        <ul class="navbar-nav">
+            <li><a href="${pageContext.request.contextPath}/jsp/post.jsp" class="navbar-brand">Posts</a></li>
+        </ul>
+    </nav>
+</header>
+<br>
+<form action="${pageContext.request.contextPath}/postFiles/getAllPostFiles" method="get">
 
-    </form>
+    List Post Files:<input type="submit" value="List" />
 
+</form>
 </body>
 </html>
 

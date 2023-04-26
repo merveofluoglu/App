@@ -10,7 +10,7 @@
 	<description>Homework</description>
 
 	<welcome-file-list>
-		<welcome-file>/jsp/main.jsp</welcome-file>
+		<welcome-file>/jsp/login.jsp</welcome-file>
 	</welcome-file-list>
 
 	<servlet>
@@ -62,5 +62,36 @@
 		<servlet-name>ReviewServlet</servlet-name>
 		<url-pattern>/review/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>FavouritesServlet</servlet-name>
+		<servlet-class>servlet.FavouritesServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>FavouritesServlet</servlet-name>
+		<url-pattern>/favourite/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>UserServlet</servlet-name>
+		<servlet-class>servlet.UserServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>UserServlet</servlet-name>
+		<url-pattern>/user/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>PermissionServlet</servlet-name>
+		<servlet-class>servlet.PermissionServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PermissionServlet</servlet-name>
+		<url-pattern>/permission/*</url-pattern>
+	</servlet-mapping>
+
+
 
 </web-app>

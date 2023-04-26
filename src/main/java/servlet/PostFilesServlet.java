@@ -17,18 +17,22 @@ import java.util.List;
 
 import static java.lang.Long.parseLong;
 
-@WebServlet(name = "PostFilesServlet", value = "/PostFilesServlet")
+@WebServlet(name = "PostFiles", value = "/PostFiles")
 public class PostFilesServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-        String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
-
-        if (_op.contentEquals("postFiles")) {
-            getPostFilesOp(_request, _response);
-        }
-        else {
-            getAllPostFiles(_request, _response);
+        String _op = _request.getRequestURI().split("/", 5)[3];
+        System.out.println(_op);
+        switch (_op) {
+            case "getAllPostFiles" :
+                getAllPostFiles(_request, _response);
+                break;
+            case "getPostFilesOp" :
+                getPostFilesOp(_request, _response);
+                break;
+            default :
+                writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
     }
 
@@ -53,7 +57,7 @@ public class PostFilesServlet extends AbstractServlet {
 
     private void getAllPostFiles (HttpServletRequest _request, HttpServletResponse _response) {
 
-        List<PostFiles> postFiles = new ArrayList<>();
+        List<PostFiles> postFiles= new ArrayList<>();
         _request.setAttribute("postFiles", postFiles);
 
         try {
