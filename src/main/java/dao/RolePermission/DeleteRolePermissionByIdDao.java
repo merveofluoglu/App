@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class DeleteRolePermissionByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "DELETE FROM role_permission WHERE role_permission_id=?";
+    private static final String STATEMENT = "DELETE FROM role_permission WHERE  role_permission_id=?";
 
     /**
      * Creates a new DAO object.
@@ -28,36 +28,28 @@ public class DeleteRolePermissionByIdDao extends AbstractDAO {
 
     }
 
-    public RolePermission deleteRolePermission(Long role_permission_id) throws SQLException, ResourceNotFoundException {
+    public String deleteRolePermission(long role_permission_id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
-        ResultSet _rs = null;
-        RolePermission _role_permission = null;
+        int _affectedRows = 0;
 
         try {
-
             _pstmt = con.prepareStatement(STATEMENT);
             _pstmt.setObject(1, role_permission_id);
-            _rs = _pstmt.executeQuery();
-            if (!_rs.isBeforeFirst() ) {
-                throw new ResourceNotFoundException("There is no such role-permission!");
-            }
-            if (_rs.next()) {
-                _role_permission = new RolePermission(_rs.getLong("role_permission_id"),
-                        _rs.getLong("role_id"),
-                        _rs.getLong("permission_id")
-                );
+
+            _affectedRows = _pstmt.executeUpdate();
+
+            if (_affectedRows != 1) {
+                throw new SQLException("Deletion Failed");
             }
         } finally {
-            if (_rs != null) {
-                _rs.close();
-            }
             if (_pstmt != null) {
                 _pstmt.close();
             }
             con.close();
         }
 
-        return _role_permission;
+
+        return ("Role Permission Assignment Deleted Successfully!");
     }
 }

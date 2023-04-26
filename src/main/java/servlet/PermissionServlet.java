@@ -1,24 +1,24 @@
 package servlet;
 
-import dao.Permission.CreatePermissionDao;
-import dao.Permission.DeletePermissionByIdDao;
-import dao.Permission.GetPermissionByIdDao;
-import dao.Permission.UpdatePermissionByIdDao;
-import dao.Permission.GetAllPermissionsDao;
+import dao.Permission.*;
 
 import dao.Post.DeletePostByIdDao;
+import dao.RolePermission.CreateRolePermissionDao;
 import dao.RolePermission.DeleteRolePermissionByIdDao;
+import dao.RolePermission.GetRolePermissionByPermissionIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
 import resource.Permission;
+import resource.RolePermission;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Long.parseLong;
 
@@ -53,7 +53,11 @@ public class PermissionServlet extends AbstractServlet{
                 updatePermission(_request, _response);
                 break;
             case "delete" :
-                deletePermission(_request, _response);
+                try {
+                    deletePermission(_request, _response);
+                } catch (ResourceNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
@@ -61,13 +65,21 @@ public class PermissionServlet extends AbstractServlet{
     }
 
 
-    private void deletePermission(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
+    private void deletePermission(HttpServletRequest _request, HttpServletResponse _response) throws IOException, ResourceNotFoundException {
         try {
-            System.out.println(_request);
-            long _permission_id = Long.parseLong(_request.getParameter("permission_id"));
+            long _permission_id = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
             JSONObject _result = new JSONObject();
-            System.out.println(_permission_id);
+            List<RolePermission> _role_permissions = new ArrayList<>();
+            _role_permissions = new GetRolePermissionByPermissionIdDao(getConnection()).getRolePermissionByPermissionId(_permission_id);
+            for(int i=0; i< _role_permissions.size(); i++){
+                _result.put("affectedRow", new DeleteRolePermissionByIdDao(getConnection()).deleteRolePermission(_role_permissions.get(i).getRole_permission_id()));
+
+            }
+
+
             _result.put("affectedRow", new DeletePermissionByIdDao(getConnection()).DeletePermissionById(_permission_id));
+
+
             _response.getWriter().write(_result.toString());
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -79,9 +91,10 @@ public class PermissionServlet extends AbstractServlet{
     private void updatePermission(HttpServletRequest _request, HttpServletResponse _response) {
 
         Permission _permission = new Permission();
-        Long _permissionId = Long.parseLong(_request.getParameter("permission_id"));
+        long _permissionId = Long.parseLong(_request.getParameter("permission_id"));
 
         try {
+            _permission.setPermission_id(_permissionId);
             _permission.setName(_request.getParameter("name"));
 
             JSONObject _result = new JSONObject();
@@ -89,8 +102,6 @@ public class PermissionServlet extends AbstractServlet{
             _result.put("data", new UpdatePermissionByIdDao(getConnection()).UpdatePermissionById(_permission, _permissionId));
 
             _response.getWriter().write(_result.toString());
-
-            //After jsp files prepared, request dispatcher will be implemented!!
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -102,16 +113,22 @@ public class PermissionServlet extends AbstractServlet{
 
     private void addPermission(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Permission _permission = null;
-
+        Permission _permission = new Permission();
+        RolePermission _role_permission = new RolePermission();
+        Permission _came_Permission = new Permission();
         try {
-            _permission.setName(_request.getParameter("name"));
-
+            String name = _request.getParameter("name");
+            boolean role_id = Boolean.parseBoolean(_request.getParameter("role"));
+            _permission.setName(name);
 
             JSONObject _result = new JSONObject();
-
             _result.put("data", new CreatePermissionDao(getConnection()).createPermission(_permission));
-
+            _came_Permission = new GetPermissionByNameDao(getConnection()).getPermissionByName(name);
+            _role_permission.setRole_id(1L);
+            _role_permission.setPermission_id(_came_Permission.getPermission_id());
+            _result.put("data", new CreateRolePermissionDao(getConnection()).createRolePermission(_role_permission));
+            _role_permission.setRole_id(0L);
+            _result.put("data", new CreateRolePermissionDao(getConnection()).createRolePermission(_role_permission));
             _response.getWriter().write(_result.toString());
 
             //After jsp files prepared, request dispatcher will be implemented!!

@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.Permission.GetAllPermissionsDao;
 import dao.RolePermission.CreateRolePermissionDao;
 import dao.RolePermission.UpdateRolePermissionByIdDao;
 import dao.RolePermission.DeleteRolePermissionByIdDao;
@@ -32,13 +33,13 @@ public class RolePermissionServlet extends AbstractServlet{
 
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-        String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
-        String sessionRole = _request.getSession().getAttribute("role").toString();
-        if (_op.contentEquals("details") && sessionRole == "admin") {
-            getRolePermissionDetailsOp(_request, _response);
-        }
-        else if (_op.contentEquals("allRolePermissions") && sessionRole == "admin") {
+        String _op = _request.getRequestURI().split("/", 5)[3].replace("/", "");
+        //String sessionRole = _request.getSession().getAttribute("role").toString();
+        if (_op.contentEquals("getallrolepermissions")) {
             getAllRolePermissionsOp(_request, _response);
+        }
+        else {
+
         }
     }
 
@@ -47,38 +48,25 @@ public class RolePermissionServlet extends AbstractServlet{
 
         String _op = _request.getRequestURI().split("/", 4)[3];
         System.out.println(_op);
-        String sessionRole = _request.getSession().getAttribute("role").toString();
+        //String sessionRole = _request.getSession().getAttribute("role").toString();
         switch (_op) {
-            case "protected/add" :
-                if(sessionRole == "admin"){
-                    addRolePermission(_request, _response);
-                    break;
-                }
+            case "add" :
+                addRolePermission(_request, _response);
+                break;
 
             case "update" :
-                if(sessionRole == "admin"){
-                    updateRolePermission(_request, _response);
-                    break;
-                }
+                updateRolePermission(_request, _response);
+                break;
+
+            case "delete" :
+                deleteRolePermission(_request, _response);
+                break;
 
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest _request, HttpServletResponse _response) throws  IOException {
-        String op = _request.getRequestURI().split("/", 4)[3];
-        String sessionRole = _request.getSession().getAttribute("role").toString();
-
-        if ("/protected/deleteRolePermission".equals(op)) {
-            if(sessionRole == "admin"){
-                deleteRolePermission(_request, _response);
-            }
-        } else {
-            writeError(_response, ErrorCode.OPERATION_UNKNOWN);
-        }
-    }
 
     private void updateRolePermission(HttpServletRequest _request, HttpServletResponse _response) {
 
@@ -150,12 +138,8 @@ public class RolePermissionServlet extends AbstractServlet{
     private void getAllRolePermissionsOp (HttpServletRequest _request, HttpServletResponse _response) throws IOException {
 
         try {
-            Long _role_permission_id = parseLong(_request.getParameter("role_permission_id"));
-            _response.setContentType("application/json");
-            _response.setStatus(HttpServletResponse.SC_OK);
-
             JSONObject _result = new JSONObject();
-            _result.put("data", new GetRolePermissionByIdDao(getConnection()).getRolePermissionById(_role_permission_id));
+            _result.put("data", new GetAllRolePermissionsDao(getConnection()).getAllRolePermissions());
 
             _response.getWriter().write(_result.toString());
 
