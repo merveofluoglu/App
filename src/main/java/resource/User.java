@@ -2,7 +2,7 @@ package resource;
 import java.sql.Timestamp;
 import java.util.Objects;
 public class User {
-    private Long user_id;
+    private long user_id;
 
     private String name;
 
@@ -12,7 +12,7 @@ public class User {
 
     private String password;
 
-    private Long role_id;
+    private long role_id;
 
     private Timestamp creation_date;
 
@@ -20,7 +20,9 @@ public class User {
 
     private byte[] pp_path;
 
-    public User(Long user_id,String name,String surname,String email,String password,Long role_id,Timestamp creation_date,Timestamp update_date,byte[] pp_path){
+    private boolean is_deleted;
+
+    public User(long user_id,String name,String surname,String email,String password,long role_id,Timestamp creation_date,Timestamp update_date,byte[] pp_path,boolean is_deleted){
         this.user_id = user_id;
         this.name = name;
         this.surname = surname;
@@ -30,9 +32,10 @@ public class User {
         this.creation_date = creation_date;
         this.update_date = update_date;
         this.pp_path = pp_path;
+        this.is_deleted = is_deleted;
     }
 
-    public User(Long user_id,String name,String surname,String email,String password,Long role_id,Timestamp creation_date,Timestamp update_date){
+    public User(long user_id,String name,String surname,String email,String password,long role_id,Timestamp creation_date,Timestamp update_date,boolean is_deleted){
         this.user_id = user_id;
         this.name = name;
         this.surname = surname;
@@ -41,20 +44,12 @@ public class User {
         this.role_id = role_id;
         this.creation_date = creation_date;
         this.update_date = update_date;
+        this.is_deleted = is_deleted;
     }
 
-    public User(Long user_id,String name,String surname,String email,Long role_id,Timestamp creation_date,Timestamp update_date,byte[] pp_path){
-        this.user_id = user_id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.role_id = role_id;
-        this.creation_date = creation_date;
-        this.update_date = update_date;
-        this.pp_path = pp_path;
-    }
+    public User(){}
 
-    public Long getUserID() {
+    public long getUserID() {
         return user_id;
     }
 
@@ -95,7 +90,7 @@ public class User {
         this.password = password;
     }
 
-    public Long getRole_id(){
+    public long getRole_id(){
         return role_id;
     }
 
@@ -127,18 +122,15 @@ public class User {
         this.pp_path = pp_path;
     }
 
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "user_id='" + user_id + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", role_id='" + role_id + '\'' +
-                ", creation_date=" + creation_date +
-                ", update_date=" + update_date +
-                '}';
+    public boolean getIsDeleted(){
+        return is_deleted;
     }
+
+    public void setIs_deleted(boolean is_deleted){
+        this.is_deleted = is_deleted;
+    }
+
+
+
 
 }

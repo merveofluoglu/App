@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class CreateCategoryDao extends AbstractDAO {
     // SQL Query to be executed : CREATE categoryobject in database.
 
-    private static  final String STATEMENT = "INSERT INTO category (category_name) VALUES (?) ";
+    private static  final String STATEMENT = "INSERT INTO category (category_id, category_name) VALUES (nextval('category_seq'), ?) ";
 
     public CreateCategoryDao(Connection con) {super(con);}
     //Declare and set up a connection in constructor

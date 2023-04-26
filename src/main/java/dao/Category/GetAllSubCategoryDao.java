@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetAllSubCategoryDao extends AbstractDAO {
-    private static final String STATEMENT = "SELECT * FROM SubCategory";
+    private static final String STATEMENT = "SELECT * FROM sub_category";
 
     public GetAllSubCategoryDao(Connection con) {
         super(con);
@@ -23,7 +23,6 @@ public class GetAllSubCategoryDao extends AbstractDAO {
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
         List<SubCategory> _SubCategories = new ArrayList<>();
-
         try {
             _pstmt = con.prepareStatement(STATEMENT);
             _rs = _pstmt.executeQuery();
@@ -35,8 +34,9 @@ public class GetAllSubCategoryDao extends AbstractDAO {
             while (_rs.next()) {
                 _SubCategories.add(
                         new SubCategory(
-                                _rs.getLong("SubCategory_id"),
-                                _rs.getString("SubCategory_name")
+                                _rs.getLong("subcategory_id"),
+                                _rs.getString("subcategory_name"),
+                                _rs.getLong("category_id")
                         )
                 );
             }

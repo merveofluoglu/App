@@ -6,6 +6,7 @@ import dao.Permission.GetPermissionByIdDao;
 import dao.Permission.UpdatePermissionByIdDao;
 import dao.Permission.GetAllPermissionsDao;
 
+import dao.Post.DeletePostByIdDao;
 import dao.RolePermission.DeleteRolePermissionByIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -29,58 +30,44 @@ public class PermissionServlet extends AbstractServlet{
 
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-        String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
-        String sessionRole = _request.getSession().getAttribute("role").toString();
-        if (_op.contentEquals("allpermissions") && sessionRole == "admin") {
+        String _op = _request.getRequestURI().split("/", 5)[3].replace("/", "");
+        //String sessionRole = _request.getSession().getAttribute("role").toString();
+        if (_op.contentEquals("allpermissions") ) {
             getAllPermissionsOp(_request, _response);
-        } else if (_op.contentEquals("permissionDetail") && sessionRole == "admin") {
+        }else{
             getPermissionDetailsOp(_request, _response);
         }
     }
     @Override
     protected void doPost(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
 
-        String _op = _request.getRequestURI().split("/", 4)[3];
+        String _op = _request.getRequestURI().split("/", 5)[3];
         System.out.println(_op);
-        String sessionRole = _request.getSession().getAttribute("role").toString();
+        //String sessionRole = _request.getSession().getAttribute("role").toString();
         switch (_op) {
-            case "protected/add" :
-                if (sessionRole == "admin"){
-                    addPermission(_request, _response);
-                    break;
-                }
+            case "add" :
+                addPermission(_request, _response);
+                break;
+
             case "update" :
-                if (sessionRole == "admin"){
-                    updatePermission(_request, _response);
-                    break;
-                }
+                updatePermission(_request, _response);
+                break;
+            case "delete" :
+                deletePermission(_request, _response);
+                break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest _request, HttpServletResponse _response) throws  IOException {
-        String op = _request.getRequestURI().split("/", 4)[3];
-        String sessionRole = _request.getSession().getAttribute("role").toString();
-
-        if ("/protected/deletePermission".equals(op)) {
-            if(sessionRole == "admin"){
-                deletePermission(_request, _response);
-            }
-        } else {
-            writeError(_response, ErrorCode.OPERATION_UNKNOWN);
-        }
-    }
 
     private void deletePermission(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
-            Long _permission_id = Long.parseLong(_request.getParameter("permission_id"));
+            System.out.println(_request);
+            long _permission_id = Long.parseLong(_request.getParameter("permission_id"));
             JSONObject _result = new JSONObject();
-
-            _result.put("data", new DeletePermissionByIdDao(getConnection()).DeletePermissionById(_permission_id));
-            _response.setStatus(HttpServletResponse.SC_OK);
-            _response.setContentType("application/json");
+            System.out.println(_permission_id);
+            _result.put("affectedRow", new DeletePermissionByIdDao(getConnection()).DeletePermissionById(_permission_id));
             _response.getWriter().write(_result.toString());
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -91,7 +78,7 @@ public class PermissionServlet extends AbstractServlet{
 
     private void updatePermission(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Permission _permission = null;
+        Permission _permission = new Permission();
         Long _permissionId = Long.parseLong(_request.getParameter("permission_id"));
 
         try {
@@ -162,8 +149,6 @@ public class PermissionServlet extends AbstractServlet{
         try {
             JSONObject _result = new JSONObject();
             _result.put("data",new GetAllPermissionsDao(getConnection()).getAllPermissions());
-            _response.setStatus(HttpServletResponse.SC_OK);
-            _response.setContentType("application/json");
             _response.getWriter().write(_result.toString());
 
         } catch (SQLException _e) {

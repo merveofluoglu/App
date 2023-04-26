@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.Category.GetAllCategoriesDao;
 import dao.Post.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 

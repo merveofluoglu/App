@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetUserByRoleIdDAO extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM user WHERE role_id = ?";
+    private static final String STATEMENT = "SELECT * FROM users WHERE role_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -24,7 +24,7 @@ public class GetUserByRoleIdDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> GetUserByRoleIdDAO(Long role_id) throws SQLException, ResourceNotFoundException {
+    public List<User> GetUserByRoleIdDAO(long role_id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -47,7 +47,8 @@ public class GetUserByRoleIdDAO extends AbstractDAO {
                                 _rs.getLong("role_id"),
                                 _rs.getTimestamp("creation_date"),
                                 _rs.getTimestamp("update_date"),
-                                _rs.getBytes("pp_path")
+                                _rs.getBytes("pp_path"),
+                                _rs.getBoolean("is_deleted")
                         )
                 );
             }

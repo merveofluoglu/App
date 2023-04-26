@@ -25,7 +25,7 @@ public class GetAllCategoriesDao  extends AbstractDAO {
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no Category!");
+                throw new ResourceNotFoundException("There is no Category!");
             }
             while (_rs.next()) {
                 _Categories.add(
