@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: mehmetsanisoglu
@@ -11,8 +12,26 @@
   <title>Add Message</title>
 </head>
 <body>
+
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
+<!---------DATATABLE--------->
+
+<table id="Message" class="display" width="100%">
+  <thead>
+  <tr>
+    <th id="MessageId">Message Id</th>
+    <th id="CreatorId">Creator Id</th>
+    <th id="RecipientId">Recipient Id</th>
+    <th id="ParentMessageId">Parent MessageId</th>
+    <th id="Subject">Subject</th>
+    <th id="MessageBody">Message Body</th>
+    <th id="IsRead">Is Read</th>
+  </tr>
+  </thead>
+</table>
+
+<!---------ADD MESSAGE--------->
 <div class="modal fade" id="addMessage" tabindex="-1">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -38,8 +57,8 @@
           <input type="text" name="Subject" id="Subject" class="form-control" />
         </div>
         <div class="form-group">
-          <label>Price:</label>
-          <input type="number" name="MessageBody" id="MessageBody" class="form-control" />
+          <label>Message Body:</label>
+          <input type="text" name="MessageBody" id="MessageBody" class="form-control" />
         </div>
       </div>
       <div class="modal-footer">
@@ -50,32 +69,168 @@
     </div>
   </div>
 </div>
+<!---------EDIT MESSAGE--------->
+
+<div class="modal fade" id="editMessage" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Edit Post</h4>
+        <button type="button" class="btn-close" target="#editPost" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Id:</label>
+          <input type="text" name="MessageId" id="MessageId" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Creator Id: </label>
+          <input type="number" name="CreatorId" id="CreatorId" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Recipient Id:</label>
+          <input type="number" name="RecipientId" id="RecipientId" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Parent Message Id:</label>
+          <input type="number" name="ParentMessageId" id="ParentMessageId" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Subject:</label>
+          <input type="text" name="Subject" id="Subject" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Message Body:</label>
+          <input type="text" name="MessageBody" id="MessageBody" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-toolbar" target="#editMessage" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="updateMessage()">Edit</button>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
 
 <script>
-  const addMessage = () => {
-    const _data = {
-      creator_id: parseInt($("#addMessage [name='CreatorId']").val()),
-      recipient_id: parseInt($("#addMessage [name='RecipientId']").val()),
-      parent_message_id: parseInt($("#addMessage [name='ParentMessageId']").val()),
-      customer_id: parseInt($("#addMessage [name='CustomerId']").val()),
-      subject: $("#addMessage [name='Subject']").val(),
-      message_body: $("#addMessage [name='MessageBody']").val(),
-    };
-    console.log(_data)
-    $.ajax({
-              url: "${pageContext.request.contextPath}/message/add",
-              method: "POST",
-              data: _data,
-              success: function (response) {
-                $('#addMessage').modal('hide');
-                toastr.success("Post added succesfully!");
-              },
-              error: function () {
-                alert("error");
-              }
-            }
-    );
-  }
+      $(document).ready(function () {
+        FillDatatable();
+      });
+
+      const addMessage = () => {
+        const _data = {
+          creator_id: parseInt($("#addMessage [name='CreatorId']").val()),
+          recipient_id: parseInt($("#addMessage [name='RecipientId']").val()),
+          parent_message_id: parseInt($("#addMessage [name='ParentMessageId']").val()),
+          subject: $("#addMessage [name='Subject']").val(),
+          message_body: $("#addMessage [name='MessageBody']").val(),
+        };
+        console.log(_data)
+        $.ajax({
+                  url: "${pageContext.request.contextPath}/message/add",
+                  method: "POST",
+                  data: _data,
+                  success: function (response) {
+                    $('#addMessage').modal('hide');
+                    toastr.success("Post added succesfully!");
+                  },
+                  error: function () {
+                    alert("error");
+                  }
+                }
+        );
+      }
+
+      const updateMessage = () => {
+
+        const _data = {
+          message_id: parseInt($("#editMessage [name='MessageId']").val()),
+          creator_id: parseInt($("#editMessage [name='CreatorId']").val()),
+          recipient_id: parseInt($("#editMessage [name='RecipientId']").val()),
+          parent_message_id: parseInt($("#editMessage [name='ParentMessageId']").val()),
+          subject: $("#editMessage [name='Subject']").val(),
+          message_body: $("#editMessage [name='MessageBody']").val(),
+        };
+        console.log("Update data")
+        console.log(_data)
+        $.ajax({
+                  url: '${pageContext.request.contextPath}/message/update',
+                  method: "POST",
+                  data: _data,
+                  success: function (response) {
+                    $('#editPost').modal('hide');
+                    table.destroy();
+                    FillDatatable();
+                    toastr.info("Post updated succesfully!");
+                  },
+                  error: function () {
+                    alert("error");
+                  }
+                }
+        );
+      }
+
+      const FillDatatable = () => {
+
+        let _selectedId = 0;
+        let _selectedCreatorId;
+        let _selectedRecipientId;
+        let _selectedParentMessageId;
+        let _selectedSubject;
+        let _selectedMessageBody;
+        let _selectedIsRead;
+
+        $.ajax({
+          url: '${pageContext.request.contextPath}/message/getAll',
+          method: "GET",
+          success: function (data) {
+            console.log(JSON.parse(data).data)
+            table = $('#Message').DataTable({
+              data: JSON.parse(data).data,
+              bDestroy: true,
+              dom: "Bfrtip",
+              columns: [
+                { title: "Id", data: "message_id" },
+                { title: "CreatorId", data: "creator_id" },
+                { title: "RecipientId", data: "recipient_id" },
+                { title: "ParentMessageId", data: "parent_message_id" },
+                { title: "Subject", data: "subject" },
+                { title: "MessageBody", data: "message_body" },
+                { title: "IsRead", data: "isRead" },
+
+              ],
+              select: true,
+              buttons: [
+                {
+                  text: "Add Message",
+                  atr: {
+                    id: 'add'
+                  },
+                  action: function () {
+                    $("#addMessage [name='CratorId']").val("");
+                    $("#addMessage [name='RecipientId']").val("");
+                    $("#addMessage [name='ParentMessageId']").val(null);
+                    $("#addMessage [name='Subject']").val(null);
+                    $("#addMessage [name='MessageBody']").val(null);
+                    $("#addMessage").modal('show');
+                  }
+                }
+              ]
+            }).off("select")
+                    .on("select", function (e, dt, type, indexes) {
+                      _selectedId = dt.data().message_id;
+                      _selectedCreatorId = dt.data().creator_id;
+                      _selectedRecipientId = dt.data().recipient_id;
+                      _selectedParentMessageId = dt.data().parent_message_id;
+                      _selectedSubject = dt.data().subject;
+                      _selectedMessageBody = dt.data().message_body;
+                      _selectedIsRead = dt.data().isRead;
+                    });
+          }
+        });
+
+      }
 </script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-select/1.6.2/dataTables.select.min.js" integrity="sha512-jrKaCKk8AzkQYkQtPSx6e12ScvqooX4lJzVC+w2ewqmJFd/UAkpETT+2MP/sMoJoSAhv1HIVQBm8ku1QaS6jFw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
