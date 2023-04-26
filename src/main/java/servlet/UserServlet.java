@@ -113,6 +113,7 @@ public class UserServlet extends AbstractServlet{
 
             _result.put("affectedRow", new DeleteUserByUseridDAO(getConnection()).DeleteUserByUseridDAO(_userId));
 
+
             _response.getWriter().write(_result.toString());
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -158,7 +159,6 @@ public class UserServlet extends AbstractServlet{
                 logAccess = true;
             }
 
-
             if (logAccess) {
                 HttpSession session = _request.getSession();
                 session.setAttribute("user_id", _user.getUserID());
@@ -170,6 +170,7 @@ public class UserServlet extends AbstractServlet{
                 else{
                     session.setAttribute("role", "user");
                 }
+                _response.sendRedirect(_request.getContextPath() + "/jsp/main.jsp");
             } else {
                 _response.setStatus(errorCode.getHTTPCode());
             }

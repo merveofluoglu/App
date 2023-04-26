@@ -58,10 +58,6 @@
                     <input type="number" name="UserId" id="UserId" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label>Customer Id:</label>
-                    <input type="number" name="CustomerId" id="CustomerId" class="form-control" />
-                </div>
-                <div class="form-group">
                     <label>Price:</label>
                     <input type="number" name="Price" id="Price" class="form-control" />
                 </div>
@@ -115,10 +111,6 @@
                     <input type="number" name="UserId" id="UserId" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label>Customer Id:</label>
-                    <input type="number" name="CustomerId" id="CustomerId" class="form-control" />
-                </div>
-                <div class="form-group">
                     <label>Price:</label>
                     <input type="number" name="Price" id="Price" class="form-control" />
                 </div>
@@ -126,6 +118,7 @@
                     <label>Status:</label>
                     <input type="text" name="Status" id="Status" class="form-control" />
                 </div>
+                <!--
                 <div class="form-group">
                     <label>Category:</label>
                     <select id="batchSelect" onchange="displaySubCategories()" class="form-control" name="CategoryId" id="CategoryId"></select>
@@ -134,6 +127,7 @@
                     <label>Sub Category:</label>
                     <select id="batchSubCategory" class="form-control" name="SubCategoryId" id="SubCategoryId"></select>
                 </div>
+                -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-toolbar" target="#editPost" data-bs-dismiss="modal">Close</button>
@@ -163,6 +157,27 @@
         </div>
     </div>
 </div>
+
+<!---------Buy POST--------->
+
+<div id="buyPost" class="modal fade" role="dialog" style="display:none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Buy Post</h3>
+                <button type="button" class="btn-close" target="#buyPost" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to buy this post?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-toolbar" target="#buyPost" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="confirmBuy" class="btn btn-danger">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <script>
         $(document).ready(function () {
@@ -209,7 +224,6 @@
                 name: $("#addPost [name='Name']").val(),
                 description: $("#addPost [name='Description']").val(),
                 user_id: $("#addPost [name='UserId']").val(),
-                customer_id: $("#addPost [name='CustomerId']").val(),
                 price: $("#addPost [name='Price']").val(),
                 status: $("#addPost [name='Status']").val(),
                 category_id: $("#addPost [name='CategoryId']").val(),
@@ -253,6 +267,22 @@
             );
         }
 
+        const buyPost = (id) => {
+            $.ajax({
+                    url: '${pageContext.request.contextPath}/post/buy/' + id,
+                    method: "POST",
+                    success: function (response) {
+                        table.destroy();
+                        FillDatatable();
+                        toastr.success("Post bought succesfully!");
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                }
+            );
+        }
+
         const updatePost = () => {
 
             const _data = {
@@ -260,16 +290,11 @@
                 name: $("#editPost [name='Name']").val(),
                 description: $("#editPost [name='Description']").val(),
                 user_id: $("#editPost [name='UserId']").val(),
-                customer_id: $("#editPost [name='CustomerId']").val(),
                 price: $("#editPost [name='Price']").val(),
                 status: $("#editPost [name='Status']").val(),
-                category_id: $("#editPost [name='CategoryId']").val(),
-                subcategory_id: $("#editPost [name='SubCategoryId']").val()
+                //category_id: $("#editPost [name='CategoryId']").val(),
+                //subcategory_id: $("#editPost [name='SubCategoryId']").val()
             };
-
-            if(!checkValidity(_data)) {
-                return;
-            }
 
             $.ajax({
                     url: '${pageContext.request.contextPath}/post/update',
@@ -301,11 +326,6 @@
             }
 
             if(data.user_id == "" || data.user_id == null || data.user_id == undefined) {
-                toastr.error("Please fill all sections!");
-                return false;
-            }
-
-            if(data.customer_id == "" || data.customer_id == null || data.customer_id == undefined) {
                 toastr.error("Please fill all sections!");
                 return false;
             }
@@ -376,11 +396,10 @@
             let _selectedName;
             let _selectedDescription;
             let _selectedUserId;
-            let _selecteCustomerId;
             let _selectedPrice;
             let _selectedStatus;
-            let _selectedCategoryId;
-            let _selectedSubCategoryId;
+           // let _selectedCategoryId;
+           // let _selectedSubCategoryId;
 
             $.ajax({
                 url: '${pageContext.request.contextPath}/post/getAll',
@@ -407,8 +426,8 @@
                             { title: "Customer Id", data: "customer_id" },
                             { title: "Price", data: "price" },
                             { title: "Status", data: "status" },
-                            { title: "Category Id", data: "category_id" },
-                            { title: "Sub Category Id", data: "subcategory_id" }
+                            { title: "Category", data: "category_id" },
+                            { title: "Sub Category", data: "subcategory_id" }
                         ],
                         select: true,
                         buttons: [{
@@ -442,11 +461,10 @@
                                         $("#editPost [name='Name']").val(_selectedName);
                                         $("#editPost [name='Description']").val(_selectedDescription);
                                         $("#editPost [name='UserId']").val(_selectedUserId);
-                                        $("#editPost [name='CustomerId']").val(_selecteCustomerId);
                                         $("#editPost [name='Price']").val(_selectedPrice);
                                         $("#editPost [name='Status']").val(_selectedStatus);
-                                        $("#editPost [name='CategoryId']").val(_selectedCategoryId);
-                                        $("#editPost [name='SubCategoryId']").val(_selectedSubCategoryId);
+                                       // $("#editPost [name='CategoryId']").val(null);
+                                       // $("#editPost [name='SubCategoryId']").val(null);
                                         $("#editPost").modal('show');
                                     }
                                 }
@@ -460,12 +478,30 @@
                                     $("#addPost [name='Name']").val("");
                                     $("#addPost [name='Description']").val("");
                                     $("#addPost [name='UserId']").val(null);
-                                    $("#addPost [name='CustomerId']").val(null);
                                     $("#addPost [name='Price']").val(null);
                                     $("#addPost [name='Status']").val("");
                                     $("#addPost [name='CategoryId']").val(null);
                                     $("#addPost [name='SubCategoryId']").val(null);
                                     $("#addPost").modal('show');
+                                }
+                            },
+                            {
+                                text: "Buy",
+                                atr: {
+                                    id: 'buy'
+                                },
+                                action: function () {
+
+                                    if (_selectedId == 0)
+                                        alert("Please select a row!");
+                                    else {
+                                        $("#buyPost").modal('show');
+
+                                        $("#confirmBuy").off('click').click(function () {
+                                            $('#buyPost').modal('hide');
+                                            buyPost(_selectedId);
+                                        });
+                                    }
                                 }
                             }
                         ]
@@ -475,18 +511,13 @@
                             _selectedName = dt.data().name;
                             _selectedDescription = dt.data().description;
                             _selectedUserId = dt.data().user_id;
-                            _selecteCustomerId = dt.data().customer_id;
                             _selectedPrice = dt.data().price;
                             _selectedStatus = dt.data().status;
-                            _selectedCategoryId = dt.data().category_id;
-                            _selectedSubCategoryId = dt.data().subcategory_id;
                         });
                 }
             });
 
         }
-
-
 
     </script>
 
