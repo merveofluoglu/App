@@ -47,6 +47,9 @@ public class PostServlet extends AbstractServlet {
             case "delete" :
                 removePost(_request, _response);
                 break;
+            case "buy" :
+                buyPost(_request, _response);
+                break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
@@ -79,7 +82,7 @@ public class PostServlet extends AbstractServlet {
             _post.setName(_request.getParameter("name"));
             _post.setDescription(_request.getParameter("description"));
             _post.setUser_id(Long.parseLong(_request.getParameter("user_id")));
-            _post.setCustomer_id(Long.parseLong(_request.getParameter("customer_id")));
+            _post.setCustomer_id(0);
             _post.setPrice(Double.parseDouble(_request.getParameter("price")));
             _post.setStatus(_request.getParameter("status"));
             _post.setStart_date(new Timestamp(System.currentTimeMillis()));
@@ -88,8 +91,8 @@ public class PostServlet extends AbstractServlet {
             _post.setIs_sold(false);
             _post.setSold_date(null);
             _post.setUpdate_date(null);
-            _post.setCategory_id(Long.parseLong(_request.getParameter("category_id")));
-            _post.setSubcategory_id(Long.parseLong(_request.getParameter("subcategory_id")));
+            _post.setCategory_id(0);
+            _post.setSubcategory_id(0);
 
             JSONObject _result = new JSONObject();
 
@@ -128,6 +131,30 @@ public class PostServlet extends AbstractServlet {
         }
     }
 
+    private void buyPost(HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            HttpSession _session = _request.getSession();
+
+            long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+            long _customerId = (long) _session.getAttribute("user_id");
+
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new BuyPostByPostIdDao(getConnection()).buyPost(_postId, _customerId));
+
+            _response.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
     private void addPost(HttpServletRequest _request, HttpServletResponse _response) {
 
         Post _post = new Post();
@@ -136,7 +163,7 @@ public class PostServlet extends AbstractServlet {
             _post.setName(_request.getParameter("name"));
             _post.setDescription(_request.getParameter("description"));
             _post.setUser_id(Long.parseLong(_request.getParameter("user_id")));
-            _post.setCustomer_id(Long.parseLong(_request.getParameter("customer_id")));
+            _post.setCustomer_id(0);
             _post.setPrice(Double.parseDouble(_request.getParameter("price")));
             _post.setStatus(_request.getParameter("status"));
             _post.setStart_date(new Timestamp(System.currentTimeMillis()));

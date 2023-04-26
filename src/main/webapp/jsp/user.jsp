@@ -154,6 +154,7 @@
 </div>
 
 <!---------LOGIN--------->
+<!--
 <div class="modal fade" id="login" tabindex="-1">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -179,7 +180,7 @@
     </div>
   </div>
 </div>
-
+-->
   <script>
     $(document).ready(function () {
       FillDatatable();
@@ -210,7 +211,7 @@
               }
       );
     }
-
+  /*
     const login = () => {
       const _data = {
         email: $("#login [name='Email']").val(),
@@ -222,9 +223,8 @@
                 data: _data,
                 success: function (response) {
                   $('#login').modal('hide');
-                  table.destroy();
-                  FillDatatable();
                   toastr.success("Logged in succesfully!");
+                  //<a href="${pageContext.request.contextPath}/jsp/home.jsp"></a>
                 },
                 error: function () {
                   alert("error");
@@ -232,7 +232,7 @@
               }
       );
     }
-
+*/
     const removeUser = (id) => {
       $.ajax({
                 url: '${pageContext.request.contextPath}/user/delete/' + id,
@@ -357,7 +357,7 @@
                   $("#addUser [name='Password']").val("");
                   $("#addUser").modal('show');
                 }
-              },
+              }/*,
               {
                 text: "Login",
                 atr: {
@@ -368,7 +368,7 @@
                   $("#login [name='Password']").val("");
                   $("#login").modal('show');
                 }
-              },
+              },*/
 
 
             ]
