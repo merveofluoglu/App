@@ -67,13 +67,13 @@
     </div>
   </div>
 </div>
-<!---------EDIT MESSAGE--------->
 
+<!---------EDIT MESSAGE--------->
 <div class="modal fade" id="editMessage" tabindex="-1">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Edit Post</h4>
+        <h4 class="modal-title" id="myModalLabel">Edit Message</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -114,7 +114,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Delete Post</h4>
+        <h4 class="modal-title" id="myModalLabel">Delete Message</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -124,6 +124,27 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" id="delete" data-dismiss="modal" onclick="deleteMessage()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!---------READ MESSAGE--------->
+<div class="modal fade" id="readMessage" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Read Message</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Id:</label>
+          <input type="text" name="MessageId" id="MessageId" class="form-control" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="delete" data-dismiss="modal" onclick="readMessage()">Read Message</button>
       </div>
     </div>
   </div>
@@ -150,7 +171,9 @@
                   data: _data,
                   success: function (response) {
                     $('#addMessage').modal('hide');
-                    toastr.success("Post added succesfully!");
+                    table.destroy();
+                    FillDatatable();
+                    toastr.success("Message added succesfully!");
                   },
                   error: function () {
                     alert("error");
@@ -179,7 +202,7 @@
                     $('#editPost').modal('hide');
                     table.destroy();
                     FillDatatable();
-                    toastr.info("Post updated succesfully!");
+                    toastr.info("Message updated succesfully!");
                   },
                   error: function () {
                     alert("error");
@@ -201,7 +224,29 @@
                     $('#editPost').modal('hide');
                     table.destroy();
                     FillDatatable();
-                    toastr.info("Post deleted succesfully!");
+                    toastr.info("Message deleted succesfully!");
+                  },
+                  error: function () {
+                    alert("error");
+                  }
+                }
+        );
+      }
+
+      const readMessage = () => {
+
+        const _data = {
+          message_id: parseInt($("#readMessage [name='MessageId']").val()),
+        };
+        $.ajax({
+                  url: '${pageContext.request.contextPath}/message/read',
+                  method: "POST",
+                  data: _data,
+                  success: function (response) {
+                    $('#editPost').modal('hide');
+                    table.destroy();
+                    FillDatatable();
+                    toastr.info("Message read succesfully!");
                   },
                   error: function () {
                     alert("error");

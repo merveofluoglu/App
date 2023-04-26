@@ -4,12 +4,17 @@ import dao.AbstractDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import resource.Message;
 import utils.ResourceNotFoundException;
 
 public class GetMessageByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM message WHERE message.messageId = ?";
+    private static final String STATEMENT = "SELECT * FROM message WHERE message.message_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -25,26 +30,44 @@ public class GetMessageByIdDao extends AbstractDAO {
 
     }
 
-    public String getMessageById(long messageId) throws SQLException {
+    public List<Message> getMessageById(long message_id) throws SQLException {
         PreparedStatement _pstmt = null;
-        int _affectedRows;
+        ResultSet _rs = null;
+        List<Message> _messages = new ArrayList<>();
+
 
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setLong(1, messageId);
+            _pstmt.setObject(1, message_id);
 
-            _affectedRows = _pstmt.executeUpdate();
+            _rs = _pstmt.executeQuery();
 
-            if (_affectedRows != 1) {
-                throw new SQLException("Getting message by ID Failed!");
+
+            if(_rs.next()) {
+                _messages.add(
+                        new Message(
+                        _rs.getLong("message_id"),
+                        _rs.getLong("creator_id"),
+                        _rs.getLong("recipient_id"),
+                        _rs.getLong("parent_message_id"),
+                        _rs.getString("subject"),
+                        _rs.getString("message_body"),
+                        _rs.getBoolean("is_read"),
+                        _rs.getTimestamp("creation_date"),
+                        _rs.getTimestamp("expiration_date"))
+                );
             }
+
         } finally {
+            if (_rs != null) {
+                _rs.close();
+            }
             if (_pstmt != null) {
                 _pstmt.close();
             }
             con.close();
         }
-        return "Message Got by ID Successfully!";
+        return _messages;
     }
 }

@@ -22,7 +22,7 @@ public class MessageServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws IOException{
         try{
-            String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
+            String _op = _request.getRequestURI().split("/", 5)[3].replace("/", "");
 
             if (_op.contentEquals("details")) {
                 getMessage(_request, _response);
@@ -50,6 +50,9 @@ public class MessageServlet extends AbstractServlet {
             case "delete" :
                 removeMessage(_request, _response);
                 break;
+            case "read" :
+                readMessage(_request, _response);
+                break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
@@ -74,7 +77,7 @@ public class MessageServlet extends AbstractServlet {
 
     protected void getMessage (HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _id = parseLong(_request.getParameter("message_id"));
+            long _id = parseLong(_request.getRequestURI().split("/", 5)[4].replace("/", ""));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 
@@ -164,4 +167,26 @@ public class MessageServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         }
     }
+
+    private void readMessage(HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            long _messageId = Long.parseLong(_request.getParameter("message_id"));
+
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new ReadMessageByIdDao(getConnection()).readMessage(_messageId));
+
+            _response.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
 }

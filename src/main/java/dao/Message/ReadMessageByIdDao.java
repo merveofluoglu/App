@@ -24,14 +24,14 @@ public class ReadMessageByIdDao extends AbstractDAO {
 
     }
 
-    public int readMessage(Message _message) throws SQLException {
+    public int readMessage(long _id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, _message.getMessage_id());
+            _pstmt.setLong(1, _id);
 
             _affectedRows = _pstmt.executeUpdate();
 
