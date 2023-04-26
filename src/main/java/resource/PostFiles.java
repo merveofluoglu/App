@@ -1,5 +1,7 @@
 package resource;
 
+import java.util.Arrays;
+
 public class PostFiles {
     private long file_id;
     private long post_id;
@@ -38,4 +40,24 @@ public class PostFiles {
     public boolean isIs_deleted() { return is_deleted; }
 
     public void setIs_deleted(boolean is_deleted) { this.is_deleted = is_deleted; }
+
+    @Override
+    public String toString() {
+        if(file != null) {
+            return "PostFiles{" +
+                    "file_id=" + file_id +
+                    ", post_id=" + post_id +
+                    ", file=" + file.toString() +
+                    ", is_deleted=" + is_deleted +
+                    '}';
+        }
+        else {
+            return "PostFiles{" +
+                    "file_id=" + file_id +
+                    ", post_id=" + post_id +
+                    ", file=" + null +
+                    ", is_deleted=" + is_deleted +
+                    '}';
+        }
+    }
 }

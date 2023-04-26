@@ -57,21 +57,22 @@ public class PostFilesServlet extends AbstractServlet {
 
     private void getAllPostFiles (HttpServletRequest _request, HttpServletResponse _response) {
 
-        List<PostFiles> postFiles= new ArrayList<>();
-        _request.setAttribute("postFiles", postFiles);
-
         try {
-            JSONObject _result = new JSONObject();
-
-            _result.put("data",new GetPostFilesByIdDao(getConnection()).getPostFilesById());
-
-            _response.getWriter().write(_result.toString());
+            _response.setContentType("text/html");
+            ArrayList<PostFiles> postFilesList= new ArrayList<>();
+            postFilesList.addAll(new GetPostFilesByIdDao(getConnection()).getPostFilesById());
+            _request.setAttribute("fileList", postFilesList);
+            String myRedirectedJSP = "/jsp/postFile-list.jsp";
+            RequestDispatcher rd = _request.getRequestDispatcher(myRedirectedJSP);
+            rd.forward(_request, _response);
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (ResourceNotFoundException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ServletException _e) {
             throw new RuntimeException(_e);
         }
     }
