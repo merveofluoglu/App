@@ -84,8 +84,8 @@ public class Message {
         return is_read;
     }
 
-    public void setIsRead(boolean isRead) {
-        this.is_read = isRead;
+    public void setIsRead(boolean is_read) {
+        this.is_read = is_read;
     }
 
     public Timestamp getCreation_date() {

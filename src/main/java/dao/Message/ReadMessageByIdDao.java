@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ReadMessageByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE message SET isRead = true WHERE messageId = ?";
+    private static final String STATEMENT = "UPDATE message SET is_read = true WHERE message_id = ?";
 
     /**
      * Creates a new DAO object.

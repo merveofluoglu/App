@@ -1,9 +1,7 @@
 package servlet;
 
-import dao.Message.CreateMessageDao;
-import dao.Message.DeleteMessageByIdDao;
-import dao.Message.GetMessageByIdDao;
-import dao.Message.UpdateMessageByIdDao;
+import dao.Message.*;
+import dao.Post.GetAllPostsDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import resource.Message;
 import utils.ErrorCode;
+import utils.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,12 +20,15 @@ import static java.lang.Long.parseLong;
 @WebServlet(name = "MessageServlet", value = "/MessageServlet")
 public class MessageServlet extends AbstractServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException{
+    protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws IOException{
         try{
-            String _op = req.getRequestURI().split("/", 4)[3].replace("/", "");
+            String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
 
             if (_op.contentEquals("details")) {
-                getMessage(req, res);
+                getMessage(_request, _response);
+            }
+            else{
+                getAllMessages(_request, _response);
             }
         } catch (Exception e){
             throw new RuntimeException(e);
@@ -50,6 +52,23 @@ public class MessageServlet extends AbstractServlet {
                 break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
+        }
+    }
+
+    protected void getAllMessages (HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            JSONObject _result = new JSONObject();
+
+            _result.put("data",new GetAllMessagesDao(getConnection()).getAllMessages());
+
+            _response.getWriter().write(_result.toString());
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
         }
     }
 
