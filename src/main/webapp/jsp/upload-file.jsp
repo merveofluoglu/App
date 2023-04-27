@@ -25,15 +25,15 @@
   <h1 class="text-center">File Upload to Database</h1>
   <div class="card">
    <div class="card-body">
-    <form method="post" class="form-group" action="${pageContext.request.contextPath}/postFiles/add">
+    <form method="post" enctype= "multipart/form-data" class="form-group" action="${pageContext.request.contextPath}/postFiles/upload">
      <div class="form-group">
-      <label for="post_id">Post Id: </label> <input type="text"
-       class="form-control" name="post_id" size="50" />
+      <label for="post_id">Post Id: </label>
+      <input id="post_id" type="text" class="form-control" name="post_id" size="50" />
      </div>
 
      <div class="form-group">
-      <label for="file">File:</label> <input
-       type="file" name="file" />
+      <label for="file">File:</label>
+      <input id="file" type="file" name="file" accept="image/png, image/jpeg, .jpg, .jpeg, .png"/>
      </div>
      <input type="submit" value="Save" class="btn btn-success">
     </form>

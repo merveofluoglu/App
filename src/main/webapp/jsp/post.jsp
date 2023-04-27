@@ -54,10 +54,6 @@
                     <input type="text" name="Description" id="Description" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label>User Id:</label>
-                    <input type="number" name="UserId" id="UserId" class="form-control" />
-                </div>
-                <div class="form-group">
                     <label>Price:</label>
                     <input type="number" name="Price" id="Price" class="form-control" />
                 </div>
@@ -106,7 +102,7 @@
                     <label>Description:</label>
                     <input type="text" name="Description" id="Description" class="form-control" />
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display:none">
                     <label>User Id:</label>
                     <input type="number" name="UserId" id="UserId" class="form-control" />
                 </div>
@@ -223,7 +219,6 @@
             const _data = {
                 name: $("#addPost [name='Name']").val(),
                 description: $("#addPost [name='Description']").val(),
-                user_id: $("#addPost [name='UserId']").val(),
                 price: $("#addPost [name='Price']").val(),
                 status: $("#addPost [name='Status']").val(),
                 category_id: $("#addPost [name='CategoryId']").val(),
@@ -261,7 +256,8 @@
                         toastr.success("Post deleted succesfully!");
                     },
                     error: function () {
-                        alert("error");
+                        toastr.error("You cannot delete someone else's post!");
+                        return;
                     }
                 }
             );
@@ -283,7 +279,30 @@
             );
         }
 
+        const addFavourite = (id) => {
+            $.ajax({
+                    url: '${pageContext.request.contextPath}/favourite/add/' + id,
+                    method: "POST",
+                    success: function (response) {
+                        toastr.success("Added to favourites!");
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                }
+            );
+        }
+
+
         const updatePost = () => {
+
+            let user_id = '<%= session.getAttribute( "user_id" ) %>';
+
+            if(user_id !== $("#editPost [name='UserId']").val()) {
+                $('#editPost').modal('hide');
+                toastr.error("You cannot update someone else's post!")
+                return;
+            }
 
             const _data = {
                 post_id: parseInt($("#editPost [name='PostId']").val()),
@@ -313,6 +332,7 @@
             );
         }
 
+
         checkValidity = (data) => {
 
             if(data.name == "" || data.name == null || data.name == undefined) {
@@ -321,11 +341,6 @@
             }
 
             if(data.description == "" || data.description == null || data.description == undefined) {
-                toastr.error("Please fill all sections!");
-                return false;
-            }
-
-            if(data.user_id == "" || data.user_id == null || data.user_id == undefined) {
                 toastr.error("Please fill all sections!");
                 return false;
             }
@@ -477,7 +492,6 @@
                                 action: function () {
                                     $("#addPost [name='Name']").val("");
                                     $("#addPost [name='Description']").val("");
-                                    $("#addPost [name='UserId']").val(null);
                                     $("#addPost [name='Price']").val(null);
                                     $("#addPost [name='Status']").val("");
                                     $("#addPost [name='CategoryId']").val(null);
@@ -501,6 +515,20 @@
                                             $('#buyPost').modal('hide');
                                             buyPost(_selectedId);
                                         });
+                                    }
+                                }
+                            },
+                            {
+                                text: "Add to Favourites",
+                                atr: {
+                                    id: 'addFav'
+                                },
+                                action: function () {
+
+                                    if (_selectedId == 0)
+                                        alert("Please select a row!");
+                                    else {
+                                        addFavourite(_selectedId);
                                     }
                                 }
                             }

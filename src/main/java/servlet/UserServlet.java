@@ -1,10 +1,17 @@
 package servlet;
 
 import dao.ActionLog.AddActionLogDao;
+import dao.Message.DeleteMessageByIdDao;
+import dao.Message.GetMessageByIdDao;
+import dao.Message.GetMessagesByCreatorIdDao;
+import dao.Message.GetMessagesByRecipientIdDao;
 import dao.Permission.GetAllPermissionsDao;
 import dao.Permission.GetPermissionByIdDao;
 import dao.Post.DeletePostByIdDao;
+import dao.Post.DeletePostByUserIdDao;
 import dao.Post.UpdatePostByIdDao;
+import dao.Review.DeleteReviewDao;
+import dao.Review.GetReviewsByUserIdDao;
 import dao.User.CreateUserDAO;
 import dao.User.DeleteUserByUseridDAO;
 import dao.User.GetAllUsersDAO;
@@ -24,10 +31,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
-import resource.ActionLog;
-import resource.Permission;
-import resource.Post;
-import resource.User;
+import resource.*;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 import utils.RestrictedActionException;
@@ -39,6 +43,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static java.lang.Long.parseLong;
@@ -71,6 +76,9 @@ public class UserServlet extends AbstractServlet{
         }
         else if (operation.contentEquals("getAll")) {
             getAllUsersOp(_request, _response);
+        }
+        else if (operation.contentEquals("getProfile")) {
+            getProfileData(_request, _response);
         }
         else{
             logoutOperations(_request, _response);
@@ -107,18 +115,48 @@ public class UserServlet extends AbstractServlet{
     private void deleteUser(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
             long _userId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
+
             JSONObject _result = new JSONObject();
+
+            List<Reviews> _reviews = new ArrayList<>();
+
+            _reviews = new GetReviewsByUserIdDao(getConnection()).getReviewsByUserId(_userId);
+
+            for(int i=0; i<_reviews.size();i++){
+                _result.put("affectedRow", new DeleteReviewDao(getConnection()).deleteReview(_reviews.get(i).getReview_id()));
+            }
+
+            List<Message> _cretorMessages = new ArrayList<>();
+
+            _cretorMessages = new GetMessagesByCreatorIdDao(getConnection()).getMessagesByCreatorId(_userId);
+
+            for(int i=0; i<_cretorMessages.size();i++){
+                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_cretorMessages.get(i).getMessage_id()));
+            }
+
+            int _deletedPosts = new DeletePostByUserIdDao(getConnection()).deletePosts(_userId);
+
+            List<Message> _recipientMessages = new ArrayList<>();
+
+            _recipientMessages = new GetMessagesByRecipientIdDao(getConnection()).getMessagesByRecipientId(_userId);
+
+            for(int i=0; i<_recipientMessages.size();i++){
+                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_recipientMessages.get(i).getMessage_id()));
+            }
 
             _result.put("affectedRow", new DeleteUserByUseridDAO(getConnection()).DeleteUserByUseridDAO(_userId));
 
-
             _response.getWriter().write(_result.toString());
+
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -162,6 +200,7 @@ public class UserServlet extends AbstractServlet{
             if (logAccess) {
                 HttpSession session = _request.getSession();
                 session.setAttribute("user_id", _user.getUserID());
+                session.setAttribute("user",_user);
                 boolean roleCheck = _user.getRole_id() == 0;
                 if (roleCheck){
                     session.setAttribute("role", "admin");
@@ -169,6 +208,7 @@ public class UserServlet extends AbstractServlet{
 
                 else{
                     session.setAttribute("role", "user");
+
                 }
                 _response.sendRedirect(_request.getContextPath() + "/jsp/main.jsp");
             } else {
@@ -266,12 +306,13 @@ public class UserServlet extends AbstractServlet{
             writeError(_response, ErrorCode.INTERNAL_ERROR);
         }
     }
-    private void logoutOperations(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void logoutOperations(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         try {
             boolean user = req.getSession().getAttribute("role") == "user";
-            ActionLog actionlog = null;
-            actionlog.setUser_id((Long) req.getSession().getAttribute("user_id"));
+            //ActionLog actionlog = null;
+            //actionlog.setUser_id((Long) req.getSession().getAttribute("user_id"));
+            /*
             if (user){
                 actionlog.setDescription("User logged out!");
                 actionlog.setIs_user_act(true);
@@ -281,14 +322,14 @@ public class UserServlet extends AbstractServlet{
                 actionlog.setDescription("Admin logged out!");
                 actionlog.setIs_user_act(false);
                 actionlog.setIs_system_act(true);
-            }
+            }*/
             //AddActionLogDao.addActionLog(getConnection(), actionlog);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         req.getSession().invalidate();
-        resp.sendRedirect(req.getContextPath());
+        //resp.sendRedirect(req.getContextPath());
+        req.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req,resp);
     }
 
 
@@ -405,6 +446,29 @@ public class UserServlet extends AbstractServlet{
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        }
+    }
+
+    private void getProfileData (HttpServletRequest _request, HttpServletResponse _response) {
+        HttpSession _session = _request.getSession();
+        // This method returns a permission.
+        try {
+            long _user_id = (long) _session.getAttribute("user_id");
+            JSONObject _result = new JSONObject();
+            _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_user_id));
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            _response.getWriter().write(_result.toString());
+            _session.setAttribute("data",_result.getJSONObject("data"));
+            _request.getRequestDispatcher("jsp/profile.jsp").forward(_request, _response);
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
         }
     }
 

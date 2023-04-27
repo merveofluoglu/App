@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class CreateUserDAO extends AbstractDAO{
     private static final String STATEMENT = "INSERT INTO users("+
             "user_id, name, surname, email, password,role_id, creation_date, update_date, pp_path,"+
-            "is_deleted) VALUES (nextval('user_seq'), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "is_deleted) VALUES (nextval('user_seq'), ?, ?, ?, crypt(?, gen_salt('bf')), ?, ?, ?, ?, ?)";
 
     /**
      * The employee to be stored into the database

@@ -23,7 +23,7 @@ public class UpdateRolePermissionByIdDao extends AbstractDAO {
         super(con);
     }
 
-    public RolePermission updateRolePermissionById(RolePermission rolePermission, Long _role_permission_id) throws SQLException {
+    public RolePermission updateRolePermissionById(RolePermission rolePermission, long _role_permission_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -33,7 +33,7 @@ public class UpdateRolePermissionByIdDao extends AbstractDAO {
             _pstmt = con.prepareStatement(STATEMENT);
             _pstmt.setLong(1, rolePermission.getRole_id());
             _pstmt.setLong(2, rolePermission.getPermission_id());
-            _pstmt.setLong(3, rolePermission.getRole_permission_id());
+            _pstmt.setLong(3, _role_permission_id);
 
 
             _affectedRows = _pstmt.executeUpdate();

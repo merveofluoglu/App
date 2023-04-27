@@ -40,7 +40,8 @@ public class GetPostFilesByIdDao extends AbstractDAO {
                         rs.getLong("file_id"),
                         rs.getLong("post_id"),
                         rs.getBytes("file"),
-                        rs.getBoolean("is_deleted"))
+                        rs.getBoolean("is_deleted"),
+                        rs.getString("file_media_type"))
                 );
             }
         } finally {

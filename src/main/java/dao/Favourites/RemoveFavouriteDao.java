@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class RemoveFavouriteDao extends AbstractDAO {
 
-    private static final String STATEMENT = "DELETE FROM favourites WHERE post_id = ?";
+    private static final String STATEMENT = "DELETE FROM favourites WHERE favourite_id = ?";
 
     /**
      * Creates a new DAO object.

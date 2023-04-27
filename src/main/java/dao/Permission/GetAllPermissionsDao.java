@@ -42,8 +42,7 @@ public class GetAllPermissionsDao extends AbstractDAO{
                 _permissions.add(
                         new Permission(
                                 _rs.getLong("permission_id"),
-                                _rs.getString("name"),
-                                _rs.getBoolean("is_deleted")
+                                _rs.getString("name")
                         )
                 );
             }

@@ -40,7 +40,7 @@ public class GetReviewsByUserIdDao extends AbstractDAO {
             _rs = _pstmt.executeQuery();
 
             if (!_rs.isBeforeFirst()) {
-                throw new SQLException("Reviews not found!");
+                return _reviews;
             }
 
             while (_rs.next()) {
