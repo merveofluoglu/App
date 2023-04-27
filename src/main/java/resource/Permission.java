@@ -7,13 +7,11 @@ public class Permission {
 
     private String name;
 
-    private boolean is_deleted;
 
 
-    public Permission(long permission_id,String name,Boolean is_deleted){
+    public Permission(long permission_id,String name){
         this.permission_id = permission_id;
         this.name = name;
-        this.is_deleted = is_deleted;
     }
     public Permission(){}
     public Long getPermission_id() {
@@ -33,13 +31,6 @@ public class Permission {
         this.name = name;
     }
 
-    public Boolean getIsDeleted() {
-        return is_deleted;
-    }
-
-    public void setIs_deleted(Boolean isDeleted) {
-        this.is_deleted = isDeleted;
-    }
 
 
 
