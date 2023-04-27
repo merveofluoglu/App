@@ -8,44 +8,43 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class GetAllPermissionsDao extends AbstractDAO{
+public class GetPermissionByNameDao extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM permission WHERE is_deleted=false";
+    private static final String STATEMENT = "SELECT * FROM permission WHERE name = ?";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public GetAllPermissionsDao(Connection con) {
+    public GetPermissionByNameDao(Connection con) {
         super(con);
     }
 
-    public List<Permission> getAllPermissions () throws SQLException, ResourceNotFoundException {
+    public Permission getPermissionByName(String name) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
-        ResultSet _rs = null;
-        List<Permission> _permissions = new ArrayList<>();
+        ResultSet _rs =null;
+        Permission _permission = null;
 
         try {
+
             _pstmt = con.prepareStatement(STATEMENT);
-            _rs = _pstmt.executeQuery();
+            _pstmt.setObject(1, name);
+            _rs= _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no permissions!");
+                throw new ResourceNotFoundException("Couldn't found such permission!");
             }
 
-            while (_rs.next()) {
-                _permissions.add(
-                        new Permission(
-                                _rs.getLong("permission_id"),
-                                _rs.getString("name")
-                        )
+            if(_rs.next()) {
+                _permission = new Permission(
+                        _rs.getLong("permission_id"),
+                        _rs.getString("name")
                 );
             }
+
         } finally {
             if (_rs != null) {
                 _rs.close();
@@ -56,7 +55,7 @@ public class GetAllPermissionsDao extends AbstractDAO{
             con.close();
         }
 
-        return _permissions;
+        return _permission;
     }
 
     @Override

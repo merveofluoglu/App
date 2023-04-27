@@ -41,8 +41,7 @@ public class GetPermissionByIdDao extends AbstractDAO{
             if(_rs.next()) {
                 _permission = new Permission(
                         _rs.getLong("permission_id"),
-                        _rs.getString("name"),
-                        _rs.getBoolean("is_deleted")
+                        _rs.getString("name")
                 );
             }
 
