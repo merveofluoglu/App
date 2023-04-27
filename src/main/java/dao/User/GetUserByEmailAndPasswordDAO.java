@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class GetUserByEmailAndPasswordDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM users WHERE email = ? AND password = ? AND is_deleted=false";
+    private static final String STATEMENT = "SELECT * FROM users WHERE email = ? AND password = crypt(?, password) AND is_deleted=false";
 
     /**
      * Creates a new DAO object.
@@ -35,7 +35,9 @@ public class GetUserByEmailAndPasswordDAO extends AbstractDAO{
             _pstmt.setString(2, password);
 
             _rs = _pstmt.executeQuery();
-
+            if(!_rs.isBeforeFirst()) {
+                throw new ResourceNotFoundException("There are no such user!");
+            }
             while (_rs.next()) {
                 _user.add(
                         new User(
