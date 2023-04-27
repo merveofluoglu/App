@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class UpdateFilesByPostIdDao extends AbstractDAO {
 
     private static final String STATEMENT =
-            "UPDATE post_files SET file_id = ?, file = ?, is_deleted = ? WHERE post_id = ?";
+            "UPDATE post_files SET file_id = ?, file = ?, is_deleted = ?, file_media_type = ? WHERE post_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -19,7 +19,7 @@ public class UpdateFilesByPostIdDao extends AbstractDAO {
      */
     public UpdateFilesByPostIdDao(Connection con) { super(con); }
 
-    public int updateFilesByPostId(PostFiles pf, long postId) throws SQLException {
+    public int updateFilesByPostId(PostFiles pf, long post_id) throws SQLException {
         PreparedStatement pstmt = null;
         int affectedRows = 0;
 
@@ -28,7 +28,8 @@ public class UpdateFilesByPostIdDao extends AbstractDAO {
             pstmt.setLong(1, pf.getFile_id());
             pstmt.setBytes(2, pf.getFile());
             pstmt.setBoolean(3, pf.isIs_deleted());
-            pstmt.setLong(4, postId);
+            pstmt.setString(4, pf.getFile_media_type());
+            pstmt.setLong(5, post_id);
 
             affectedRows = pstmt.executeUpdate();
 

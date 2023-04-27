@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class GetPostFileByPostIdDao extends AbstractDAO {
 
     private static final String STATEMENT =
-            "SELECT * FROM post_files WHERE post_files.file_id = ? AND is_deleted = false";
+            "SELECT * FROM post_files pf WHERE pf.post_id = ? AND is_deleted = false";
 
     /**
      * Creates a new DAO object.
@@ -40,7 +40,8 @@ public class GetPostFileByPostIdDao extends AbstractDAO {
                         rs.getLong("file_id"),
                         rs.getLong("post_id"),
                         rs.getBytes("file"),
-                        rs.getBoolean("is_deleted")
+                        rs.getBoolean("is_deleted"),
+                        rs.getString("file_media_type")
                 );
             }
         } finally {

@@ -1,18 +1,19 @@
 package resource;
 
-import java.util.Arrays;
-
 public class PostFiles {
     private long file_id;
     private long post_id;
     private byte[] file;
     private boolean is_deleted;
 
-    public PostFiles(long file_id, long post_id, byte[] file, boolean is_deleted) {
+    private String file_media_type;
+
+    public PostFiles(long file_id, long post_id, byte[] file, boolean is_deleted, String file_media_type) {
         this.file_id = file_id;
         this.post_id = post_id;
         this.file = file;
         this.is_deleted = is_deleted;
+        this.file_media_type = file_media_type;
     }
 
     public PostFiles() {}
@@ -41,23 +42,17 @@ public class PostFiles {
 
     public void setIs_deleted(boolean is_deleted) { this.is_deleted = is_deleted; }
 
-    @Override
-    public String toString() {
-        if(file != null) {
-            return "PostFiles{" +
-                    "file_id=" + file_id +
-                    ", post_id=" + post_id +
-                    ", file=" + file.toString() +
-                    ", is_deleted=" + is_deleted +
-                    '}';
-        }
-        else {
-            return "PostFiles{" +
-                    "file_id=" + file_id +
-                    ", post_id=" + post_id +
-                    ", file=" + null +
-                    ", is_deleted=" + is_deleted +
-                    '}';
-        }
+    public String getFile_media_type() {
+        return file_media_type;
     }
+
+    public void setFile_media_type(String file_media_type) {
+        this.file_media_type = file_media_type;
+    }
+
+    public boolean hasFile() {
+        return file != null && file.length > 0 && file_media_type != null && !file_media_type.isBlank();
+    }
+
+    public int getFileSize() { return file != null ? file.length : Integer.MIN_VALUE; }
 }
