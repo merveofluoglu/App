@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DeleteFileFromPostDao extends AbstractDAO {
-    private static final String STATEMENT = "UPDATE post_" + "files SET is_deleted = true WHERE post_id = ?";
+    private static final String STATEMENT = "UPDATE post_files SET is_deleted = true WHERE file_id = ?";
 
     /**
      * Creates a new DAO object.
