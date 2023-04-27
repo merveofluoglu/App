@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import resource.Message;
 import utils.ErrorCode;
@@ -23,11 +24,11 @@ public class MessageServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws IOException{
         try{
             String _op = _request.getRequestURI().split("/", 5)[3].replace("/", "");
-
             if (_op.contentEquals("details")) {
                 getMessage(_request, _response);
-            }
-            else{
+            } else if (_op.contentEquals("usermessages")) {
+                getUserMessages(_request,_response);
+            } else{
                 getAllMessages(_request, _response);
             }
         } catch (Exception e){
@@ -88,6 +89,25 @@ public class MessageServlet extends AbstractServlet {
 
         } catch (SQLException | IOException _e) {
             throw new RuntimeException(_e);
+        }
+    }
+
+    protected void getUserMessages (HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            HttpSession _session = _request.getSession();
+            long _userId = (long) _session.getAttribute("user_id");
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            JSONObject _result = new JSONObject();
+            _result.put("data", new CheckMessageParentIdDao(getConnection()).getAllMessagesByUserId(_userId));
+
+            _response.getWriter().write(_result.toString());
+
+        } catch (SQLException | IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
