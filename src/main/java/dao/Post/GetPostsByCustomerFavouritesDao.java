@@ -1,6 +1,7 @@
 package dao.Post;
 
 import dao.AbstractDAO;
+import resource.Favourites;
 import resource.Post;
 import utils.ResourceNotFoundException;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT post_id FROM favourites WHERE user_id = ?";
+    private static final String STATEMENT = "SELECT * FROM favourites WHERE user_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -24,14 +25,13 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
         super(con);
     }
 
-    public List<Post> getPostsByCustomerFavourites(long _id) throws SQLException, ResourceNotFoundException {
+    public List<Favourites> getPostsByCustomerFavourites(long _id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
-        List<Post> _posts = new ArrayList<>();
-        Long _postId = null;
+        List<Favourites> _favourites = new ArrayList<>();
 
-        GetPostByIdDao getPosts = null;
+        //GetPostByIdDao getPosts = null;
 
         try {
 
@@ -43,10 +43,14 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
                 throw new ResourceNotFoundException("No Favourites Yet!");
             }
 
-            if (_rs.next()) {
-                _postId = _rs.getLong("post_id");
-
-                _posts.add(getPosts.getPostById(_postId));
+            while (_rs.next()) {
+                _favourites.add(
+                        new Favourites(
+                                _rs.getLong("favourite_id"),
+                                _rs.getLong("post_id"),
+                                _rs.getLong("user_id")
+                        )
+                );
             }
 
         } finally {
@@ -59,7 +63,7 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
             con.close();
         }
 
-        return _posts;
+        return _favourites;
     }
 
     @Override

@@ -283,6 +283,21 @@
             );
         }
 
+        const addFavourite = (id) => {
+            $.ajax({
+                    url: '${pageContext.request.contextPath}/favourite/add/' + id,
+                    method: "POST",
+                    success: function (response) {
+                        toastr.success("Added to favourites!");
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                }
+            );
+        }
+
+
         const updatePost = () => {
 
             const _data = {
@@ -312,6 +327,7 @@
                 }
             );
         }
+
 
         checkValidity = (data) => {
 
@@ -501,6 +517,20 @@
                                             $('#buyPost').modal('hide');
                                             buyPost(_selectedId);
                                         });
+                                    }
+                                }
+                            },
+                            {
+                                text: "Add to Favourites",
+                                atr: {
+                                    id: 'addFav'
+                                },
+                                action: function () {
+
+                                    if (_selectedId == 0)
+                                        alert("Please select a row!");
+                                    else {
+                                        addFavourite(_selectedId);
                                     }
                                 }
                             }

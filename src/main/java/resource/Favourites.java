@@ -12,6 +12,10 @@ public class Favourites {
         this.post_id = post_id;
     }
 
+    public Favourites() {
+
+    }
+
     public long getFavourite_id() {
         return favourite_id;
     }
