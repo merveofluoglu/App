@@ -6,27 +6,27 @@ import org.json.JSONObject;
  * It's a simple class that holds a message and a boolean that indicates whether the message is an error or not
  */
 public class Message {
-    final boolean error;
-    final String message;
+    final boolean _isError;
+    final String _message;
 
 
-    public Message(boolean error, String message) {
-        this.error = error;
-        this.message = message;
+    public Message(boolean _isError, String _message) {
+        this._isError = _isError;
+        this._message = _message;
     }
 
     public String getMessage() {
-        return message;
+        return _message;
     }
 
     public boolean isError() {
-        return error;
+        return _isError;
     }
 
     public JSONObject toJSON(){
         JSONObject result = new JSONObject();
-        result.put("error", this.error);
-        result.put("message", this.message);
+        result.put("error", this._isError);
+        result.put("message", this._message);
         return result;
     }
 }
