@@ -5,6 +5,7 @@ import dao.Favourites.GetFavouritesByPostIdDao;
 import dao.Favourites.RemoveFavouriteDao;
 import dao.Post.*;
 import dao.PostFiles.DeleteFileFromPostDao;
+import dao.PostFiles.DeletePostFilesByPostIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -149,7 +150,7 @@ public class PostServlet extends AbstractServlet {
 
             _result.put("affectedRow", new DeletePostByIdDao(getConnection()).deletePost(_postId));
 
-            int _deletedFiles = new DeleteFileFromPostDao(getConnection()).deleteFileFromPost(_postId);
+            int _deletedFiles = new DeletePostFilesByPostIdDao(getConnection()).deletePostFilesByPostIdDao(_postId);
 
             List<Favourites> _favs = new ArrayList<>();
             _favs = new GetFavouritesByPostIdDao(getConnection()).getFavouritesByPostIdDao(_postId);
