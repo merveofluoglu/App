@@ -18,6 +18,8 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
+  <!-- Custom Css -->
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
@@ -58,19 +60,33 @@
     </div>
   </div>
 </div>
-
-<form method="POST" action="${pageContext.request.contextPath}/user/login">
-  <h3>Login Here</h3>
-  <label for="email">email:</label>
-  <input id="email" name="email" type="text"/><br/><br/>
-  <label for="password">password:</label>
-  <input id="password" name="password" type="password"/><br/><br/>
-  <button class="button" type="submit">Log In</button><br/>
-
-</form>
-<div style="margin-top: 15px; margin-left: 3px;  font-size: 9px;"> Do not have an account?
-  <button id="registerUser" >Register</button>
+<div class="navbar-top">
+  <!-- Navbar -->
+  <ul>
+  </ul>
+  <!-- End -->
 </div>
+<!-- Main -->
+<div class="main">
+  <h2>Welcome to Login Page</h2>
+  <div class="card">
+    <div class="card-body">
+      <form method="POST" action="${pageContext.request.contextPath}/user/login">
+        <label for="email">email:</label>
+        <input id="email" name="email" type="text"/><br/><br/>
+        <label for="password">password:</label>
+        <input id="password" name="password" type="password"/><br/><br/>
+        <button class="button" type="submit">Log In</button><br/>
+      </form>
+      <div style="margin-top: 15px; margin-left: 3px;  font-size: 9px;"> Do not have an account?
+        <button id="registerUser" >Register</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
 <c:choose>
   <c:when test="${message.error}">
