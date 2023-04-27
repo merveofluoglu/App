@@ -10,6 +10,7 @@
     <a href="${pageContext.request.contextPath}/jsp/post.jsp" >View / Edit / Delete / Add Posts</a>
     <br/><a href="${pageContext.request.contextPath}/jsp/upload-file.jsp" >Upload File</a>
     <br/><a href="${pageContext.request.contextPath}/jsp/list-file.jsp" >List Files</a>
+    <br/><a href="${pageContext.request.contextPath}/jsp/get_favourites.jsp" >Favourites</a>
     <%
         String role = (String) session.getAttribute("role");
         if (Objects.equals(role, "admin")) { %>
