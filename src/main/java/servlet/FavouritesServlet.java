@@ -21,8 +21,6 @@ public class FavouritesServlet extends AbstractServlet{
 
     @Override
     protected void doGet(HttpServletRequest _req, HttpServletResponse _resp) throws ServletException, IOException {
-        // Will be updated!
-
         try {
             getCustomerFavourites(_req, _resp);
         } catch (SQLException _e) {

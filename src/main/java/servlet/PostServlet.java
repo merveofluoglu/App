@@ -26,6 +26,11 @@ public class PostServlet extends AbstractServlet {
 
         if (_op.contentEquals("details")) {
             getPostDetailsOp(_request, _response);
+        } else if (_op.contentEquals("myorders")) {
+            myOrders(_request,_response);
+        }
+        else if (_op.contentEquals("myposts")){
+            myPosts(_request,_response);
         }
         else {
             getAllPosts(_request, _response);
@@ -142,7 +147,7 @@ public class PostServlet extends AbstractServlet {
             _response.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            _result.put("affectedRow", new BuyPostByPostIdDao(getConnection()).buyPost(_postId, _customerId));
+            _result.put("affectedRow", new BuyPostByPostIdDao(getConnection()).buyPost(_postId,_customerId));
 
             _response.getWriter().write(_result.toString());
 
@@ -152,6 +157,55 @@ public class PostServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        }
+    }
+    private void myOrders(HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            HttpSession _session = _request.getSession();
+
+            long _customerId = (long) _session.getAttribute("user_id");
+
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("data", new GetPostsByCustomerIdDao(getConnection()).getPostsByCustomerId(_customerId));
+
+            _response.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void myPosts(HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            HttpSession _session = _request.getSession();
+
+            long _customerId = (long) _session.getAttribute("user_id");
+
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("data", new GetPostsByUserIdDao(getConnection()).getPostsByUserId(_customerId));
+
+            _response.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

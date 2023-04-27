@@ -57,20 +57,27 @@
     </div>
       <div class="sidenav-url">
         <div class="url">
-          <a href="javascript:myFavorites()" class="active">Favorites</a>
+          <a href="${pageContext.request.contextPath}/jsp/get_favourites.jsp" class="active">Favorites</a>
           <hr align="center">
         </div>
       </div>
   <div class="sidenav-url">
     <div class="url">
-      <a href="javascript:myPosts()" class="active">My Posts</a>
+      <a href="${pageContext.request.contextPath}/jsp/myposts.jsp" class="active">My Posts</a>
       <hr align="center">
     </div>
   </div>
 
   <div class="sidenav-url">
     <div class="url">
-      <a href="javascript:myOrders()" class="active">My Orders</a>
+      <a href="${pageContext.request.contextPath}/jsp/myorders.jsp" class="active">My Orders</a>
+      <hr align="center">
+    </div>
+  </div>
+
+  <div class="sidenav-url">
+    <div class="url">
+      <a href="${pageContext.request.contextPath}/jsp/usermessages.jsp" class="active">My Messages</a>
       <hr align="center">
     </div>
   </div>
@@ -112,6 +119,7 @@
       </table>
     </div>
   </div>
+</div>
 
 
 <!-- End -->
@@ -155,6 +163,22 @@
     );
   }
 
+  const myMessages = () => {
+    $.ajax({
+              url: "${pageContext.request.contextPath}/message/getUserMessages",
+              method: "GET",
+              data: _data,
+              success: function (response) {
+                $('#addUser').modal('hide');
+                toastr.success(response);
+              },
+              error: function () {
+                alert("error");
+              }
+            }
+    );
+  }
+
   const myPosts = () => {
     const _data = {
       name: $("#addUser [name='Name']").val(),
@@ -178,18 +202,11 @@
   }
 
   const myFavorites = () => {
-    const _data = {
-      name: $("#addUser [name='Name']").val(),
-      surname: $("#addUser [name='Surname']").val(),
-      email: $("#addUser [name='Email']").val(),
-      password: $("#addUser [name='Password']").val(),
-    };
     $.ajax({
-              url: "${pageContext.request.contextPath}/user/register",
-              method: "POST",
+              url: "${pageContext.request.contextPath}/favourite/myfavourites",
+              method: "GET",
               data: _data,
               success: function (response) {
-                $('#addUser').modal('hide');
                 toastr.success(response);
               },
               error: function () {

@@ -1,10 +1,16 @@
 package servlet;
 
 import dao.ActionLog.AddActionLogDao;
+import dao.Message.DeleteMessageByIdDao;
+import dao.Message.GetMessageByIdDao;
+import dao.Message.GetMessagesByCreatorIdDao;
+import dao.Message.GetMessagesByRecipientIdDao;
 import dao.Permission.GetAllPermissionsDao;
 import dao.Permission.GetPermissionByIdDao;
 import dao.Post.DeletePostByIdDao;
 import dao.Post.UpdatePostByIdDao;
+import dao.Review.DeleteReviewDao;
+import dao.Review.GetReviewsByUserIdDao;
 import dao.User.CreateUserDAO;
 import dao.User.DeleteUserByUseridDAO;
 import dao.User.GetAllUsersDAO;
@@ -24,10 +30,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
-import resource.ActionLog;
-import resource.Permission;
-import resource.Post;
-import resource.User;
+import resource.*;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 import utils.RestrictedActionException;
@@ -39,6 +42,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static java.lang.Long.parseLong;
@@ -113,7 +117,22 @@ public class UserServlet extends AbstractServlet{
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
+            List<Reviews> _reviews = new ArrayList<>();
+            _reviews = new GetReviewsByUserIdDao(getConnection()).getReviewsByUserId(_userId);
+            for(int i=0; i<_reviews.size();i++){
+                _result.put("affectedRow", new DeleteReviewDao(getConnection()).deleteReview(_reviews.get(i).getReview_id()));
+            }
+            List<Message> _cretorMessages = new ArrayList<>();
+            _cretorMessages = new GetMessagesByCreatorIdDao(getConnection()).getMessagesByCreatorId(_userId);
+            for(int i=0; i<_reviews.size();i++){
+                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_cretorMessages.get(i).getMessage_id()));
+            }
 
+            List<Message> _recipientMessages = new ArrayList<>();
+            _recipientMessages = new GetMessagesByRecipientIdDao(getConnection()).getMessagesByRecipientId(_userId);
+            for(int i=0; i<_reviews.size();i++){
+                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_recipientMessages.get(i).getMessage_id()));
+            }
             _result.put("affectedRow", new DeleteUserByUseridDAO(getConnection()).DeleteUserByUseridDAO(_userId));
 
 
@@ -122,6 +141,8 @@ public class UserServlet extends AbstractServlet{
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
