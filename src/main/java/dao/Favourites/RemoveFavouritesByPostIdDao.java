@@ -6,20 +6,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class RemoveFavouriteDao extends AbstractDAO {
+public class RemoveFavouritesByPostIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "DELETE FROM favourites WHERE favourite_id = ?";
+    private static final String STATEMENT = "DELETE FROM favourites WHERE post_id = ?";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public RemoveFavouriteDao(Connection con) {
+    public RemoveFavouritesByPostIdDao(Connection con) {
         super(con);
     }
 
-    public int removeFavourite(long post_id) throws SQLException {
+    public int removeFavouritesByPostIdDao(long post_id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
