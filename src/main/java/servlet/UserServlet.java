@@ -72,6 +72,9 @@ public class UserServlet extends AbstractServlet{
         else if (operation.contentEquals("getAll")) {
             getAllUsersOp(_request, _response);
         }
+        else if (operation.contentEquals("getProfile")) {
+            getProfileData(_request, _response);
+        }
         else{
             logoutOperations(_request, _response);
         }
@@ -162,6 +165,7 @@ public class UserServlet extends AbstractServlet{
             if (logAccess) {
                 HttpSession session = _request.getSession();
                 session.setAttribute("user_id", _user.getUserID());
+                session.setAttribute("user",_user);
                 boolean roleCheck = _user.getRole_id() == 0;
                 if (roleCheck){
                     session.setAttribute("role", "admin");
@@ -169,6 +173,7 @@ public class UserServlet extends AbstractServlet{
 
                 else{
                     session.setAttribute("role", "user");
+
                 }
                 _response.sendRedirect(_request.getContextPath() + "/jsp/main.jsp");
             } else {
@@ -266,12 +271,13 @@ public class UserServlet extends AbstractServlet{
             writeError(_response, ErrorCode.INTERNAL_ERROR);
         }
     }
-    private void logoutOperations(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void logoutOperations(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         try {
             boolean user = req.getSession().getAttribute("role") == "user";
-            ActionLog actionlog = null;
-            actionlog.setUser_id((Long) req.getSession().getAttribute("user_id"));
+            //ActionLog actionlog = null;
+            //actionlog.setUser_id((Long) req.getSession().getAttribute("user_id"));
+            /*
             if (user){
                 actionlog.setDescription("User logged out!");
                 actionlog.setIs_user_act(true);
@@ -281,14 +287,14 @@ public class UserServlet extends AbstractServlet{
                 actionlog.setDescription("Admin logged out!");
                 actionlog.setIs_user_act(false);
                 actionlog.setIs_system_act(true);
-            }
+            }*/
             //AddActionLogDao.addActionLog(getConnection(), actionlog);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         req.getSession().invalidate();
-        resp.sendRedirect(req.getContextPath());
+        //resp.sendRedirect(req.getContextPath());
+        req.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req,resp);
     }
 
 
@@ -405,6 +411,29 @@ public class UserServlet extends AbstractServlet{
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        }
+    }
+
+    private void getProfileData (HttpServletRequest _request, HttpServletResponse _response) {
+        HttpSession _session = _request.getSession();
+        // This method returns a permission.
+        try {
+            long _user_id = (long) _session.getAttribute("user_id");
+            JSONObject _result = new JSONObject();
+            _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_user_id));
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            _response.getWriter().write(_result.toString());
+            _session.setAttribute("data",_result.getJSONObject("data"));
+            _request.getRequestDispatcher("jsp/profile.jsp").forward(_request, _response);
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
         }
     }
 
