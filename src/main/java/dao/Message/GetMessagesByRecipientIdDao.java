@@ -41,7 +41,7 @@ public class GetMessagesByRecipientIdDao extends AbstractDAO {
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no messages!");
+                return _messages;
             }
 
             while (_rs.next()) {

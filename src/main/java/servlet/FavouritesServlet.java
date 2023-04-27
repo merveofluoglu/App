@@ -2,6 +2,7 @@ package servlet;
 
 import dao.Favourites.AddFavouriteDao;
 import dao.Favourites.RemoveFavouriteDao;
+import dao.Favourites.RemoveFavouritesByPostIdDao;
 import dao.Post.GetPostsByCustomerFavouritesDao;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -122,7 +123,7 @@ public class FavouritesServlet extends AbstractServlet{
             _resp.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            _result.put("affectedRow", new RemoveFavouriteDao(getConnection()).removeFavourite(_postId));
+            _result.put("affectedRow", new RemoveFavouritesByPostIdDao(getConnection()).removeFavouritesByPostIdDao(_postId));
 
             _resp.getWriter().write(_result.toString());
 

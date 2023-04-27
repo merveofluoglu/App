@@ -8,6 +8,7 @@ import dao.Message.GetMessagesByRecipientIdDao;
 import dao.Permission.GetAllPermissionsDao;
 import dao.Permission.GetPermissionByIdDao;
 import dao.Post.DeletePostByIdDao;
+import dao.Post.DeletePostByUserIdDao;
 import dao.Post.UpdatePostByIdDao;
 import dao.Review.DeleteReviewDao;
 import dao.Review.GetReviewsByUserIdDao;
@@ -114,29 +115,42 @@ public class UserServlet extends AbstractServlet{
     private void deleteUser(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
             long _userId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
+
             JSONObject _result = new JSONObject();
+
             List<Reviews> _reviews = new ArrayList<>();
+
             _reviews = new GetReviewsByUserIdDao(getConnection()).getReviewsByUserId(_userId);
+
             for(int i=0; i<_reviews.size();i++){
                 _result.put("affectedRow", new DeleteReviewDao(getConnection()).deleteReview(_reviews.get(i).getReview_id()));
             }
+
             List<Message> _cretorMessages = new ArrayList<>();
+
             _cretorMessages = new GetMessagesByCreatorIdDao(getConnection()).getMessagesByCreatorId(_userId);
-            for(int i=0; i<_reviews.size();i++){
+
+            for(int i=0; i<_cretorMessages.size();i++){
                 _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_cretorMessages.get(i).getMessage_id()));
             }
 
+            int _deletedPosts = new DeletePostByUserIdDao(getConnection()).deletePosts(_userId);
+
             List<Message> _recipientMessages = new ArrayList<>();
+
             _recipientMessages = new GetMessagesByRecipientIdDao(getConnection()).getMessagesByRecipientId(_userId);
-            for(int i=0; i<_reviews.size();i++){
+
+            for(int i=0; i<_recipientMessages.size();i++){
                 _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_recipientMessages.get(i).getMessage_id()));
             }
+
             _result.put("affectedRow", new DeleteUserByUseridDAO(getConnection()).DeleteUserByUseridDAO(_userId));
 
-
             _response.getWriter().write(_result.toString());
+
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {

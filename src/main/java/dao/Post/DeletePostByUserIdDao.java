@@ -1,4 +1,4 @@
-package dao.Favourites;
+package dao.Post;
 
 import dao.AbstractDAO;
 
@@ -6,35 +6,39 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class RemoveFavouriteDao extends AbstractDAO {
+public class DeletePostByUserIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "DELETE FROM favourites WHERE favourite_id = ?";
+    private static final String STATEMENT = "UPDATE post SET is_deleted = true WHERE user_id = ?";
+
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public RemoveFavouriteDao(Connection con) {
+    public DeletePostByUserIdDao(Connection con) {
         super(con);
     }
 
-    public int removeFavourite(long post_id) throws SQLException {
+    @Override
+    protected void doAccess() throws Exception {
+
+    }
+
+    public int deletePosts(long _id) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-
-            _pstmt.setLong(1, post_id);
+            _pstmt.setObject(1, _id);
 
             _affectedRows = _pstmt.executeUpdate();
 
-            if (_affectedRows != 1) {
-                throw new SQLException("Remove Failed!");
+            if(_affectedRows != 1) {
+                return _affectedRows;
             }
-
         } finally {
             if (_pstmt != null) {
                 _pstmt.close();
@@ -43,10 +47,5 @@ public class RemoveFavouriteDao extends AbstractDAO {
         }
 
         return _affectedRows;
-    }
-
-    @Override
-    protected void doAccess() throws Exception {
-
     }
 }
