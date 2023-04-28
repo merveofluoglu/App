@@ -37,7 +37,7 @@ public class GetFavouritesByPostIdDao extends AbstractDAO {
             _rs= _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no favourites!");
+                return _favs;
             }
 
             while (_rs.next()) {

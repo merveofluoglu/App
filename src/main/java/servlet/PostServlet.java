@@ -148,8 +148,6 @@ public class PostServlet extends AbstractServlet {
             _response.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            _result.put("affectedRow", new DeletePostByIdDao(getConnection()).deletePost(_postId));
-
             int _deletedFiles = new DeletePostFilesByPostIdDao(getConnection()).deletePostFilesByPostIdDao(_postId);
 
             List<Favourites> _favs = new ArrayList<>();
@@ -157,6 +155,8 @@ public class PostServlet extends AbstractServlet {
             for(int i=0; i<_favs.size();i++){
                 int _deletedFavs = new RemoveFavouriteDao(getConnection()).removeFavourite(_favs.get(i).getFavourite_id());
             }
+
+            _result.put("affectedRow", new DeletePostByIdDao(getConnection()).deletePost(_postId));
 
             _response.getWriter().write(_result.toString());
 

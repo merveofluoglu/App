@@ -30,7 +30,7 @@ public class DeletePostFilesByPostIdDao extends AbstractDAO {
 
             _affectedRows = _pstmt.executeUpdate();
 
-            if(_affectedRows != 1) { throw new SQLException("Delete Failed"); }
+            if(_affectedRows != 1) { return _affectedRows; }
         } finally {
             if (_pstmt != null) { _pstmt.close(); }
             con.close();
