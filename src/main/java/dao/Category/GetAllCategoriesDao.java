@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetAllCategoriesDao  extends AbstractDAO {
-    private static final String STATEMENT = "SELECT * FROM Category";
+    private static final String STATEMENT = "SELECT * FROM category";
     public GetAllCategoriesDao(Connection con) {
         super(con);
     }
@@ -30,8 +30,8 @@ public class GetAllCategoriesDao  extends AbstractDAO {
             while (_rs.next()) {
                 _Categories.add(
                         new Category(
-                                _rs.getLong("Category_id"),
-                                _rs.getString("Category_name")
+                                _rs.getLong("category_id"),
+                                _rs.getString("category_name")
                         )
                 );
             }

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 
 public class GetCategoryByIdDao extends AbstractDAO {
-    private static final String STATEMENT = "SELECT * FROM Category WHERE Category.Category_id = ?";
+    private static final String STATEMENT = "SELECT * FROM category WHERE category.category_id = ?";
 
     public GetCategoryByIdDao(Connection con) {
         super(con);
@@ -32,8 +32,8 @@ public class GetCategoryByIdDao extends AbstractDAO {
             }
             if(_rs.next()) {
                 _Category = new Category(
-                        _rs.getLong("Category_id"),
-                        _rs.getString("Category_name")
+                        _rs.getLong("category_id"),
+                        _rs.getString("category_name")
                 );
             }
         } finally {
