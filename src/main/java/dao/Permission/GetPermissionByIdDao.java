@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class GetPermissionByIdDao extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM permission WHERE permission.permission_id = ? AND is_deleted = false";
+    private static final String STATEMENT = "SELECT * FROM permission WHERE permission_id = ?";
 
     /**
      * Creates a new DAO object.

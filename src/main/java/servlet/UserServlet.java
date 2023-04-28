@@ -252,8 +252,8 @@ public class UserServlet extends AbstractServlet{
                 _response.setStatus(errorCode.getHTTPCode());
                 writeError(_response, errorCode);
             } else {
-                int size = new GetUserbyEmailDAO(getConnection()).GetUserbyEmailDAO(email).size();
-                if (size == 0){
+                var _user = new GetUserbyEmailDAO(getConnection()).GetUserbyEmailDAO(email);
+                if (_user.size() == 0){
                     newUser.setName(_request.getParameter("name"));
                     newUser.setSurname(_request.getParameter("surname"));
                     newUser.setEmail(_request.getParameter("email"));
@@ -268,7 +268,7 @@ public class UserServlet extends AbstractServlet{
                     _response.getWriter().write(_result.toString());
                 }
                 else{
-                    checkuser = new GetUserbyEmailDAO(getConnection()).GetUserbyEmailDAO(email).get(size-1);
+                    checkuser = _user.get(_user.size()-1);
                     if (checkuser.getIsDeleted() == true){
                         if (checkuser.getPassword() != password){
                             newUser.setName(_request.getParameter("name"));

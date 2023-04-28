@@ -71,7 +71,13 @@ public class CategoryServlet extends AbstractServlet {
 
         long _CategoryId = Long.parseLong(_request.getParameter("category_id"));
 
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
             _Category.setCategory_name(_request.getParameter("category_name"));
 
             JSONObject _result = new JSONObject();
@@ -86,12 +92,19 @@ public class CategoryServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        } catch (Exception _e) {
+            throw new RuntimeException(_e.getMessage());
         }
 
     }
 
     private void removeCategory (HttpServletRequest _request, HttpServletResponse _response){
+        HttpSession _session = _request.getSession();
+
         try {
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
             long _CategoryId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
 
             _response.setContentType("application/json");
@@ -108,6 +121,8 @@ public class CategoryServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        } catch (Exception _e) {
+            throw new RuntimeException(_e.getMessage());
         }
     }
 
@@ -115,19 +130,30 @@ public class CategoryServlet extends AbstractServlet {
 
         Category _Category = new Category();
 
+        JSONObject _result = new JSONObject();
+
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
+
             _Category.setCategory_name(_request.getParameter("category_name"));
 
-            JSONObject _result = new JSONObject();
+            var _checkCategory = new GetCategoryByNameDao(getConnection()).getCategoriesByName(_Category.getCategory_name());
+
+            if(!_checkCategory.isEmpty()) {
+                throw new Exception("There is already a category with that name! Please choose another name!");
+            }
 
             _result.put("data", new CreateCategoryDao(getConnection()).CreateCategory(_Category));
 
             _response.getWriter().write(_result.toString());
 
-            //After jsp files prepared, request dispatcher will be implemented!!
-
         } catch (Exception _e) {
-            throw new RuntimeException(_e);
+            throw new RuntimeException(_e.getMessage());
         }
 
     }

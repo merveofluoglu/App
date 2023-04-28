@@ -9,10 +9,7 @@ import java.sql.SQLException;
 
 public class CreatePermissionDao extends AbstractDAO{
 
-    private static final String STATEMENT = "INSERT INTO permission (" +
-            "name"+
-            "is_deleted"+
-            "VALUES (?,?)";
+    private static final String STATEMENT = "INSERT INTO permission (permission_id, name) VALUES (nextval('permission_seq'), ?)";
 
 
     /**
@@ -42,7 +39,6 @@ public class CreatePermissionDao extends AbstractDAO{
             _pstmt = con.prepareStatement(STATEMENT);
 
             _pstmt.setString(1, _permission.getName());
-            _pstmt.setBoolean(2, false);
             _rs = _pstmt.executeUpdate();
 
             if (_rs != 1) {

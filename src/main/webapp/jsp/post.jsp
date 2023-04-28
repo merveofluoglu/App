@@ -179,7 +179,6 @@
         $(document).ready(function () {
             getCategories();
             getSubCategories();
-            FillDatatable();
         });
 
         var table;
@@ -204,6 +203,7 @@
                 url: "${pageContext.request.contextPath}/subcategory/getAll",
                 success: function (response) {
                     subcategories = JSON.parse(response).data;
+                    FillDatatable();
                 }
             })
         }
@@ -255,7 +255,7 @@
                         FillDatatable();
                         toastr.success("Post deleted succesfully!");
                     },
-                    error: function () {
+                    error: function (response) {
                         toastr.error("You cannot delete someone else's post!");
                         return;
                     }

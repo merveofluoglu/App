@@ -7,6 +7,11 @@
 
     <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -34,10 +39,6 @@
                 <button type="button" class="btn-close" target="#addPermission" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>PermissionId:</label>
-                    <input type="text" name="PermissionId" id="PermissionId" class="form-control" />
-                </div>
                 <div class="form-group">
                      <label>PermissionName: </label>
                      <input type="text" name="PermissionName" id="PermissionName" class="form-control" />
@@ -110,7 +111,6 @@
 
         const addPermission = () => {
             const _data = {
-                permission_id: $("#addPermission [name='PermissionId']").val(),
                 name: $("#addPermission [name='PermissionName']").val()
 
 

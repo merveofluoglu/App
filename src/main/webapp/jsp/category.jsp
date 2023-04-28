@@ -123,8 +123,8 @@
                     FillDatatable();
                     toastr.success("Category Creation Successfully!");
                 },
-                error: function () {
-                    alert("error");
+                error: function (response) {
+                    toastr.error(response.statusText);
                 }
             }
         );

@@ -13,6 +13,11 @@
 
   <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -98,11 +103,6 @@
         <div class="form-group">
           <label>Password:</label>
           <input type="password" name="Password" id="Password" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="formFile" class="form-label">You can provide a profile photo here:</label>
-          <input class="form-control" type="file" name="ProfilePath" id="ProfilePath" >
-        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-toolbar" target="#editUser" data-bs-dismiss="modal">Close</button>
