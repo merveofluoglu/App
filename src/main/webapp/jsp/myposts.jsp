@@ -40,7 +40,6 @@
     $(document).ready(function () {
         getCategories();
         getSubCategories();
-        FillDatatable();
     });
     let categories;
     let subcategories;
@@ -61,6 +60,7 @@
             url: "${pageContext.request.contextPath}/subcategory/getAll",
             success: function (response) {
                 subcategories = JSON.parse(response).data;
+                FillDatatable();
             }
         })
     }

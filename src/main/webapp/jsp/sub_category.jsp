@@ -14,6 +14,11 @@
 
   <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 </head>
 <body>
 
@@ -77,7 +82,7 @@
           <label>Id:</label>
           <input type="number" name="SubCategoryId" id="SubCategoryId" class="form-control" readonly="readonly" />
         </div>
-        <div class="form-group">
+        <div class="form-group" style="display: none">
           <label>Id:</label>
           <input type="number" name="CategoryId" id="CategoryId" class="form-control"  />
         </div>

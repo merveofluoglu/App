@@ -73,7 +73,13 @@ public class RoleServlet extends AbstractServlet {
 
         long _roleId = Long.parseLong(_request.getParameter("role_id"));
 
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
             _role.setName(_request.getParameter("name"));
 
             JSONObject _result = new JSONObject();
@@ -88,12 +94,21 @@ public class RoleServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
 
     }
 
     private void deleteRole(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
+
             Long _role_id = Long.parseLong(_request.getParameter("role_id"));
             JSONObject _result = new JSONObject();
 
@@ -107,6 +122,8 @@ public class RoleServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         } catch (ResourceNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -114,7 +131,14 @@ public class RoleServlet extends AbstractServlet {
 
         Role _role = null;
 
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
+
             _role.setName(_request.getParameter("name"));
 
 
@@ -127,7 +151,7 @@ public class RoleServlet extends AbstractServlet {
             //After jsp files prepared, request dispatcher will be implemented!!
 
         } catch (Exception _e) {
-            throw new RuntimeException(_e);
+            throw new RuntimeException(_e.getMessage());
         }
 
     }

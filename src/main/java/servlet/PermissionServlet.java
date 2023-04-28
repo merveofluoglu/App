@@ -114,9 +114,19 @@ public class PermissionServlet extends AbstractServlet{
     private void addPermission(HttpServletRequest _request, HttpServletResponse _response) {
 
         Permission _permission = new Permission();
+
         RolePermission _role_permission = new RolePermission();
+
         Permission _came_Permission = new Permission();
+
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
+
             String name = _request.getParameter("name");
             boolean role_id = Boolean.parseBoolean(_request.getParameter("role"));
             _permission.setName(name);
@@ -134,7 +144,7 @@ public class PermissionServlet extends AbstractServlet{
             //After jsp files prepared, request dispatcher will be implemented!!
 
         } catch (Exception _e) {
-            throw new RuntimeException(_e);
+            throw new RuntimeException(_e.getMessage());
         }
 
     }

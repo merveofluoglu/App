@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetAllPostsDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM post WHERE is_deleted = false";
+    private static final String STATEMENT = "SELECT * FROM post WHERE is_deleted = false AND is_sold = false";
 
     /**
      * Creates a new DAO object.

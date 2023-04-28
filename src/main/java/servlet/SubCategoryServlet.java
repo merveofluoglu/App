@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.annotation.*;
+import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import resource.Category;
 import resource.SubCategory;
@@ -81,7 +82,14 @@ public class SubCategoryServlet extends AbstractServlet {
 
         long _SubCategoryId = parseLong(_request.getParameter("subcategory_id"));
 
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
+
             _SubCategory.setSubcategory_name(_request.getParameter("subcategory_name"));
 
             JSONObject _result = new JSONObject();
@@ -96,12 +104,22 @@ public class SubCategoryServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        } catch (Exception _e) {
+            throw new RuntimeException(_e.getMessage());
         }
 
     }
 
     private void removeSubCategory (HttpServletRequest _request, HttpServletResponse _response){
+
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
+
             long _SubCategoryId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
 
             _response.setContentType("application/json");
@@ -118,6 +136,8 @@ public class SubCategoryServlet extends AbstractServlet {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
             throw new RuntimeException(_e);
+        } catch (Exception _e) {
+            throw new RuntimeException(_e.getMessage());
         }
     }
 
@@ -125,19 +145,32 @@ public class SubCategoryServlet extends AbstractServlet {
 
         SubCategory _SubCategory = new SubCategory();
 
+        HttpSession _session = _request.getSession();
+
         try {
+
+            if(_session.getAttribute("role") != "admin") {
+                throw new Exception("You don't have access to this area!");
+            }
+
             _SubCategory.setSubcategory_name(_request.getParameter("subcategory_name"));
+
+            var _checkSubCategory = new GetSubCategoryByNameDao(getConnection()).getSubCategoriesByName(_SubCategory.getSubcategory_name());
+
+            if(!_checkSubCategory.isEmpty()) {
+                throw new Exception("There is already a subcategory with that name! Please choose another name!");
+            }
+
             _SubCategory.setCategory_id(parseLong(_request.getParameter("category_id")));
+
             JSONObject _result = new JSONObject();
 
             _result.put("data", new CreateSubCategoryDao(getConnection()).CreateSubCategory(_SubCategory));
 
             _response.getWriter().write(_result.toString());
 
-            //After jsp files prepared, request dispatcher will be implemented!!
-
         } catch (Exception _e) {
-            throw new RuntimeException(_e);
+            throw new RuntimeException(_e.getMessage());
         }
 
     }

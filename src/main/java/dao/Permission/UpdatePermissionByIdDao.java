@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class UpdatePermissionByIdDao extends AbstractDAO {
 
     private static final String STATEMENT = "UPDATE permission SET name = ?" +
-            "WHERE permission_id =?";
+            " WHERE permission_id =?";
     /**
      * Creates a new DAO object.
      *
