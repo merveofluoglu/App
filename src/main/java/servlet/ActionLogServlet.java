@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import resource.ActionLog;
+import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
@@ -20,12 +21,43 @@ public class ActionLogServlet extends AbstractServlet{
 
     @Override
     protected void doGet(HttpServletRequest _req, HttpServletResponse _resp) throws ServletException, IOException {
-        // Will be updated!
+        String operation = _req.getRequestURI().split("/", 4)[3].replace("/", "");
+        if (operation.contentEquals("getLogs")) {
+            try {
+                getActionLog(_req, _resp);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else if (operation.contentEquals("getSystemLog")) {
+            getSystemLog(_req, _resp);
+        }
+        else if (operation.contentEquals("getUserLof")) {
+            getUserActionLog(_req, _resp);
+        }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest _req, HttpServletResponse _resp) throws ServletException, IOException {
-        // Will be updated!
+        String op = _req.getRequestURI().split("/", 5)[3];
+        switch (op) {
+            // the requested operation is login
+            case "add" :
+                try {
+                    addActionLog(_req,_resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ResourceNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+
+            // the requested operation is unknown
+            default :
+                writeError(_resp, ErrorCode.OPERATION_UNKNOWN);
+                break;
+        }
     }
 
     private void addActionLog(HttpServletRequest _req, HttpServletResponse _resp) throws SQLException, IOException, ResourceNotFoundException {
