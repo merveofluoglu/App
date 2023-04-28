@@ -35,7 +35,7 @@ public class GetAllPostsDao extends AbstractDAO {
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no post!");
+                return _posts;
             }
 
             while (_rs.next()) {

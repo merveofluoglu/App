@@ -32,7 +32,7 @@ public class GetPostFilesByIdDao extends AbstractDAO {
             rs = pstmt.executeQuery();
 
             if(!rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no post files!");
+                return postFiles;
             }
 
             while (rs.next()) {
