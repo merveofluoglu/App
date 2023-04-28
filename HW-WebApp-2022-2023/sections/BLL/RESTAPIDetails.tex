@@ -2,20 +2,55 @@
 
 %List here a few resources retrievable via REST API
 
-\subsubsection*{A resource}
+\subsubsection*{Rest Posts Search}
 
 % the description of the resource
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\begin{itemize}
+    \item URL: \texttt{/rest/posts/search}
+    \item Method: \texttt{GET}
+    \item URL Parameters: Content-Type = application/json
+    \item Data Parameters: ”keyword”: ”keyword”
+    \item Success Response: "posts-list" : [Post.objects]
+    \item Error Response:
+    
+    Code: -101 NO\_SUCH\_RESOURCE\_FOUND
+Content: {‘‘error’’: {‘‘code’’: -101, ‘‘message’’ : Resource Not Found.’’} When: The resource, post in our case, not found in the database.
 
+\item Curl Example: curl -v -X GET -H ”Content-Type:application/json” -d ” keyword:MSI ” {http://localhost:8080
+/damacanan\_war\_exploded/rest/posts/search}
+\end{itemize}
+
+
+\subsubsection*{Login}
+
+% the description of the resource
 
 \begin{itemize}
-    \item URL: \texttt{the URL to retrieve it}
-    \item Method: \texttt{Method to retrieve it}
-    \item URL Parameters:
-    \item Data Parameters: 
-    \item Success Response:
+    \item URL: \texttt{/user/login}
+    \item Method: \texttt{POST}
+    \item URL Parameters: No parameters required
+    \item Data Parameters: Email and Password
+    \item Success Response: Upon success, the servlet logins the user in and redirects to the main.jsp
     \item Error Response:
+    
+    Code: -103 EMAIL MISSING
+Content: {‘‘error’’: {‘‘code’’: -103, ‘‘message’’ : Email missing.’’} When: If the email box is left empty this error is dispatched.
+
+Code: -104 PASSWORD MISSING
+Content: {‘‘error’’: {‘‘code’’: -104, ‘‘message’’ : Password missing.’’} When: If the password box is left empty this error is dispatched.
+
+Code: -105 WRONG CREDENTIALS
+Content: {‘‘error’’: {‘‘code’’: -105, ‘‘message’’ : submitted credentials are wrong.’’} When: If there is a SQLException or the user enters wrong login credentials this error is dispatched.
+
+Code: -109 INVALID EMAIL ADDRESS
+Content: {‘‘error’’: {‘‘code’’: -109, ‘‘message’’ :Invalid email address’’} When: If the wrong email is entered this error is dispatched.
+
+Code: -111 USER NOT FOUND
+Content: {‘‘error’’: {‘‘code’’: -111, ‘‘message’’ :Invalid password.’’} When: If the user does not exist in the database this error is dispatched.
+
+Code: -999 INTERNAL ERROR
+Content: {‘‘error’’: {‘‘code’’: -999, ‘‘message’’ :Internal Error.’’} When: If there is a SQLException this error is dispatched.
     
 \end{itemize}
 
