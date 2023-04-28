@@ -38,6 +38,11 @@ public class Post {
     }
 
     public Post() {}
+
+    public Post(long post_id, String name) {
+        this.post_id = post_id;
+        this.name = name;
+    }
     public long getPost_id() {
         return post_id;
     }
