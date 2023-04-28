@@ -102,6 +102,16 @@
 		<url-pattern>/permission/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>ActionLogServlet</servlet-name>
+		<servlet-class>servlet.ActionLogServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ActionLogServlet</servlet-name>
+		<url-pattern>/actionlog/*</url-pattern>
+	</servlet-mapping>
+
 
 
 </web-app>
