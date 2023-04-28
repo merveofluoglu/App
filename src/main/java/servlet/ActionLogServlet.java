@@ -32,7 +32,7 @@ public class ActionLogServlet extends AbstractServlet{
         else if (operation.contentEquals("getSystemLog")) {
             getSystemLog(_req, _resp);
         }
-        else if (operation.contentEquals("getUserLof")) {
+        else if (operation.contentEquals("getUserLog")) {
             getUserActionLog(_req, _resp);
         }
 
