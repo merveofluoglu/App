@@ -12,20 +12,7 @@ import dao.Post.DeletePostByUserIdDao;
 import dao.Post.UpdatePostByIdDao;
 import dao.Review.DeleteReviewDao;
 import dao.Review.GetReviewsByUserIdDao;
-import dao.User.CreateUserDAO;
-import dao.User.DeleteUserByUseridDAO;
-import dao.User.GetAllUsersDAO;
-import dao.User.GetUserByCreationDateDAO;
-import dao.User.GetUserByEmailAndPasswordDAO;
-import dao.User.GetUserbyEmailDAO;
-import dao.User.GetUserByNameAndSurnameDAO;
-import dao.User.GetUserbyNameDAO;
-import dao.User.GetUserByNameSurnameEmailDAO;
-import dao.User.GetUserByRoleIdDAO;
-import dao.User.GetUserbySurnameDAO;
-import dao.User.GetUserByUpdateDateDAO;
-import dao.User.GetUserByUseridDAO;
-import dao.User.UpdateUserByIdDAO;
+import dao.User.*;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -103,6 +90,12 @@ public class UserServlet extends AbstractServlet{
             case "delete":
                 deleteUser(_request,_response);
                 break;
+            case "changepassword":
+                changePassword(_request,_response);
+                break;
+            case "updatephoto":
+                updatephoto(_request,_response);
+                break;
 
             // the requested operation is unknown
             default :
@@ -151,6 +144,7 @@ public class UserServlet extends AbstractServlet{
 
             _response.getWriter().write(_result.toString());
 
+            _response.getWriter().write(_result.toString());
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
@@ -309,44 +303,93 @@ public class UserServlet extends AbstractServlet{
     private void logoutOperations(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
         try {
-            boolean user = req.getSession().getAttribute("role") == "user";
-            //ActionLog actionlog = null;
-            //actionlog.setUser_id((Long) req.getSession().getAttribute("user_id"));
+            HttpSession _session = req.getSession();
+
+            long _userId = (long) _session.getAttribute("user_id");
             /*
-            if (user){
-                actionlog.setDescription("User logged out!");
-                actionlog.setIs_user_act(true);
-                actionlog.setIs_system_act(false);
+            String _user = String.valueOf(_userId);
+            String _role = (String) _session.getAttribute("role");
+            ActionLog _actionlog = new ActionLog();
+
+            if (_role == "admin"){
+                _actionlog.setDescription("Admin logged out!");
+                _actionlog.setIs_user_act(true);
+                _actionlog.setIs_system_act(false);
+                _actionlog.setAction_date(new Timestamp(System.currentTimeMillis()));
+                _actionlog.setUser_id(_userId);
             }
             else{
-                actionlog.setDescription("Admin logged out!");
-                actionlog.setIs_user_act(false);
-                actionlog.setIs_system_act(true);
-            }*/
-            //AddActionLogDao.addActionLog(getConnection(), actionlog);
+                _actionlog.setDescription("User #"+ _user +" logged out!");
+                _actionlog.setIs_user_act(true);
+                _actionlog.setIs_system_act(false);
+                _actionlog.setAction_date(new Timestamp(System.currentTimeMillis()));
+                _actionlog.setUser_id(_userId);
+            }
+            JSONObject res = new JSONObject();
+            resp.setStatus(HttpServletResponse.SC_OK);
+            PrintWriter out = resp.getWriter();
+
+            res.put("data", new AddActionLogDao(getConnection()).addActionLog(_actionlog));
+            resp.getWriter().write(res.toString());
+
+             */
         } catch (Exception e) {
             e.printStackTrace();
         }
         req.getSession().invalidate();
-        //resp.sendRedirect(req.getContextPath());
-        req.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req,resp);
+        resp.sendRedirect(req.getContextPath() + "/jsp/login.jsp");
+        //resp.sendRedirect("/jsp/login.jsp");
+        //req.getServletContext().getRequestDispatcher("/jsp/login.jsp").forward(req,resp);
+    }
+    private void changePassword(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
+        try {
+            HttpSession _session = _request.getSession();
+            long _userId = (long) _session.getAttribute("user_id");
+            String password = _request.getParameter("password");
+            _response.setContentType("application/json");
+            JSONObject res = new JSONObject();
+            _response.setStatus(HttpServletResponse.SC_OK);
+            PrintWriter out = _response.getWriter();
+
+            res.put("data", new ChangePasswordDao(getConnection()).ChangePasswordDao(_userId,password));
+            _response.getWriter().write(res.toString());
+            _response.sendRedirect(_request.getContextPath() + "/jsp/login.jsp");
+        } catch (Exception e) {
+            System.out.println("internal error");
+            writeError(_response, ErrorCode.INTERNAL_ERROR);
+        }
     }
 
+    private void updatephoto(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
+        try {
+            HttpSession _session = _request.getSession();
+            long _userId = (long) _session.getAttribute("user_id");
+            String password = _request.getParameter("password");
+            byte[] pp_path = _request.getParameter("file").getBytes();
+            _response.setContentType("application/json");
+            JSONObject res = new JSONObject();
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            res.put("data", new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userId,pp_path));
+            _response.getWriter().write(res.toString());
+            _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
+
+        } catch (Exception e) {
+            System.out.println("internal error");
+            writeError(_response, ErrorCode.INTERNAL_ERROR);
+        }
+    }
 
 
 
     private void updateOperations(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
-            //boolean userRole = _request.getSession().getAttribute("role") == "user";
-            boolean imageCheck = Boolean.parseBoolean(_request.getParameter("pp_path"));
-            System.out.println(imageCheck);
             User _user = new User();
-            long _userId = Long.parseLong(_request.getParameter("user_id"));
+            HttpSession _session = _request.getSession();
+            long _user_id = (long) _session.getAttribute("user_id");
             String name = _request.getParameter("name");
             String surname = _request.getParameter("surname");
             String email = _request.getParameter("email");
-            String password = _request.getParameter("password");
-            //byte[] pp_path = _request.getParameter("pp_path").getBytes();
 
             JSONObject error = new JSONObject();
             JSONObject message = new JSONObject();
@@ -354,15 +397,6 @@ public class UserServlet extends AbstractServlet{
             PrintWriter out = _response.getWriter();
 
             int errorCount = 0;
-
-            if(imageCheck){
-                byte[] userImage = DatatypeConverter.parseBase64Binary(
-                        _request.getParameter("pp_path").split(",")[1]);
-                if (userImage.length > 128 * 3 * 1024) {
-                    errorCount++;
-                    System.out.println(errorCount);
-                }
-            }
 
             if (!Validator.isAlphabetical(name)) {
                 errorCount++;
@@ -386,42 +420,15 @@ public class UserServlet extends AbstractServlet{
                 _response.setContentType("application/json");
                 JSONObject res = new JSONObject();
                 _response.setStatus(HttpServletResponse.SC_OK);
-                if(imageCheck) {
-                    byte[] userImage = DatatypeConverter.parseBase64Binary(
-                            _request.getParameter("pp_path").split(",")[1]);
-                    _user.setName(_request.getParameter("name"));
-                    _user.setSurname(_request.getParameter("surname"));
-                    _user.setEmail(_request.getParameter("email"));
-                    _user.setPassword(_request.getParameter("password"));
-                    _user.setRole_id(1L);
-                    _user.setCreation_date(Timestamp.valueOf(_request.getParameter("creation_date")));
-                    _user.setUpdate_date(new Timestamp(System.currentTimeMillis()));
-                    _user.setIs_deleted(false);
-                    _user.setProfile_photo(userImage);
-                    JSONObject _result = new JSONObject();
-                    _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
-                    _response.getWriter().write(_result.toString());
-
-                }else{
-                    User temp = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId);
-                    _user.setName(_request.getParameter("name"));
-                    _user.setSurname(_request.getParameter("surname"));
-                    _user.setEmail(_request.getParameter("email"));
-                    _user.setPassword(_request.getParameter("password"));
-                    _user.setRole_id(1L);
-                    _user.setCreation_date(temp.getCreation_date());
-                    _user.setUpdate_date(new Timestamp(System.currentTimeMillis()));
-                    _user.setIs_deleted(false);
-                    _user.setProfile_photo(null);
-                    JSONObject _result = new JSONObject();
-                    _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
-                    _response.getWriter().write(_result.toString());
-
-                }
-
-                out.print(res.put("msg","success!"));
-                out.flush();
-                out.close();
+                User temp = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_user_id);
+                _user.setName(_request.getParameter("name"));
+                _user.setSurname(_request.getParameter("surname"));
+                _user.setEmail(_request.getParameter("email"));
+                _user.setUpdate_date(new Timestamp(System.currentTimeMillis()));
+                JSONObject _result = new JSONObject();
+                _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_user_id, _user));
+                _response.getWriter().write(_result.toString());
+                _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
             }
         } catch (Exception e) {
             System.out.println("internal error");
