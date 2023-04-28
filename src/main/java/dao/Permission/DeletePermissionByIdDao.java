@@ -8,8 +8,7 @@ import java.sql.SQLException;
 
 public class DeletePermissionByIdDao extends AbstractDAO{
 
-    private static final String STATEMENT = "DELETE FROM permission" +
-            " WHERE permission_id = ?";
+    private static final String STATEMENT = "DELETE FROM permission WHERE permission_id=?";
 
     /**
      * Creates a new DAO object.
