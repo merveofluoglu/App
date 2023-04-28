@@ -8,7 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class AddFileToPostDao extends AbstractDAO {
-    private static final String STATEMENT = "INSERT INTO post_files (file_id, post_id, file, is_deleted, file_media_type) VALUES (nextval('postfiles_seq'), ?, ?, ?, ?)";
+    private static final String STATEMENT = "INSERT INTO post_files " +
+            "(file_id, post_id, file, is_deleted, file_media_type) VALUES (nextval('postfiles_seq'), ?, ?, ?, ?)";
 
     /**
      * Creates a new DAO object.

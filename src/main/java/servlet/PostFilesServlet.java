@@ -6,6 +6,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
+import resource.Post;
 import resource.PostFiles;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
@@ -37,6 +38,13 @@ public class PostFilesServlet extends AbstractServlet {
             case "loadPostFile" :
                 loadPostFile(_request, _response);
                 break;
+            case "postList" :
+                try {
+                    postList(_request, _response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
@@ -59,6 +67,13 @@ public class PostFilesServlet extends AbstractServlet {
             case "delete" :
                 deletePostFile(_request, _response);
                 break;
+            case "getPostList" :
+                try {
+                    getPostList(_request, _response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
         }
@@ -73,15 +88,21 @@ public class PostFilesServlet extends AbstractServlet {
             JSONObject _result = new JSONObject();
 
             _result.put("data",new GetPostFilesByIdDao(getConnection()).getPostFilesById());
+            List<PostFiles> files = new GetPostFilesByIdDao(getConnection()).getPostFilesById();
+            byte[] data = files.get(0).getFile();
 
-            _response.getWriter().write(_result.toString());
+            String str = new String(data,StandardCharsets.UTF_8.toString().trim());
+
+            _request.getSession().setAttribute("str",str);
+            _request.getRequestDispatcher("/jsp/uploadFile-result.jsp").forward(_request, _response);
+
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (ResourceNotFoundException _e) {
             throw new RuntimeException(_e);
-        } catch (IOException _e) {
-            throw new RuntimeException(_e);
+        }catch( Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -137,7 +158,7 @@ public class PostFilesServlet extends AbstractServlet {
 
     private void addPostFile(HttpServletRequest _request, HttpServletResponse _response) {
 
-        PostFiles _postFiles = null;
+        PostFiles _postFiles = new PostFiles();
 
         try {
             _postFiles.setPost_id(Long.parseLong(_request.getParameter("post_id")));
@@ -151,13 +172,45 @@ public class PostFilesServlet extends AbstractServlet {
 
             _response.getWriter().write(_result.toString());
 
-            _request.getRequestDispatcher("/jsp/upload-file.jsp").forward(_request, _response);
+            //_request.getRequestDispatcher("/jsp/upload-file.jsp").forward(_request, _response);
 
             //After jsp files prepared, request dispatcher will be implemented!!
 
         } catch (Exception _e) {
             throw new RuntimeException(_e);
         }
+
+    }
+
+    private void postList(HttpServletRequest _request, HttpServletResponse _response) throws SQLException {
+
+        PostListDao dao = (PostListDao) new PostListDao(getConnection()).postList();
+
+        try {
+
+            List<Post> listPost = dao.postList();
+            _request.setAttribute("listPost", listPost);
+
+            RequestDispatcher dispatcher = _request.getRequestDispatcher("upload-file.jsp");
+            dispatcher.forward(_request, _response);
+
+        } catch (ServletException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void getPostList(HttpServletRequest _request, HttpServletResponse _response) throws SQLException {
+
+        long post_id = Long.parseLong(_request.getParameter("name"));
+
+        _request.setAttribute("selectedPostId", post_id);
+
+        postList(_request, _response);
 
     }
 
@@ -247,6 +300,8 @@ public class PostFilesServlet extends AbstractServlet {
                 _response.getOutputStream().write(postFiles.getFile());
                 _response.getOutputStream().flush();
             }
+
+
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
