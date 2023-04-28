@@ -39,7 +39,7 @@
               type="javax.sql.DataSource"
               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
               driverClassName="org.postgresql.Driver"
-              url="jdbc:postgresql://localhost:5432/dummy"
+              url="jdbc:postgresql://localhost:5432/damacaNaN"
               username="postgres"
               password="1"
               testOnBorrow="true"

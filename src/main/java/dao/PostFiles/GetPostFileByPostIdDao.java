@@ -32,7 +32,7 @@ public class GetPostFileByPostIdDao extends AbstractDAO {
             rs= pstmt.executeQuery();
 
             if(!rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("Couldn't found such post file!");
+                return postFile;
             }
 
             while (rs.next()) {

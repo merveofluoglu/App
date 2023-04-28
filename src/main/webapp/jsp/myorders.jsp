@@ -85,7 +85,7 @@
         // let _selectedSubCategoryId;
 
         $.ajax({
-            url: '${pageContext.request.contextPath}/post/myorders',
+            url: '${pageContext.request.contextPath}/post/myposts',
             method: "GET",
             success: function (data) {
                 data = data.data;

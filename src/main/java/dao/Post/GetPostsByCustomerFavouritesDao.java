@@ -40,7 +40,7 @@ public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
             _rs = _pstmt.executeQuery();
 
             if (!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("No Favourites Yet!");
+                return _favourites;
             }
 
             while (_rs.next()) {
