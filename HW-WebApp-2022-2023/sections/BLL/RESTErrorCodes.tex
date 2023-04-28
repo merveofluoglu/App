@@ -1,11 +1,29 @@
 \subsection{REST Error Codes}
 
-%If needed, add few lines of text, describing the error codes table
+%If needed, add a few lines of text, describing the error codes table
 
-\begin{longtable}{|p{.15\columnwidth}|p{.2\columnwidth} |p{.6\columnwidth}|} 
+\begin{longtable}{|p{.15\columnwidth}|p{.3\columnwidth} |p{.50\columnwidth}|} 
 \hline
 \textbf{Error Code} & \textbf{HTTP Status Code} & \textbf{Description} \\\hline
-Error Code Identifier & Corresponding HTTP Status Code &  Description of the error \\\hline
+
+99 & INVALID\_INPUT\_TYPES & One or more input fields are invalid.\\\hline
+100 & INVALID\_USER\_ID & ID is invalid for the resource\\\hline
+101 & NO\_SUCH\_RESOURCE\_FOUND & Resource not found\\\hline
+102 & INVALID\_REVIEW\_RANGE & Invalid review range\\\hline
+103 & EMAIL\_MISSING & Email credential is missing\\\hline
+104 & PASSWORD\_MISSING & Password credential is missing.\\\hline
+105 & WRONG\_CREDENTIALS & Submitted credentials are not in correct format\\\hline
+106 & INVALID\_REVIEW\_RATING & Rating range of review is invalid\\\hline
+107 & INVALID\_USER\_INFO & Invalid user credentials\\\hline
+108 & ADMIN\_ONLY\_ACTION & Authorized action for only admin.\\\hline
+110 & INVALID\_EMAIL\_ADDRESS & Invalid email address credential.\\\hline
+111 & INVALID\_PASSWORD & Invalid password credential.\\\hline
+117 & USER\_NOT\_FOUND & User not found.\\\hline
+120 & BADLY\_FORMATTED\_JSON & JSON format is invalid.\\\hline
+200 & OPERATION\_UNKNOWN & Operation unknown.\\\hline
+500 & METHOD\_NOT\_ALLOWED & The method is not allowed\\\hline
+999 & INTERNAL\_ERROR & Internal Error\\\hline
+
 \caption{Describe in this table your REST API}
 \label{tab:termGlossary}
 \end{longtable}

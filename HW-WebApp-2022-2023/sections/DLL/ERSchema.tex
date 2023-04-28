@@ -1,8 +1,31 @@
+
 \subsection{Entity-Relationship Schema}
 
-\includegraphics[]{ERSchema.pdf}
+
+
+    
+\includegraphics[scale = 0.38,center]{ERSchema\_Rev.png}
+\begin{center}
+\caption{Entity Relationship Schema}
+\label{fig:my\_label}
+\end{center}
+\clearpage
 
 %Describe here your ER schema
+\newline Entity-Relationship(ER) modal have 9 main entities:
+\begin{itemize}
+    \item \textbf{User:} Each user has an unqiue user\_id which is set as primary key. Also we are recording their name, surname, email, password, creation\_date(timestamp for the moment that user generated), update\_date(timestamp for the last time that the user information is updated), pp\_path(where the profile photo of the user is stored as byte array). The admin user and a normal user's login credentials are below: \newline
+    \textbf{E-mail:} admin@gmail.com ||
+    \textbf{Password:} 123456\newline
+    \textbf{E-mail:} user@gmail.com ||
+    \textbf{Password:} 123456
+    \item \textbf{Role:} Roles are the identifiers for the permissions. Each Role hes it's own unique Role Id.\newline
+    \item \textbf{Post:} Users create posts. Each post has it's own unique post\_id. Posts contain Name, Description, Price, Status, start\_date and update informations. According to situation of the post there are two boolean for each post. Those two booleans are Is\_deleted and Is\_sold. According to these boolean's value, End\_date, Sold\_date and Update\_date can change.\newline
+    \item \textbf{Review:} After completion of the selling process, user that bought the item which post owner was selling can give Review to the post owner about their buying experience. Each Review has it's own unique Review\_id. Review contains date, Point\_scale and Description. \newline
+    \item \textbf{PostFile: }The file that post contains. It is the files that the post should have and that the user wanted to add.\newline
+    \item \textbf{Category:} Each category has it's own unique Category Id. Categories have just 2 datas, Category\_Id and Category\_name. Each post should have a category.\newline
+    \item \textbf{Subcategory:} Subcategory is under the Category. Like Category, Sub Category has its own sub\_category\_Id, and sub\_category\_name. \newline
+    \item \textbf{Permission: }Permissions are the things that users allowed to do. Each permission has it's own Permission\_Id, each different permission has their own name. According to the user's role, permissions will be given by the system.\newline
+    \item \textbf{ActionLog:} ActionLog contains every action and those actions information (like date and description) in it.
+\end{itemize}
 
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

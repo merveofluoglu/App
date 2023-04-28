@@ -2,10 +2,91 @@
 
 %describe the REST API. If needed, add a few lines of text here, describing the content of the table.
 
-\begin{longtable}{|p{.375\columnwidth}|p{.1\columnwidth} |p{.35\columnwidth}|p{.1\columnwidth}|} 
+Part of the URIs are filtered through the session filtering with the role of the users within the system. With this filter only users with the role of SuperAdmin can access some of the resources.
+
+\begin{longtable}{|p{.25\columnwidth}|p{.1\columnwidth} |p{.5\columnwidth}|p{.075\columnwidth}|} 
 \hline
 \textbf{URI} & \textbf{Method} & \textbf{Description} & \textbf{Filter} \\\hline
-What is the URI? & What HTTP method uses? &  Describe briefly the result of calling the URI & is it behind a filter?\\\hline
+
+user/userById & GET & Retrieves user with the given user\_id & \\\hline
+user/userByCreationDate & GET & Retrieves users with the given date-time & Admin\\\hline
+user/userByNameSurname & GET & Retrieves user with the given name and surname & \\\hline
+user/userByUpdateDate & GET & Retrieves users with the given update dates & Admin\\\hline
+user/getAll & GET & Retrieves all users & Admin\\\hline
+user/getProfile & GET & Retrieves user with the given user\_id & \\\hline
+user/logout & GET & Logouts user & \\\hline
+user/login & POST & Logins user & \\\hline
+user/register & POST & Registers user &\\\hline
+user/update & POST & Updates user information & \\\hline
+user/delete & POST & Deletes user & Admin\\\hline
+user/changepassword & POST & Changes password of the user & \\\hline
+user/updatephoto & POST & Changes profile picture of the user &\\\hline
+
+post/details & GET & Brings the details of the post & \\\hline
+post/myorders & GET & Brings the orders of user &\\\hline
+post/myposts & GET & Brings the posts of user & \\\hline
+post/add & POST & Post addition operation &\\\hline
+post/update & POST & Post update operation & \\\hline
+post/delete & POST & Post delete operation &\\\hline
+post/buy & POST & Post buy operation & \\\hline
+
+
+subcategory/details & GET & Brings the details of SubCategory &\\\hline
+subcategory/getAll & GET & Brings all the SubCategory &\\\hline
+subcategory/add & POST & Adding SubCategory &\\\hline
+subcategory/update & POST & Updating SubCategory &\\\hline
+subcategory/delete & POST & Deleting SubCategory &\\\hline
+
+role/allRole & GET & Bringing all the roles & Admin\\\hline
+role/protected/add & POST & Adding Role &Admin\\\hline
+role/protected/deleteRole & POST & Deleting Role &Admin\\\hline
+role/update & POST & Updating Role &Admin\\\hline
+
+review/details\_by\_post\_id & GET & Bringing review detail by post\_id & \\\hline
+review/protected/add & POST & Adding Review &\\\hline
+review/protected/delete & POST & Deleting Review &\\\hline
+review/update & POST & Updating Review & \\\hline
+
+postFiles/getAllPostFiles & GET & Bringing all post files & Admin\\\hline
+postFiles/loadPostFile & GET & Loading a post File&\\\hline
+postFiles/getPostFilesOp & GET & Getting post file details &\\\hline
+postFiles/add & POST & Adding post files &\\\hline
+postFiles/upload & POST & Uploading post files & \\\hline
+postFiles/update & POST & Updating post files & \\\hline
+postFiles/delete & POST & Deleting post files &\\\hline
+
+
+permission/allpermissions & GET & Bringing all permissions & Admin\\\hline
+permission/permissionDetails & GET & Bringing permission details & Admin\\\hline
+permission/add & POST & Adding permission &Admin\\\hline
+permission/update & POST & Updating permission &Admin\\\hline
+permission/delete & POST & Deleting permission & Admin\\\hline
+
+message/details & GET & Bringing message details & \\\hline
+message/usermessages & GET & Bringing messages of the user with given user\_id & \\\hline
+message/getAll & GET & Bringing all messages  &Admin\\\hline
+message/add & POST & Sending message &\\\hline
+
+favourite/getAll & GET & Bringing favorite posts of the user with given user\_id & \\\hline
+favourite/add & POST & Adding post to the favorties  &\\\hline
+favourite/remove & POST & Removing post from favorites&\\\hline
+
+
+category/details & GET & Bringing category details & \\\hline
+category/getAll & GET & Bringing all categories &\\\hline
+category/add & GET & Adding a category &Admin\\\hline
+category/update & POST & Updating a category &Admin\\\hline
+category/delete & POST & Deleting a category &Admin\\\hline
+
+actionlog/getLogs & GET & Bringing all logs &Admin\\\hline
+actionlog/getSystemLog & GET & Bringing all system logs &Admin\\\hline
+actionlog/getUserLog & GET & Bringing all user logs &Admin\\\hline
+actionlog/add & POST & Adding action log &Admin\\\hline
+
+
+
 \caption{Describe in this table your REST API}
 \label{tab:termGlossary}
 \end{longtable}
+
+\clearpage
