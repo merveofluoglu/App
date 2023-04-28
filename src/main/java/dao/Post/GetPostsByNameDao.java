@@ -20,7 +20,7 @@ public class GetPostsByNameDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetPostsByNameDao(Connection con) {
+    public GetPostsByNameDao(Connection con) {
         super(con);
     }
 
