@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 public class UpdateUserByIdDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "UPDATE users SET name = ?, surname = ?, email = ?, password = ?, update_date = ?," +
-            "pp_path = ? WHERE user_id=?";
+    private static final String STATEMENT = "UPDATE users SET name = ?, surname = ?, email = ?, update_date = ?" +
+            " WHERE user_id=?";
     /**
      * Creates a new DAO object.
      *
@@ -20,7 +20,7 @@ public class UpdateUserByIdDAO extends AbstractDAO{
         super(con);
     }
 
-    public User UpdateUserByIdDAO(Long user_id,User user) throws SQLException {
+    public User UpdateUserByIdDAO(long user_id,User user) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -31,10 +31,8 @@ public class UpdateUserByIdDAO extends AbstractDAO{
             _pstmt.setString(1, user.getName());
             _pstmt.setString(2, user.getSurname());
             _pstmt.setString(3, user.getEmail());
-            _pstmt.setString(4, user.getPassword());
-            _pstmt.setTimestamp(5, user.getUpdate_date());
-            _pstmt.setBytes(6, user.getProfile_photo());
-            _pstmt.setLong(7, user_id);
+            _pstmt.setTimestamp(4, user.getUpdate_date());
+            _pstmt.setLong(5, user_id);
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {

@@ -11,7 +11,7 @@ public class ActionLog {
     private String description;
     private Timestamp action_date;
     private long user_id;
-
+    public ActionLog(){}
     public ActionLog(long action_id, boolean is_user_act, boolean is_system_act, String description, Timestamp action_date, long user_id) {
         this.action_id = action_id;
         this.is_user_act = is_user_act;

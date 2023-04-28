@@ -122,6 +122,10 @@
                         _selectedPrice = dt.data().price;
                         _selectedStatus = dt.data().status;
                     });
+            },
+            error: function(){
+                toastr.error("There are no orders of this user!");
+                return;
             }
         });
 
