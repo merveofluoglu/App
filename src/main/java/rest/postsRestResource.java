@@ -19,7 +19,7 @@ public class postsRestResource {
 
         final JsonGenerator jg = JSON_FACTORY.createGenerator(out);
         jg.writeStartObject();
-        jg.writeFieldName("books-list");
+        jg.writeFieldName("posts-list");
         jg.writeStartArray();
         jg.flush();
         boolean firstElement = true;
