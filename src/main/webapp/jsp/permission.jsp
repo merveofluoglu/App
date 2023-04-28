@@ -29,7 +29,7 @@
     </thead>
 </table>
 
-<!---------ADD POST--------->
+<!---------ADD PERMISSION--------->
 
 <div class="modal fade" id="addPermission" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -40,9 +40,13 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                     <label>PermissionName: </label>
-                     <input type="text" name="PermissionName" id="PermissionName" class="form-control" />
+                    <label>Permission Name: </label>
+                    <input type="text" name="PermissionName" id="PermissionName" class="form-control" />
                 </div>
+            </div>
+            <div class="form-group">
+                <label>Do you want to assign role? </label>
+                <input type="checkbox" name="RoleId" id="RoleId" class="form-control" style="alignment: center; width: available;"/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-toolbar" target="#addPermission" data-bs-dismiss="modal">Close</button>
@@ -53,36 +57,7 @@
     </div>
 </div>
 
-<!---------EDIT POST--------->
-
-<div class="modal fade" id="editPermission" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Edit Permission</h4>
-                <button type="button" class="btn-close" target="#editPermission" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group" style="display:none">
-                    <label>PermissionId:</label>
-                    <input type="text" name="PermissionId" id="PermissionId" class="form-control" readonly="readonly" />
-                </div>
-                <div class="form-group">
-                    <label>PermissionName: </label>
-                    <input type="text" name="PermissionName" id="PermissionName" class="form-control" />
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-toolbar" target="#editPermission" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="updatePermission()">Edit</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<!---------DELETE POST--------->
+<!---------DELETE PERMISSION--------->
 
 <div id="dialog" class="modal fade" role="dialog" style="display:none">
     <div class="modal-dialog">
