@@ -12,7 +12,7 @@
 <head>
     <title>Login</title>
   <!-- Custom Css -->
-  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="/jsp/profile.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
@@ -118,7 +118,7 @@
               data: _data,
               success: function (response) {
                 $('#addUser').modal('hide');
-                toastr.success(response);
+                toastr.success("User created successfully");
               },
               error: function () {
                 alert("error");
