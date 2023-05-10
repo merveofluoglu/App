@@ -24,7 +24,7 @@ public class GetUserByNameSurnameEmailDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> getPosGetUserByNameSurnameEmailDAOtsByName(String name, String surname,String email) throws SQLException, ResourceNotFoundException {
+    public List<User> getPosGetUserByNameSurnameEmailDAOtsByName(String _name, String _surname,String _email) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -33,9 +33,9 @@ public class GetUserByNameSurnameEmailDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, name);
-            _pstmt.setString(2, surname);
-            _pstmt.setString(3, email);
+            _pstmt.setString(1, _name);
+            _pstmt.setString(2, _surname);
+            _pstmt.setString(3, _email);
 
             _rs = _pstmt.executeQuery();
 

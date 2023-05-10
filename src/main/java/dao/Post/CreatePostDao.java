@@ -38,18 +38,18 @@ public class CreatePostDao extends AbstractDAO {
 
             _pstmt.setString(1, _post.getName());
             _pstmt.setString(2, _post.getDescription());
-            _pstmt.setLong(3, _post.getUser_id());
-            _pstmt.setLong(4, _post.getCustomer_id());
+            _pstmt.setLong(3, _post.getUserId());
+            _pstmt.setLong(4, _post.getCustomerId());
             _pstmt.setDouble(5, _post.getPrice());
             _pstmt.setString(6, _post.getStatus());
-            _pstmt.setTimestamp(7, _post.getStart_date());
-            _pstmt.setTimestamp(8, _post.getEnd_date());
-            _pstmt.setBoolean(9, _post.isIs_deleted());
-            _pstmt.setBoolean(10, _post.isIs_sold());
-            _pstmt.setTimestamp(11, _post.getSold_date());
-            _pstmt.setTimestamp(12, _post.getUpdate_date());
-            _pstmt.setLong(13, _post.getCategory_id());
-            _pstmt.setLong(14, _post.getSubcategory_id());
+            _pstmt.setTimestamp(7, _post.getStartDate());
+            _pstmt.setTimestamp(8, _post.getEndDate());
+            _pstmt.setBoolean(9, _post.isDeleted());
+            _pstmt.setBoolean(10, _post.isSold());
+            _pstmt.setTimestamp(11, _post.getSoldDate());
+            _pstmt.setTimestamp(12, _post.getUpdateDate());
+            _pstmt.setLong(13, _post.getCategoryId());
+            _pstmt.setLong(14, _post.getSubcategoryId());
 
             _rs = _pstmt.executeUpdate();
 

@@ -25,10 +25,10 @@ public class UpdateFilesByPostIdDao extends AbstractDAO {
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setLong(1, pf.getFile_id());
+            pstmt.setLong(1, pf.getFileId());
             pstmt.setBytes(2, pf.getFile());
-            pstmt.setBoolean(3, pf.isIs_deleted());
-            pstmt.setString(4, pf.getFile_media_type());
+            pstmt.setBoolean(3, pf.isDeleted());
+            pstmt.setString(4, pf.getFileMediaType());
             pstmt.setLong(5, post_id);
 
             affectedRows = pstmt.executeUpdate();

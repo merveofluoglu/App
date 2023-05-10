@@ -22,7 +22,7 @@ public class CreateCategoryDao extends AbstractDAO {
         try {
             //Prepare and set the statement object to be executed
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setString(1, category.getCategory_name());
+            pstmt.setString(1, category.getCategoryName());
 
             rs = pstmt.executeUpdate();
             if (rs != 1) {

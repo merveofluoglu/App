@@ -3,52 +3,52 @@ package resource;
 import java.sql.Timestamp;
 
 public class Post {
-    private long post_id;
+    private long postId;
     private String name;
     private String description;
-    private long user_id;
-    private long customer_id;
+    private long userId;
+    private long customerId;
     private double price;
     private String status;
-    private Timestamp start_date;
-    private Timestamp end_date;
-    private boolean is_deleted;
-    private boolean is_sold;
-    private Timestamp sold_date;
-    private Timestamp update_date;
-    private long category_id;
-    private long subcategory_id;
-
-    public Post(long post_id, String name, String description, long user_id, long customer_id, double price, String status, Timestamp start_date, Timestamp end_date, boolean is_deleted, boolean is_sold, Timestamp sold_date, Timestamp update_date, long category_id, long subcategory_id) {
-        this.post_id = post_id;
-        this.name = name;
-        this.description = description;
-        this.user_id = user_id;
-        this.customer_id = customer_id;
-        this.price = price;
-        this.status = status;
-        this.start_date = start_date;
-        this.end_date = end_date;
-        this.is_deleted = is_deleted;
-        this.is_sold = is_sold;
-        this.sold_date = sold_date;
-        this.update_date = update_date;
-        this.category_id = category_id;
-        this.subcategory_id = subcategory_id;
-    }
+    private Timestamp startDate;
+    private Timestamp endDate;
+    private boolean isDeleted;
+    private boolean isSold;
+    private Timestamp soldDate;
+    private Timestamp updateDate;
+    private long categoryId;
+    private long subcategoryId;
 
     public Post() {}
 
-    public Post(long post_id, String name) {
-        this.post_id = post_id;
+    public Post(long postId, String name, String description, long userId, long customerId, double price, String status, Timestamp startDate, Timestamp endDate, boolean isDeleted, boolean isSold, Timestamp soldDate, Timestamp updateDate, long categoryId, long subcategoryId) {
+        this.postId = postId;
         this.name = name;
-    }
-    public long getPost_id() {
-        return post_id;
+        this.description = description;
+        this.userId = userId;
+        this.customerId = customerId;
+        this.price = price;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isDeleted = isDeleted;
+        this.isSold = isSold;
+        this.soldDate = soldDate;
+        this.updateDate = updateDate;
+        this.categoryId = categoryId;
+        this.subcategoryId = subcategoryId;
     }
 
-    public void setPost_id(long post_id) {
-        this.post_id = post_id;
+    public Post(long postId, String name) {
+        this.postId = postId;
+        this.name = name;
+    }
+    public long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(long postId) {
+        this.postId = postId;
     }
 
     public String getName() {
@@ -67,20 +67,20 @@ public class Post {
         this.description = description;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getCustomer_id() {
-        return customer_id;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer_id(long customer_id) {
-        this.customer_id = customer_id;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
     public double getPrice() {
@@ -99,67 +99,67 @@ public class Post {
         this.status = status;
     }
 
-    public Timestamp getStart_date() {
-        return start_date;
+    public Timestamp getStartDate() {
+        return startDate;
     }
 
-    public void setStart_date(Timestamp start_date) {
-        this.start_date = start_date;
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
     }
 
-    public Timestamp getEnd_date() {
-        return end_date;
+    public Timestamp getEndDate() {
+        return endDate;
     }
 
-    public void setEnd_date(Timestamp end_date) {
-        this.end_date = end_date;
+    public void setEndDate(Timestamp endDate) {
+        this.endDate = endDate;
     }
 
-    public boolean isIs_deleted() {
-        return is_deleted;
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setIs_deleted(boolean is_deleted) {
-        this.is_deleted = is_deleted;
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
-    public boolean isIs_sold() {
-        return is_sold;
+    public boolean isSold() {
+        return isSold;
     }
 
-    public void setIs_sold(boolean is_sold) {
-        this.is_sold = is_sold;
+    public void setSold(boolean sold) {
+        isSold = sold;
     }
 
-    public Timestamp getSold_date() {
-        return sold_date;
+    public Timestamp getSoldDate() {
+        return soldDate;
     }
 
-    public void setSold_date(Timestamp sold_date) {
-        this.sold_date = sold_date;
+    public void setSoldDate(Timestamp soldDate) {
+        this.soldDate = soldDate;
     }
 
-    public Timestamp getUpdate_date() {
-        return update_date;
+    public Timestamp getUpdateDate() {
+        return updateDate;
     }
 
-    public void setUpdate_date(Timestamp update_date) {
-        this.update_date = update_date;
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
 
-    public long getCategory_id() {
-        return category_id;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(long category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public long getSubcategory_id() {
-        return subcategory_id;
+    public long getSubcategoryId() {
+        return subcategoryId;
     }
 
-    public void setSubcategory_id(long subcategory_id) {
-        this.subcategory_id = subcategory_id;
+    public void setSubcategoryId(long subcategoryId) {
+        this.subcategoryId = subcategoryId;
     }
 }

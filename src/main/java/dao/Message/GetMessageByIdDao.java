@@ -14,7 +14,7 @@ import utils.ResourceNotFoundException;
 
 public class GetMessageByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM message WHERE message.message_id = ?";
+    private static final String STATEMENT = "SELECT * FROM message WHERE message_id = ?";
 
     /**
      * Creates a new DAO object.

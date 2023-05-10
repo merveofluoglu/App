@@ -69,7 +69,7 @@ public class CategoryServlet extends AbstractServlet {
 
         Category _Category = new Category();
 
-        long _CategoryId = Long.parseLong(_request.getParameter("category_id"));
+        long _CategoryId = Long.parseLong(_request.getParameter("categoryId"));
 
         HttpSession _session = _request.getSession();
 
@@ -78,7 +78,7 @@ public class CategoryServlet extends AbstractServlet {
             if(_session.getAttribute("role") != "admin") {
                 throw new Exception("You don't have access to this area!");
             }
-            _Category.setCategory_name(_request.getParameter("category_name"));
+            _Category.setCategoryName(_request.getParameter("categoryName"));
 
             JSONObject _result = new JSONObject();
 
@@ -140,9 +140,9 @@ public class CategoryServlet extends AbstractServlet {
                 throw new Exception("You don't have access to this area!");
             }
 
-            _Category.setCategory_name(_request.getParameter("category_name"));
+            _Category.setCategoryName(_request.getParameter("categoryName"));
 
-            var _checkCategory = new GetCategoryByNameDao(getConnection()).getCategoriesByName(_Category.getCategory_name());
+            var _checkCategory = new GetCategoryByNameDao(getConnection()).getCategoriesByName(_Category.getCategoryName());
 
             if(!_checkCategory.isEmpty()) {
                 throw new Exception("There is already a category with that name! Please choose another name!");
@@ -159,7 +159,7 @@ public class CategoryServlet extends AbstractServlet {
     }
     private void getCategoryDetailsOp(HttpServletRequest _request, HttpServletResponse _response){
         try {
-            long _id = parseLong(_request.getParameter("category_id"));
+            long _id = parseLong(_request.getParameter("categoryId"));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 

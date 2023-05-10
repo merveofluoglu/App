@@ -22,14 +22,14 @@ public class DeleteUserByUseridDAO extends AbstractDAO{
 
     }
 
-    public int DeleteUserByUseridDAO(long user_id) throws SQLException {
+    public int DeleteUserByUseridDAO(long _userId) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, user_id);
+            _pstmt.setObject(1, _userId);
 
             _affectedRows = _pstmt.executeUpdate();
 

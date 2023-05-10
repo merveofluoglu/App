@@ -154,7 +154,7 @@
     </div>
 </div>
 
-<!---------Buy POST--------->
+<!---------BUY POST--------->
 
 <div id="buyPost" class="modal fade" role="dialog" style="display:none">
     <div class="modal-dialog">
@@ -209,10 +209,10 @@
         }
 
         getCategoryNameById = (id) => {
-            return categories.filter(item => item.category_id == id)[0].category_name;
+            return categories.filter(item => item.categoryId == id)[0].categoryName;
         }
         getSubCategoryNameById = (id) => {
-            return subcategories.filter(item => item.subcategory_id == id)[0].subcategory_name;
+            return subcategories.filter(item => item.subcategoryId == id)[0].subcategoryName;
         }
 
         const addPost = () => {
@@ -221,8 +221,8 @@
                 description: $("#addPost [name='Description']").val(),
                 price: $("#addPost [name='Price']").val(),
                 status: $("#addPost [name='Status']").val(),
-                category_id: $("#addPost [name='CategoryId']").val(),
-                subcategory_id: $("#addPost [name='SubCategoryId']").val()
+                categoryId: $("#addPost [name='CategoryId']").val(),
+                subcategoryId: $("#addPost [name='SubCategoryId']").val()
             };
 
             if(!checkValidity(_data)) {
@@ -296,7 +296,7 @@
 
         const updatePost = () => {
 
-            let user_id = '<%= session.getAttribute( "user_id" ) %>';
+            let user_id = '<%= session.getAttribute( "userId" ) %>';
 
             if(user_id !== $("#editPost [name='UserId']").val()) {
                 $('#editPost').modal('hide');
@@ -305,14 +305,14 @@
             }
 
             const _data = {
-                post_id: parseInt($("#editPost [name='PostId']").val()),
+                postId: parseInt($("#editPost [name='PostId']").val()),
                 name: $("#editPost [name='Name']").val(),
                 description: $("#editPost [name='Description']").val(),
-                user_id: $("#editPost [name='UserId']").val(),
+                userId: $("#editPost [name='UserId']").val(),
                 price: $("#editPost [name='Price']").val(),
                 status: $("#editPost [name='Status']").val(),
-                //category_id: $("#editPost [name='CategoryId']").val(),
-                //subcategory_id: $("#editPost [name='SubCategoryId']").val()
+                //categoryId: $("#editPost [name='CategoryId']").val(),
+                //subcategoryId: $("#editPost [name='SubCategoryId']").val()
             };
 
             $.ajax({
@@ -355,12 +355,12 @@
                 return false;
             }
 
-            if(data.category_id == "" || data.category_id == null || data.category_id == undefined) {
+            if(data.categoryId == "" || data.categoryId == null || data.categoryId == undefined) {
                 toastr.error("Please fill all sections!");
                 return false;
             }
 
-            if(data.subcategory_id == "" || data.subcategory_id == null || data.subcategory_id == undefined) {
+            if(data.subcategoryId == "" || data.subcategoryId == null || data.subcategoryId == undefined) {
                 toastr.error("Please fill all sections!");
                 return false;
             }
@@ -375,8 +375,8 @@
             categories.forEach(option => {
                 const newOption = document.createElement("option");
                 console.log(option);
-                newOption.value = option.category_id;
-                newOption.text = option.category_name;
+                newOption.value = option.categoryId;
+                newOption.text = option.categoryName;
                 newOption.id = "CategoryIdOpt"
                 batchTrack.appendChild(newOption);
             });
@@ -387,15 +387,15 @@
             removeOptions();
 
             let categoryId = document.getElementById("batchSelect").value;
-            subCat = subcategories.filter(item => item.category_id == categoryId);
+            subCat = subcategories.filter(item => item.categoryId == categoryId);
 
             const batchTrack = document.getElementById("batchSubCategory");
 
             subCat.forEach(option => {
                 const newOption = document.createElement("option");
                 console.log(option);
-                newOption.value = option.subcategory_id;
-                newOption.text = option.subcategory_name;
+                newOption.value = option.subcategoryId;
+                newOption.text = option.subcategoryName;
                 newOption.id = "SubCategoryIdOpt"
                 batchTrack.appendChild(newOption);
             });
@@ -423,26 +423,26 @@
                     data = JSON.parse(data).data;
                     data.forEach(element => {
 
-                        categoryName = getCategoryNameById(element.category_id);
-                        subCategoryName = getSubCategoryNameById(element.subcategory_id);
+                        categoryName = getCategoryNameById(element.categoryId);
+                        subCategoryName = getSubCategoryNameById(element.subcategoryId);
 
-                        element.category_id = categoryName;
-                        element.subcategory_id = subCategoryName;
+                        element.categoryId = categoryName;
+                        element.subcategoryId = subCategoryName;
                     })
                     table = $('#Post').DataTable({
                         data: data,
                         bDestroy: true,
                         dom: "Bfrtip",
                         columns: [
-                            { title: "Id", data: "post_id" },
+                            { title: "Id", data: "postId" },
                             { title: "Name", data: "name" },
                             { title: "Description", data: "description" },
-                            { title: "User Id", data: "user_id" },
-                            { title: "Customer Id", data: "customer_id" },
+                            { title: "User Id", data: "userId" },
+                            { title: "Customer Id", data: "customerId" },
                             { title: "Price", data: "price" },
                             { title: "Status", data: "status" },
-                            { title: "Category", data: "category_id" },
-                            { title: "Sub Category", data: "subcategory_id" }
+                            { title: "Category", data: "categoryId" },
+                            { title: "Sub Category", data: "subcategoryId" }
                         ],
                         select: true,
                         buttons: [{
@@ -535,10 +535,10 @@
                         ]
                     }).off("select")
                         .on("select", function (e, dt, type, indexes) {
-                            _selectedId = dt.data().post_id;
+                            _selectedId = dt.data().postId;
                             _selectedName = dt.data().name;
                             _selectedDescription = dt.data().description;
-                            _selectedUserId = dt.data().user_id;
+                            _selectedUserId = dt.data().userId;
                             _selectedPrice = dt.data().price;
                             _selectedStatus = dt.data().status;
                         });

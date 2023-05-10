@@ -22,7 +22,7 @@ public class GetUserByEmailAndPasswordDAO extends AbstractDAO{
         super(con);
     }
 
-    public List<User> getUserByEmailandPassword(String email,String password) throws SQLException, ResourceNotFoundException {
+    public List<User> getUserByEmailandPassword(String _email, String _password) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -31,8 +31,8 @@ public class GetUserByEmailAndPasswordDAO extends AbstractDAO{
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, email);
-            _pstmt.setString(2, password);
+            _pstmt.setString(1, _email);
+            _pstmt.setString(2, _password);
 
             _rs = _pstmt.executeQuery();
             if(!_rs.isBeforeFirst()) {

@@ -3,24 +3,24 @@ import java.sql.Timestamp;
 import java.util.Objects;
 public class Permission {
 
-    private long permission_id;
+    private long permissionId;
 
     private String name;
 
 
 
-    public Permission(long permission_id,String name){
-        this.permission_id = permission_id;
+    public Permission(long permissionId,String name){
+        this.permissionId = permissionId;
         this.name = name;
     }
     public Permission(){}
-    public Long getPermission_id() {
-        return permission_id;
+
+    public long getPermissionId() {
+        return permissionId;
     }
 
-    public void setPermission_id(long permission_id)
-    {
-        this.permission_id = permission_id;
+    public void setPermissionId(long permissionId) {
+        this.permissionId = permissionId;
     }
 
     public String getName() {

@@ -31,7 +31,7 @@ public class UpdateUserByIdDAO extends AbstractDAO{
             _pstmt.setString(1, user.getName());
             _pstmt.setString(2, user.getSurname());
             _pstmt.setString(3, user.getEmail());
-            _pstmt.setTimestamp(4, user.getUpdate_date());
+            _pstmt.setTimestamp(4, user.getUpdateDate());
             _pstmt.setLong(5, user_id);
             _affectedRows = _pstmt.executeUpdate();
 

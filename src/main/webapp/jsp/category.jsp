@@ -106,7 +106,7 @@
     var table;
     const addCategory = () => {
         const _data = {
-            category_name: $("#addCategory [name='CategoryName']").val(),
+            categoryName: $("#addCategory [name='CategoryName']").val(),
         };
 
         if(!checkValidity(_data)) {
@@ -149,8 +149,8 @@
     const updateCategory = () => {
 
         const _data = {
-            category_id: $("#editCategory [name='CategoryId']").val(),
-            category_name: $("#editCategory [name='CategoryName']").val(),
+            categoryId: $("#editCategory [name='CategoryId']").val(),
+            categoryName: $("#editCategory [name='CategoryName']").val(),
         };
 
         if(!checkValidity(_data)) {
@@ -175,7 +175,7 @@
     }
 
     checkValidity = (data) => {
-        if(data.category_name == "" || data.category_name == null || data.category_name == undefined) {
+        if(data.categoryName == "" || data.categoryName == null || data.categoryName == undefined) {
             toastr.error("Please fill all sections!");
             return false;
         }
@@ -197,8 +197,8 @@
                     bDestroy: true,
                     dom: "Bfrtip",
                     columns: [
-                        { title: "Id", data: "category_id" },
-                        { title: "Category Name", data: "category_name" },
+                        { title: "Id", data: "categoryId" },
+                        { title: "Category Name", data: "categoryName" },
                     ],
                     select: true,
                     buttons: [{
@@ -247,8 +247,8 @@
                     ]
                 }).off("select")
                     .on("select", function (e, dt, type, indexes) {
-                        _selectedId = dt.data().category_id;
-                        _selectedCategoryName = dt.data().category_name;
+                        _selectedId = dt.data().categoryId;
+                        _selectedCategoryName = dt.data().categoryName;
                     });
             }
         });

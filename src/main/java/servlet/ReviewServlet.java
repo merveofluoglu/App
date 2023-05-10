@@ -52,16 +52,16 @@ public class ReviewServlet extends AbstractServlet {
 
         Reviews _review = null;
 
-        long _reviewId = Long.parseLong(_request.getParameter("review_id"));
+        long _reviewId = Long.parseLong(_request.getParameter("reviewId"));
 
         try {
             _review.setDescription(_request.getParameter("description"));
-            _review.setSeller_id(Long.parseLong(_request.getParameter("seller_id")));
-            _review.setPoint_scale(Double.parseDouble((_request.getParameter("point_scale"))));
-            _review.setPost_id(Long.parseLong(_request.getParameter("post_id")));
-            _review.setUser_id(Long.parseLong(_request.getParameter("user_id")));
-            _review.setCreate_date(new Timestamp(System.currentTimeMillis()));
-            _review.setIs_deleted(false);
+            _review.setSellerId(Long.parseLong(_request.getParameter("sellerId")));
+            _review.setPointScale(Double.parseDouble((_request.getParameter("pointScale"))));
+            _review.setPostId(Long.parseLong(_request.getParameter("postId")));
+            _review.setUserId(Long.parseLong(_request.getParameter("userId")));
+            _review.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            _review.setDeleted(false);
 
             JSONObject _result = new JSONObject();
 
@@ -80,7 +80,7 @@ public class ReviewServlet extends AbstractServlet {
     }
     private void removeReview(HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _reviewId = Long.parseLong(_request.getParameter("review_id"));
+            long _reviewId = Long.parseLong(_request.getParameter("reviewId"));
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
@@ -104,12 +104,12 @@ public class ReviewServlet extends AbstractServlet {
 
         try {
             _review.setDescription(_request.getParameter("description"));
-            _review.setSeller_id(Long.parseLong(_request.getParameter("seller_id")));
-            _review.setPoint_scale(Double.parseDouble((_request.getParameter("point_scale"))));
-            _review.setPost_id(Long.parseLong((_request.getParameter("post_id"))));
-            _review.setUser_id(Long.parseLong((_request.getParameter("user_id"))));
-            _review.setCreate_date(new Timestamp(System.currentTimeMillis()));
-            _review.setIs_deleted(false);
+            _review.setSellerId(Long.parseLong(_request.getParameter("sellerId")));
+            _review.setPointScale(Double.parseDouble((_request.getParameter("pointScale"))));
+            _review.setPostId(Long.parseLong((_request.getParameter("postId"))));
+            _review.setUserId(Long.parseLong((_request.getParameter("userId"))));
+            _review.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            _review.setDeleted(false);
 
             JSONObject _result = new JSONObject();
 
@@ -126,7 +126,7 @@ public class ReviewServlet extends AbstractServlet {
 
     private void getReviewDetailsByPostId (HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _id = parseLong(_request.getParameter("post_id"));
+            long _id = parseLong(_request.getParameter("postId"));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 
@@ -146,7 +146,7 @@ public class ReviewServlet extends AbstractServlet {
 
     private void getReviewDetailsByUserId (HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _id = parseLong(_request.getParameter("user_id"));
+            long _id = parseLong(_request.getParameter("userId"));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 

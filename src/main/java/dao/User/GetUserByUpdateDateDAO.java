@@ -20,7 +20,7 @@ public class GetUserByUpdateDateDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> GetUserByUpdateDateDAO(Timestamp update_date) throws SQLException, ResourceNotFoundException {
+    public List<User> GetUserByUpdateDateDAO(Timestamp _updateDate) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -29,7 +29,7 @@ public class GetUserByUpdateDateDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setTimestamp(1, update_date);;
+            _pstmt.setTimestamp(1, _updateDate);;
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

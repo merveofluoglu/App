@@ -41,9 +41,6 @@
         FillDatatable();
     });
 
-
-
-
     var table;
     const FillDatatable = () => {
         $.ajax({
@@ -57,15 +54,15 @@
                     bDestroy: true,
                     dom: "Bfrtip",
                     columns: [
-                        { title: "Message Id", data: "message_id" },
+                        { title: "Message Id", data: "messageId" },
                         { title: "Subject", data: "subject" },
-                        { title: "Message Body", data: "meassage_body" },
-                        { title: "Creation Date", data: "creation_date" },
-                        { title: "Message Flow Id", data: "parent_message_id" },
-                        { title: "Until", data: "expiration_date" },
-                        { title: "Sent Who?", data: "recipient_id" },
-                        { title: "My Id", data: "creator_id" },
-                        { title: "Is Read?", data: "is_read" }
+                        { title: "Message Body", data: "meassageBody" },
+                        { title: "Creation Date", data: "creationDate" },
+                        { title: "Message Flow Id", data: "parentMessageId" },
+                        { title: "Until", data: "expirationDate" },
+                        { title: "Sent Who?", data: "recipientId" },
+                        { title: "My Id", data: "creatorId" },
+                        { title: "Is Read?", data: "isRead" }
                     ],
                 })
             },

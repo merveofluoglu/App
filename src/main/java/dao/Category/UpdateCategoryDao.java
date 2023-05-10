@@ -17,7 +17,7 @@ public class UpdateCategoryDao extends AbstractDAO{
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setString(1, category.getCategory_name());
+            pstmt.setString(1, category.getCategoryName());
             pstmt.setLong(2, _categoryId);
 
             affectedRows = pstmt.executeUpdate();

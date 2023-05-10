@@ -23,7 +23,7 @@ public class GetUserbySurnameDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> getPostsByName(String surname) throws SQLException, ResourceNotFoundException {
+    public List<User> getPostsByName(String _surname) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -32,7 +32,7 @@ public class GetUserbySurnameDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, surname);
+            _pstmt.setString(1, _surname);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

@@ -22,7 +22,7 @@ public class GetUserByNameAndSurnameDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> getUserByNameAndSurname(String name,String surname) throws SQLException, ResourceNotFoundException {
+    public List<User> getUserByNameAndSurname(String _name, String _surname) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -31,8 +31,8 @@ public class GetUserByNameAndSurnameDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, name);
-            _pstmt.setString(2, surname);
+            _pstmt.setString(1, _name);
+            _pstmt.setString(2, _surname);
 
             _rs = _pstmt.executeQuery();
 

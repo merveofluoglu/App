@@ -2,41 +2,41 @@ package resource;
 
 public class Favourites {
 
-    private long favourite_id;
-    private long user_id;
-    private long post_id;
-
-    public Favourites(long favourite_id, long user_id, long post_id) {
-        this.favourite_id = favourite_id;
-        this.user_id = user_id;
-        this.post_id = post_id;
-    }
+    private long favouriteId;
+    private long userId;
+    private long postId;
 
     public Favourites() {
 
     }
 
-    public long getFavourite_id() {
-        return favourite_id;
+    public Favourites(long favouriteId, long userId, long postId) {
+        this.favouriteId = favouriteId;
+        this.userId = userId;
+        this.postId = postId;
     }
 
-    public void setFavourite_id(long favourite_id) {
-        this.favourite_id = favourite_id;
+    public long getFavouriteId() {
+        return favouriteId;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public void setFavouriteId(long favouriteId) {
+        this.favouriteId = favouriteId;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public long getUserId() {
+        return userId;
     }
 
-    public long getPost_id() {
-        return post_id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public void setPost_id(long post_id) {
-        this.post_id = post_id;
+    public long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(long postId) {
+        this.postId = postId;
     }
 }

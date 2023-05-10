@@ -26,6 +26,10 @@
     <div class="card">
         <div class="card-body">
             <form method="post" class="form-group" action="${pageContext.request.contextPath}/user/update">
+                <div class="form-group" style="display:none">
+                    <label>Id: </label>
+                    <input type="text" class="form-control" name="userId" readonly="readonly" value="${user.userId}"/>
+                </div>
                 <div class="form-group">
                     <label>Name: </label>
                     <input type="text" class="form-control" name="name" size="50" value="${user.name}"/>

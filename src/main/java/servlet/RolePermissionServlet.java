@@ -70,17 +70,17 @@ public class RolePermissionServlet extends AbstractServlet{
 
     private void updateRolePermission(HttpServletRequest _request, HttpServletResponse _response) {
 
-        RolePermission _role_permission = null;
+        RolePermission _rolePermission = null;
 
-        Long _role_permission_id = Long.parseLong(_request.getParameter("role_permission_id"));
+        Long _rolePermissionId = Long.parseLong(_request.getParameter("rolePermissionId"));
 
         try {
-            _role_permission.setRole_id(Long.valueOf(_request.getParameter("role_id")));
-            _role_permission.setPermission_id(Long.valueOf(_request.getParameter("permission_id")));
+            _rolePermission.setRoleId(Long.valueOf(_request.getParameter("roleId")));
+            _rolePermission.setPermissionId(Long.valueOf(_request.getParameter("permissionId")));
 
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new UpdateRolePermissionByIdDao(getConnection()).updateRolePermissionById(_role_permission, _role_permission_id));
+            _result.put("data", new UpdateRolePermissionByIdDao(getConnection()).updateRolePermissionById(_rolePermission, _rolePermissionId));
 
             _response.getWriter().write(_result.toString());
 
@@ -96,13 +96,15 @@ public class RolePermissionServlet extends AbstractServlet{
 
     private void deleteRolePermission(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
-            Long _role_permission_id = Long.parseLong(_request.getParameter("role_permission_id"));
+            Long _rolePermissionId = Long.parseLong(_request.getParameter("rolePermissionId"));
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new DeleteRolePermissionByIdDao(getConnection()).deleteRolePermission(_role_permission_id));
+            _result.put("data", new DeleteRolePermissionByIdDao(getConnection()).deleteRolePermission(_rolePermissionId));
+
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.setContentType("application/json");
             _response.getWriter().write(_result.toString());
+
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
@@ -114,16 +116,16 @@ public class RolePermissionServlet extends AbstractServlet{
 
     private void addRolePermission(HttpServletRequest _request, HttpServletResponse _response) {
 
-        RolePermission _role_permission = null;
+        RolePermission _rolePermission = null;
 
         try {
-            _role_permission.setRole_id(Long.valueOf(_request.getParameter("role_id")));
-            _role_permission.setPermission_id(Long.valueOf(_request.getParameter("permission_id")));
+            _rolePermission.setRoleId(Long.valueOf(_request.getParameter("roleId")));
+            _rolePermission.setPermissionId(Long.valueOf(_request.getParameter("permissionId")));
 
 
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new CreateRolePermissionDao(getConnection()).createRolePermission(_role_permission));
+            _result.put("data", new CreateRolePermissionDao(getConnection()).createRolePermission(_rolePermission));
 
             _response.getWriter().write(_result.toString());
 

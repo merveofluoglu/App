@@ -5,44 +5,45 @@ import java.sql.Timestamp;
 
 public class ActionLog {
 
-    private long action_id;
-    private boolean is_user_act;
-    private boolean is_system_act;
+    private long actionId;
+    private boolean isUserAct;
+    private boolean isSystemAct;
     private String description;
-    private Timestamp action_date;
-    private long user_id;
+    private Timestamp actionDate;
+    private long userId;
     public ActionLog(){}
-    public ActionLog(long action_id, boolean is_user_act, boolean is_system_act, String description, Timestamp action_date, long user_id) {
-        this.action_id = action_id;
-        this.is_user_act = is_user_act;
-        this.is_system_act = is_system_act;
+
+    public ActionLog(long actionId, boolean isUserAct, boolean isSystemAct, String description, Timestamp actionDate, long userId) {
+        this.actionId = actionId;
+        this.isUserAct = isUserAct;
+        this.isSystemAct = isSystemAct;
         this.description = description;
-        this.action_date = action_date;
-        this.user_id = user_id;
+        this.actionDate = actionDate;
+        this.userId = userId;
     }
 
-    public long getAction_id() {
-        return action_id;
+    public long getActionId() {
+        return actionId;
     }
 
-    public void setAction_id(long action_id) {
-        this.action_id = action_id;
+    public void setActionId(long actionId) {
+        this.actionId = actionId;
     }
 
-    public boolean isIs_user_act() {
-        return is_user_act;
+    public boolean isUserAct() {
+        return isUserAct;
     }
 
-    public void setIs_user_act(boolean is_user_act) {
-        this.is_user_act = is_user_act;
+    public void setUserAct(boolean userAct) {
+        isUserAct = userAct;
     }
 
-    public boolean isIs_system_act() {
-        return is_system_act;
+    public boolean isSystemAct() {
+        return isSystemAct;
     }
 
-    public void setIs_system_act(boolean is_system_act) {
-        this.is_system_act = is_system_act;
+    public void setSystemAct(boolean systemAct) {
+        isSystemAct = systemAct;
     }
 
     public String getDescription() {
@@ -53,19 +54,19 @@ public class ActionLog {
         this.description = description;
     }
 
-    public Timestamp getAction_date() {
-        return action_date;
+    public Timestamp getActionDate() {
+        return actionDate;
     }
 
-    public void setAction_date(Timestamp action_date) {
-        this.action_date = action_date;
+    public void setActionDate(Timestamp actionDate) {
+        this.actionDate = actionDate;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

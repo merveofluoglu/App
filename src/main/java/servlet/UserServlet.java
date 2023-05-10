@@ -82,7 +82,7 @@ public class UserServlet extends AbstractServlet{
                 loginOperations(_request,_response);
                 break;
             case "register" :
-                registerationOperations(_request,_response);
+                registrationOperations(_request,_response);
                 break;
             case "update" :
                 updateOperations(_request,_response);
@@ -119,7 +119,7 @@ public class UserServlet extends AbstractServlet{
             _reviews = new GetReviewsByUserIdDao(getConnection()).getReviewsByUserId(_userId);
 
             for(int i=0; i<_reviews.size();i++){
-                _result.put("affectedRow", new DeleteReviewDao(getConnection()).deleteReview(_reviews.get(i).getReview_id()));
+                _result.put("affectedRow", new DeleteReviewDao(getConnection()).deleteReview(_reviews.get(i).getReviewId()));
             }
 
             List<Message> _cretorMessages = new ArrayList<>();
@@ -127,7 +127,7 @@ public class UserServlet extends AbstractServlet{
             _cretorMessages = new GetMessagesByCreatorIdDao(getConnection()).getMessagesByCreatorId(_userId);
 
             for(int i=0; i<_cretorMessages.size();i++){
-                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_cretorMessages.get(i).getMessage_id()));
+                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_cretorMessages.get(i).getMessageId()));
             }
 
             int _deletedPosts = new DeletePostByUserIdDao(getConnection()).deletePosts(_userId);
@@ -137,14 +137,13 @@ public class UserServlet extends AbstractServlet{
             _recipientMessages = new GetMessagesByRecipientIdDao(getConnection()).getMessagesByRecipientId(_userId);
 
             for(int i=0; i<_recipientMessages.size();i++){
-                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_recipientMessages.get(i).getMessage_id()));
+                _result.put("affectedRow", new DeleteMessageByIdDao(getConnection()).deleteMessageById(_recipientMessages.get(i).getMessageId()));
             }
 
             _result.put("affectedRow", new DeleteUserByUseridDAO(getConnection()).DeleteUserByUseridDAO(_userId));
 
             _response.getWriter().write(_result.toString());
 
-            _response.getWriter().write(_result.toString());
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
@@ -193,9 +192,9 @@ public class UserServlet extends AbstractServlet{
 
             if (logAccess) {
                 HttpSession session = _request.getSession();
-                session.setAttribute("user_id", _user.getUserID());
+                session.setAttribute("userId", _user.getUserId());
                 session.setAttribute("user",_user);
-                boolean roleCheck = _user.getRole_id() == 0;
+                boolean roleCheck = _user.getRoleId() == 0;
                 if (roleCheck){
                     session.setAttribute("role", "admin");
                 }
@@ -217,7 +216,7 @@ public class UserServlet extends AbstractServlet{
             writeError(_response, ErrorCode.INTERNAL_ERROR);
         }
     }
-    private void registerationOperations(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
+    private void registrationOperations(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         ErrorCode errorCode = null;
         User newUser = new User();
         User checkuser = new User();
@@ -258,36 +257,36 @@ public class UserServlet extends AbstractServlet{
                     newUser.setSurname(_request.getParameter("surname"));
                     newUser.setEmail(_request.getParameter("email"));
                     newUser.setPassword(_request.getParameter("password"));
-                    newUser.setRole_id(1L);
-                    newUser.setCreation_date(new Timestamp(System.currentTimeMillis()));
-                    newUser.setUpdate_date(new Timestamp(System.currentTimeMillis()));
-                    newUser.setIs_deleted(false);
-                    newUser.setProfile_photo(null);
+                    newUser.setRoleId(1L);
+                    newUser.setCreationDate(new Timestamp(System.currentTimeMillis()));
+                    newUser.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+                    newUser.setDeleted(false);
+                    newUser.setPpPath(null);
                     JSONObject _result = new JSONObject();
                     _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
                     _response.getWriter().write(_result.toString());
                 }
                 else{
                     checkuser = _user.get(_user.size()-1);
-                    if (checkuser.getIsDeleted() == true){
+                    if (checkuser.isDeleted() == true){
                         if (checkuser.getPassword() != password){
                             newUser.setName(_request.getParameter("name"));
                             newUser.setSurname(_request.getParameter("surname"));
                             newUser.setEmail(_request.getParameter("email"));
                             newUser.setPassword(_request.getParameter("password"));
-                            newUser.setRole_id(1L);
-                            newUser.setCreation_date(new Timestamp(System.currentTimeMillis()));
-                            newUser.setUpdate_date(new Timestamp(System.currentTimeMillis()));
-                            newUser.setIs_deleted(false);
-                            newUser.setProfile_photo(null);
+                            newUser.setRoleId(1L);
+                            newUser.setCreationDate(new Timestamp(System.currentTimeMillis()));
+                            newUser.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+                            newUser.setDeleted(false);
+                            newUser.setPpPath(null);
                             JSONObject _result = new JSONObject();
                             _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
                             _response.getWriter().write(_result.toString());
                         }
                         else{
-                            checkuser.setIs_deleted(false);
+                            checkuser.setDeleted(false);
                             JSONObject _result = new JSONObject();
-                            _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(checkuser.getUserID(),checkuser));
+                            _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(checkuser.getUserId(),checkuser));
                             _response.getWriter().write(_result.toString());
                         }
 
@@ -363,7 +362,7 @@ public class UserServlet extends AbstractServlet{
     private void updatephoto(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
             HttpSession _session = _request.getSession();
-            long _userId = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
             String password = _request.getParameter("password");
             byte[] pp_path = _request.getParameter("file").getBytes();
             _response.setContentType("application/json");
@@ -386,7 +385,7 @@ public class UserServlet extends AbstractServlet{
         try {
             User _user = new User();
             HttpSession _session = _request.getSession();
-            long _user_id = (long) _session.getAttribute("user_id");
+            long _userId = Long.parseLong(_request.getParameter("userId"));
             String name = _request.getParameter("name");
             String surname = _request.getParameter("surname");
             String email = _request.getParameter("email");
@@ -420,13 +419,13 @@ public class UserServlet extends AbstractServlet{
                 _response.setContentType("application/json");
                 JSONObject res = new JSONObject();
                 _response.setStatus(HttpServletResponse.SC_OK);
-                User temp = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_user_id);
+                User temp = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId);
                 _user.setName(_request.getParameter("name"));
                 _user.setSurname(_request.getParameter("surname"));
                 _user.setEmail(_request.getParameter("email"));
-                _user.setUpdate_date(new Timestamp(System.currentTimeMillis()));
+                _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
                 JSONObject _result = new JSONObject();
-                _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_user_id, _user));
+                _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
                 _response.getWriter().write(_result.toString());
                 _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
             }
@@ -440,9 +439,9 @@ public class UserServlet extends AbstractServlet{
 
         // This method returns a permission.
         try {
-            long _user_id = parseLong(_request.getParameter("user_id"));
+            long _userId = parseLong(_request.getParameter("userId"));
             JSONObject _result = new JSONObject();
-            _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_user_id));
+            _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.getWriter().write(_result.toString());
@@ -460,9 +459,9 @@ public class UserServlet extends AbstractServlet{
         HttpSession _session = _request.getSession();
         // This method returns a permission.
         try {
-            long _user_id = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
             JSONObject _result = new JSONObject();
-            _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_user_id));
+            _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.getWriter().write(_result.toString());
@@ -484,7 +483,7 @@ public class UserServlet extends AbstractServlet{
         // This method returns a json array with the roles.
         ArrayList<User> _users;
         try {
-            Timestamp _creation_date = Timestamp.valueOf(_request.getParameter("role_id"));
+            Timestamp _creation_date = Timestamp.valueOf(_request.getParameter("creationDate"));
             JSONObject _result = new JSONObject();
             _result.put("data",new GetUserByCreationDateDAO(getConnection()).GetUserByCreationDateDAO(_creation_date));
             _response.setStatus(HttpServletResponse.SC_OK);
@@ -504,9 +503,9 @@ public class UserServlet extends AbstractServlet{
 
         ArrayList<User> _users;
         try {
-            long _role_id = Long.parseLong(_request.getParameter("role_id"));
+            long _roleId = Long.parseLong(_request.getParameter("roleId"));
             JSONObject _result = new JSONObject();
-            _result.put("data",new GetUserByRoleIdDAO(getConnection()).GetUserByRoleIdDAO(_role_id));
+            _result.put("data",new GetUserByRoleIdDAO(getConnection()).GetUserByRoleIdDAO(_roleId));
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.setContentType("application/json");
             _response.getWriter().write(_result.toString());
@@ -599,9 +598,9 @@ public class UserServlet extends AbstractServlet{
         // This method returns a json array with the roles.
         ArrayList<User> _users;
         try {
-            Timestamp _update_date = Timestamp.valueOf(_request.getParameter("update_date"));
+            Timestamp _updateDate = Timestamp.valueOf(_request.getParameter("updateDate"));
             JSONObject _result = new JSONObject();
-            _result.put("data",new GetUserByUpdateDateDAO(getConnection()).GetUserByUpdateDateDAO(_update_date));
+            _result.put("data",new GetUserByUpdateDateDAO(getConnection()).GetUserByUpdateDateDAO(_updateDate));
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.setContentType("application/json");
             _response.getWriter().write(_result.toString());

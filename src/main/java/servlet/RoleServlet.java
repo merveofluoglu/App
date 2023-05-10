@@ -71,7 +71,7 @@ public class RoleServlet extends AbstractServlet {
 
         Role _role = null;
 
-        long _roleId = Long.parseLong(_request.getParameter("role_id"));
+        long _roleId = Long.parseLong(_request.getParameter("roleId"));
 
         HttpSession _session = _request.getSession();
 
@@ -109,13 +109,15 @@ public class RoleServlet extends AbstractServlet {
                 throw new Exception("You don't have access to this area!");
             }
 
-            Long _role_id = Long.parseLong(_request.getParameter("role_id"));
+            Long _roleId = Long.parseLong(_request.getParameter("roleId"));
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new DeleteRoleByIdDAO(getConnection()).deleteRoleById(_role_id));
+            _result.put("data", new DeleteRoleByIdDAO(getConnection()).deleteRoleById(_roleId));
+
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.setContentType("application/json");
             _response.getWriter().write(_result.toString());
+
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {

@@ -1,10 +1,8 @@
 package servlet;
 
-import dao.Category.GetAllCategoriesDao;
 import dao.Favourites.GetFavouritesByPostIdDao;
 import dao.Favourites.RemoveFavouriteDao;
 import dao.Post.*;
-import dao.PostFiles.DeleteFileFromPostDao;
 import dao.PostFiles.DeletePostFilesByPostIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -16,12 +14,10 @@ import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 
@@ -88,29 +84,29 @@ public class PostServlet extends AbstractServlet {
 
         HttpSession _session = _request.getSession();
 
-        long _postId = Long.parseLong(_request.getParameter("post_id"));
+        long _postId = Long.parseLong(_request.getParameter("postId"));
 
         String _role = (String) _session.getAttribute("role");
 
-        if(_role != "admin" && (long)_session.getAttribute("user_id") != Long.parseLong(_request.getParameter("user_id"))) {
+        if(_role != "admin" && (long)_session.getAttribute("userId") != Long.parseLong(_request.getParameter("userId"))) {
             writeError(_response, ErrorCode.METHOD_NOT_ALLOWED);
         }
 
         try {
             _post.setName(_request.getParameter("name"));
             _post.setDescription(_request.getParameter("description"));
-            _post.setUser_id(Long.parseLong(_request.getParameter("user_id")));
-            _post.setCustomer_id(0);
+            _post.setUserId(Long.parseLong(_request.getParameter("userId")));
+            _post.setCustomerId(0);
             _post.setPrice(Double.parseDouble(_request.getParameter("price")));
             _post.setStatus(_request.getParameter("status"));
-            _post.setStart_date(new Timestamp(System.currentTimeMillis()));
-            _post.setEnd_date(Timestamp.valueOf(_post.getStart_date().toLocalDateTime().plusDays(15)));
-            _post.setIs_deleted(false);
-            _post.setIs_sold(false);
-            _post.setSold_date(null);
-            _post.setUpdate_date(null);
-            _post.setCategory_id(0);
-            _post.setSubcategory_id(0);
+            _post.setStartDate(new Timestamp(System.currentTimeMillis()));
+            _post.setEndDate(Timestamp.valueOf(_post.getStartDate().toLocalDateTime().plusDays(15)));
+            _post.setDeleted(false);
+            _post.setSold(false);
+            _post.setSoldDate(null);
+            _post.setUpdateDate(null);
+            _post.setCategoryId(0);
+            _post.setSubcategoryId(0);
 
             JSONObject _result = new JSONObject();
 
@@ -134,13 +130,13 @@ public class PostServlet extends AbstractServlet {
 
             HttpSession _session = _request.getSession();
 
-            long _userId = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
 
             String _role = (String) _session.getAttribute("role");
 
             Post _post = new GetPostByIdDao(getConnection()).getPostById(_postId);
 
-            if(_role != "admin" && _post.getUser_id() != _userId) {
+            if(_role != "admin" && _post.getUserId() != _userId) {
                 writeError(_response, ErrorCode.METHOD_NOT_ALLOWED);
             }
 
@@ -153,7 +149,7 @@ public class PostServlet extends AbstractServlet {
             List<Favourites> _favs = new ArrayList<>();
             _favs = new GetFavouritesByPostIdDao(getConnection()).getFavouritesByPostIdDao(_postId);
             for(int i=0; i<_favs.size();i++){
-                int _deletedFavs = new RemoveFavouriteDao(getConnection()).removeFavourite(_favs.get(i).getFavourite_id());
+                int _deletedFavs = new RemoveFavouriteDao(getConnection()).removeFavourite(_favs.get(i).getFavouriteId());
             }
 
             _result.put("affectedRow", new DeletePostByIdDao(getConnection()).deletePost(_postId));
@@ -174,7 +170,7 @@ public class PostServlet extends AbstractServlet {
             HttpSession _session = _request.getSession();
 
             long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
-            long _customerId = (long) _session.getAttribute("user_id");
+            long _customerId = (long) _session.getAttribute("userId");
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
@@ -184,7 +180,6 @@ public class PostServlet extends AbstractServlet {
 
             _response.getWriter().write(_result.toString());
 
-            //After jsp files prepared, request dispatcher will be implemented!!
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -197,7 +192,7 @@ public class PostServlet extends AbstractServlet {
         try {
             HttpSession _session = _request.getSession();
 
-            long _customerId = (long) _session.getAttribute("user_id");
+            long _customerId = (long) _session.getAttribute("userId");
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
@@ -206,8 +201,6 @@ public class PostServlet extends AbstractServlet {
             _result.put("data", new GetPostsByCustomerIdDao(getConnection()).getPostsByCustomerId(_customerId));
 
             _response.getWriter().write(_result.toString());
-
-            //After jsp files prepared, request dispatcher will be implemented!!
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -222,7 +215,7 @@ public class PostServlet extends AbstractServlet {
         try {
             HttpSession _session = _request.getSession();
 
-            long _customerId = (long) _session.getAttribute("user_id");
+            long _customerId = (long) _session.getAttribute("userId");
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
@@ -251,18 +244,18 @@ public class PostServlet extends AbstractServlet {
         try {
             _post.setName(_request.getParameter("name"));
             _post.setDescription(_request.getParameter("description"));
-            _post.setUser_id((Long) _session.getAttribute("user_id"));
-            _post.setCustomer_id(0);
+            _post.setUserId((Long) _session.getAttribute("userId"));
+            _post.setCustomerId(0);
             _post.setPrice(Double.parseDouble(_request.getParameter("price")));
             _post.setStatus(_request.getParameter("status"));
-            _post.setStart_date(new Timestamp(System.currentTimeMillis()));
-            _post.setEnd_date(Timestamp.valueOf(_post.getStart_date().toLocalDateTime().plusDays(15)));
-            _post.setIs_deleted(false);
-            _post.setIs_sold(false);
-            _post.setSold_date(null);
-            _post.setUpdate_date(null);
-            _post.setCategory_id(Long.parseLong(_request.getParameter("category_id")));
-            _post.setSubcategory_id(Long.parseLong(_request.getParameter("subcategory_id")));
+            _post.setStartDate(new Timestamp(System.currentTimeMillis()));
+            _post.setEndDate(Timestamp.valueOf(_post.getStartDate().toLocalDateTime().plusDays(15)));
+            _post.setDeleted(false);
+            _post.setSold(false);
+            _post.setSoldDate(null);
+            _post.setUpdateDate(null);
+            _post.setCategoryId(Long.parseLong(_request.getParameter("categoryId")));
+            _post.setSubcategoryId(Long.parseLong(_request.getParameter("subcategoryId")));
 
             JSONObject _result = new JSONObject();
 
@@ -280,7 +273,7 @@ public class PostServlet extends AbstractServlet {
 
     private void getPostDetailsOp (HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _id = parseLong(_request.getParameter("post_id"));
+            long _id = parseLong(_request.getParameter("postId"));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 

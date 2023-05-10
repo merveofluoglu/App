@@ -28,8 +28,8 @@ public class CreateSubCategoryDao extends AbstractDAO{
         try {
             // Prepare and set the statement object to be executed
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setString(1, subcategory.getSubcategory_name());
-            pstmt.setLong(2, subcategory.getCategory_id());
+            pstmt.setString(1, subcategory.getSubcategoryName());
+            pstmt.setLong(2, subcategory.getCategoryId());
 
             rs = pstmt.executeUpdate();
             if (rs != 1 ) {

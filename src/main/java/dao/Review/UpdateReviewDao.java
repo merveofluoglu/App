@@ -31,13 +31,13 @@ public class UpdateReviewDao extends AbstractDAO {
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, _review.getUser_id());
-            _pstmt.setLong(2, _review.getSeller_id());
-            _pstmt.setLong(3, _review.getPost_id());
-            _pstmt.setDouble(4, _review.getPoint_scale());
+            _pstmt.setLong(1, _review.getUserId());
+            _pstmt.setLong(2, _review.getSellerId());
+            _pstmt.setLong(3, _review.getPostId());
+            _pstmt.setDouble(4, _review.getPointScale());
             _pstmt.setString(5, _review.getDescription());
-            _pstmt.setTimestamp(6, _review.getCreate_date());
-            _pstmt.setBoolean(7, _review.isIs_deleted());
+            _pstmt.setTimestamp(6, _review.getCreateDate());
+            _pstmt.setBoolean(7, _review.isDeleted());
             _pstmt.setLong(8, _reviewId);
 
             _affectedRows = _pstmt.executeUpdate();

@@ -29,7 +29,7 @@ public class CreateRoleDAO extends AbstractDAO{
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, role.getRole_id());
+            _pstmt.setLong(1, role.getRoleId());
             _pstmt.setString(2, role.getName());
             _rs = _pstmt.executeUpdate();
 

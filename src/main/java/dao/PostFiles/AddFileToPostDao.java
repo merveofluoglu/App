@@ -24,10 +24,10 @@ public class AddFileToPostDao extends AbstractDAO {
 
         try {
             pstmt = con.prepareStatement(STATEMENT);
-            pstmt.setLong(1, _postFiles.getPost_id());
+            pstmt.setLong(1, _postFiles.getPostId());
             pstmt.setBytes(2, _postFiles.getFile());
-            pstmt.setBoolean(3, _postFiles.isIs_deleted());
-            pstmt.setString(4, _postFiles.getFile_media_type());
+            pstmt.setBoolean(3, _postFiles.isDeleted());
+            pstmt.setString(4, _postFiles.getFileMediaType());
 
             rs = pstmt.executeUpdate();
 

@@ -45,11 +45,11 @@ public class CreateUserDAO extends AbstractDAO{
             _pstmt.setString(2, user.getSurname());
             _pstmt.setString(3, user.getEmail());
             _pstmt.setString(4, user.getPassword());
-            _pstmt.setLong(5, user.getRole_id());
-            _pstmt.setTimestamp(6, user.getCreation_date());
-            _pstmt.setTimestamp(7, user.getUpdate_date());
-            _pstmt.setBytes(8, user.getProfile_photo());
-            _pstmt.setBoolean(9,user.getIsDeleted());
+            _pstmt.setLong(5, user.getRoleId());
+            _pstmt.setTimestamp(6, user.getCreationDate());
+            _pstmt.setTimestamp(7, user.getUpdateDate());
+            _pstmt.setBytes(8, user.getPpPath());
+            _pstmt.setBoolean(9,user.isDeleted());
             _rs = _pstmt.executeUpdate();
 
             if (_rs != 1) {

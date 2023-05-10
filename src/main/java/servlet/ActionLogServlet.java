@@ -65,11 +65,11 @@ public class ActionLogServlet extends AbstractServlet{
         ActionLog _actionLog = null;
 
         try {
-            _actionLog.setIs_user_act(Boolean.parseBoolean(_req.getParameter("is_user_act")));
-            _actionLog.setIs_system_act(Boolean.parseBoolean(_req.getParameter("is_system_act")));
+            _actionLog.setUserAct(Boolean.parseBoolean(_req.getParameter("is_user_act")));
+            _actionLog.setSystemAct(Boolean.parseBoolean(_req.getParameter("is_system_act")));
             _actionLog.setDescription(_req.getParameter("description"));
-            _actionLog.setAction_date(new Timestamp(System.currentTimeMillis()));
-            _actionLog.setUser_id(Long.parseLong(_req.getParameter("user_id")));
+            _actionLog.setActionDate(new Timestamp(System.currentTimeMillis()));
+            _actionLog.setUserId(Long.parseLong(_req.getParameter("user_id")));
 
             JSONObject _result = new JSONObject();
 

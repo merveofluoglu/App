@@ -55,7 +55,7 @@ public class FavouritesServlet extends AbstractServlet{
         try {
 
             HttpSession _session = _req.getSession();
-            long _userId = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
 
             _resp.setContentType("application/json");
             _resp.setStatus(HttpServletResponse.SC_OK);
@@ -94,10 +94,10 @@ public class FavouritesServlet extends AbstractServlet{
             HttpSession _session = _req.getSession();
 
             long _postId = Long.parseLong(_req.getRequestURI().split("/", 5)[4]);
-            long _userId = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
 
-            _fav.setUser_id(_userId);
-            _fav.setPost_id(_postId);
+            _fav.setUserId(_userId);
+            _fav.setPostId(_postId);
 
             JSONObject _result = new JSONObject();
 
@@ -117,7 +117,7 @@ public class FavouritesServlet extends AbstractServlet{
 
     private void removeFavourite(HttpServletRequest _req, HttpServletResponse _resp) {
         try {
-            long _postId = Long.parseLong(_req.getParameter("post_id"));
+            long _postId = Long.parseLong(_req.getParameter("postId"));
 
             _resp.setContentType("application/json");
             _resp.setStatus(HttpServletResponse.SC_OK);

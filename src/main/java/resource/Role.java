@@ -2,21 +2,21 @@ package resource;
 import java.sql.Timestamp;
 import java.util.Objects;
 public class Role {
-    private Long role_id;
+    private Long roleId;
 
     private String name;
 
-    public Role(Long role_id, String name) {
-        this.role_id = role_id;
+    public Role(Long roleId, String name) {
+        this.roleId = roleId;
         this.name = name;
     }
 
-    public Long getRole_id() {
-        return role_id;
+    public Long getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(Long role_id) {
-        this.role_id = role_id;
+    public void setRoleId(Long role_id) {
+        this.roleId = role_id;
     }
 
     public String getName() {
@@ -30,7 +30,7 @@ public class Role {
     @Override
     public String toString() {
         return "Role{" +
-                "role_id='" + role_id + '\'' +
+                "role_id='" + roleId + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

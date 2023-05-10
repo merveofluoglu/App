@@ -34,8 +34,6 @@
     </thead>
 </table>
 
-
-
 <script>
     $(document).ready(function () {
         getCategories();
@@ -66,10 +64,10 @@
     }
 
     getCategoryNameById = (id) => {
-        return categories.filter(item => item.category_id == id)[0].category_name;
+        return categories.filter(item => item.categoryId == id)[0].categoryName;
     }
     getSubCategoryNameById = (id) => {
-        return subcategories.filter(item => item.subcategory_id == id)[0].subcategory_name;
+        return subcategories.filter(item => item.subcategoryId == id)[0].subcategoryName;
     }
 
     var table;
@@ -91,34 +89,34 @@
                 data = data.data;
                 data.forEach(element => {
 
-                    categoryName = getCategoryNameById(element.category_id);
-                    subCategoryName = getSubCategoryNameById(element.subcategory_id);
+                    categoryName = getCategoryNameById(element.categoryId);
+                    subCategoryName = getSubCategoryNameById(element.subcategoryId);
 
-                    element.category_id = categoryName;
-                    element.subcategory_id = subCategoryName;
+                    element.categoryId = categoryName;
+                    element.subcategoryId = subCategoryName;
                 })
                 table = $('#MyPosts').DataTable({
                     data: data,
                     bDestroy: true,
                     dom: "Bfrtip",
                     columns: [
-                        { title: "Id", data: "post_id" },
+                        { title: "Id", data: "postId" },
                         { title: "Name", data: "name" },
                         { title: "Description", data: "description" },
-                        { title: "User Id", data: "user_id" },
-                        { title: "Customer Id", data: "customer_id" },
+                        { title: "User Id", data: "userId" },
+                        { title: "Customer Id", data: "customerId" },
                         { title: "Price", data: "price" },
                         { title: "Status", data: "status" },
-                        { title: "Category", data: "category_id" },
-                        { title: "Sub Category", data: "subcategory_id" }
+                        { title: "Category", data: "categoryId" },
+                        { title: "Sub Category", data: "subcategoryId" }
                     ],
                     select: true,
                 }).off("select")
                     .on("select", function (e, dt, type, indexes) {
-                        _selectedId = dt.data().post_id;
+                        _selectedId = dt.data().postId;
                         _selectedName = dt.data().name;
                         _selectedDescription = dt.data().description;
-                        _selectedUserId = dt.data().user_id;
+                        _selectedUserId = dt.data().userId;
                         _selectedPrice = dt.data().price;
                         _selectedStatus = dt.data().status;
                     });

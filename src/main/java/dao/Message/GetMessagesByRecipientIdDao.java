@@ -29,7 +29,7 @@ public class GetMessagesByRecipientIdDao extends AbstractDAO {
     }
 
 
-    public List<Message> getMessagesByRecipientId(long recipient_id) throws SQLException, ResourceNotFoundException {
+    public List<Message> getMessagesByRecipientId(long _recipientId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -37,7 +37,7 @@ public class GetMessagesByRecipientIdDao extends AbstractDAO {
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, recipient_id);
+            _pstmt.setObject(1, _recipientId);
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {

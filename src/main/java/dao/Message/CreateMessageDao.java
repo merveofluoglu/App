@@ -36,14 +36,14 @@ public class CreateMessageDao extends AbstractDAO {
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, _message.getCreator_id());
-            _pstmt.setLong(2, _message.getRecipient_id());
-            _pstmt.setLong(3, _message.getParent_message_id());
+            _pstmt.setLong(1, _message.getCreatorId());
+            _pstmt.setLong(2, _message.getRecipientId());
+            _pstmt.setLong(3, _message.getParentMessageId());
             _pstmt.setString(4, _message.getSubject());
-            _pstmt.setString(5, _message.getMessage_body());
-            _pstmt.setBoolean(6, _message.getIsRead());
-            _pstmt.setTimestamp(7, _message.getCreation_date());
-            _pstmt.setTimestamp(8, _message.getExpiration_date());
+            _pstmt.setString(5, _message.getMessageBody());
+            _pstmt.setBoolean(6, _message.isRead());
+            _pstmt.setTimestamp(7, _message.getCreationDate());
+            _pstmt.setTimestamp(8, _message.getExpirationDate());
             _rs = _pstmt.executeUpdate();
 
             if (_rs != 1) {

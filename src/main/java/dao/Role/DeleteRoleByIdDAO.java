@@ -26,7 +26,7 @@ public class DeleteRoleByIdDAO extends AbstractDAO {
 
     }
 
-    public Role deleteRoleById(Long role_id) throws SQLException, ResourceNotFoundException {
+    public Role deleteRoleById(Long _roleId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -35,7 +35,7 @@ public class DeleteRoleByIdDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, role_id);
+            _pstmt.setObject(1, _roleId);
             _rs = _pstmt.executeQuery();
             if (!_rs.isBeforeFirst() ) {
                 throw new ResourceNotFoundException("There is no such user!");
