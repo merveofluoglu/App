@@ -57,6 +57,34 @@
     </div>
 </div>
 
+<!---------EDIT PERMISSION ---------->
+
+<div class="modal fade" id="editPermission" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit Category</h4>
+                <button type="button" class="btn-close" target="#editPermission" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" >
+                <div class="form-group" style="display:none">
+                    <label>Permission Id: </label>
+                    <input type="text" name="PermissionId" id="PermissionId" class="form-control" readonly="readonly"/>
+                </div>
+                <div class="form-group">
+                    <label>Permission Name:</label>
+                    <input type="text" name="PermissionName" id="PermissionName" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-toolbar" target="#editPermission" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="updatePermission()">Edit</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!---------DELETE PERMISSION--------->
 
 <div id="dialog" class="modal fade" role="dialog" style="display:none">
@@ -127,7 +155,7 @@
 
             const _data = {
 
-                permission_id: $("#editPermission [name='PermissionId']").val(),
+                permissionId: $("#editPermission [name='PermissionId']").val(),
                 name: $("#editPermission [name='PermissionName']").val()
             };
 
@@ -137,7 +165,8 @@
                     data: _data,
                     success: function (response) {
                         $('#editPermission').modal('hide');
-
+                        table.destroy();
+                        FillDatatable();
                         toastr.info("Permission updated succesfully!");
                     },
                     error: function () {
@@ -163,7 +192,7 @@
                         bDestroy: true,
                         dom: "Bfrtip",
                         columns: [
-                            { title: "PermissionId", data: "permission_id" },
+                            { title: "PermissionId", data: "permissionId" },
                             { title: "PermissionName", data: "name" },
                         ],
                         select: true,
@@ -214,7 +243,7 @@
                         ]
                     }).off("select")
                         .on("select", function (e, dt, type, indexes) {
-                            _selectedId = dt.data().permission_id;
+                            _selectedId = dt.data().permissionId;
                             _selectedName = dt.data().name;
 
                         });

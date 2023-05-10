@@ -29,7 +29,7 @@ public class CheckMessageParentIdDao extends AbstractDAO {
     }
 
 
-    public List<Message> getAllMessagesByUserId(long user_id) throws SQLException, ResourceNotFoundException {
+    public List<Message> getAllMessagesByUserId(long _userId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -37,8 +37,8 @@ public class CheckMessageParentIdDao extends AbstractDAO {
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, user_id);
-            _pstmt.setObject(2, user_id);
+            _pstmt.setObject(1, _userId);
+            _pstmt.setObject(2, _userId);
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {

@@ -120,7 +120,7 @@
         <tr>
           <td>Member since</td>
           <td>:</td>
-          <td>${user.creation_date}</td>
+          <td>${user.creationDate}</td>
         </tr>
         </tbody>
       </table>

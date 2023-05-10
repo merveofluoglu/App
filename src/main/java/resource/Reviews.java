@@ -4,64 +4,67 @@ import java.sql.Timestamp;
 
 public class Reviews {
 
-    private long review_id;
-    private long user_id;
-    private long seller_id;
-    private long post_id;
-    private double point_scale;
+    private long reviewId;
+    private long userId;
+    private long sellerId;
+    private long postId;
+    private double pointScale;
     private String description;
-    private Timestamp create_date;
-    private boolean is_deleted;
+    private Timestamp createDate;
+    private boolean isDeleted;
 
-    public Reviews(long review_id, long user_id, long seller_id, long post_id, double point_scale, String description, Timestamp create_date, boolean is_deleted) {
-        this.review_id = review_id;
-        this.user_id = user_id;
-        this.seller_id = seller_id;
-        this.post_id = post_id;
-        this.point_scale = point_scale;
+    public Reviews() {
+    }
+
+    public Reviews(long reviewId, long userId, long sellerId, long postId, double pointScale, String description, Timestamp createDate, boolean isDeleted) {
+        this.reviewId = reviewId;
+        this.userId = userId;
+        this.sellerId = sellerId;
+        this.postId = postId;
+        this.pointScale = pointScale;
         this.description = description;
-        this.create_date = create_date;
-        this.is_deleted = is_deleted;
+        this.createDate = createDate;
+        this.isDeleted = isDeleted;
     }
 
-    public long getReview_id() {
-        return review_id;
+    public long getReviewId() {
+        return reviewId;
     }
 
-    public void setReview_id(long review_id) {
-        this.review_id = review_id;
+    public void setReviewId(long reviewId) {
+        this.reviewId = reviewId;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getSeller_id() {
-        return seller_id;
+    public long getSellerId() {
+        return sellerId;
     }
 
-    public void setSeller_id(long seller_id) {
-        this.seller_id = seller_id;
+    public void setSellerId(long sellerId) {
+        this.sellerId = sellerId;
     }
 
-    public long getPost_id() {
-        return post_id;
+    public long getPostId() {
+        return postId;
     }
 
-    public void setPost_id(long post_id) {
-        this.post_id = post_id;
+    public void setPostId(long postId) {
+        this.postId = postId;
     }
 
-    public double getPoint_scale() {
-        return point_scale;
+    public double getPointScale() {
+        return pointScale;
     }
 
-    public void setPoint_scale(double point_scale) {
-        this.point_scale = point_scale;
+    public void setPointScale(double pointScale) {
+        this.pointScale = pointScale;
     }
 
     public String getDescription() {
@@ -72,19 +75,19 @@ public class Reviews {
         this.description = description;
     }
 
-    public Timestamp getCreate_date() {
-        return create_date;
+    public Timestamp getCreateDate() {
+        return createDate;
     }
 
-    public void setCreate_date(Timestamp create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
     }
 
-    public boolean isIs_deleted() {
-        return is_deleted;
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setIs_deleted(boolean is_deleted) {
-        this.is_deleted = is_deleted;
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

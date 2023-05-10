@@ -24,7 +24,7 @@ public class GetUserByRoleIdDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> GetUserByRoleIdDAO(long role_id) throws SQLException, ResourceNotFoundException {
+    public List<User> GetUserByRoleIdDAO(long _roleId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -33,7 +33,7 @@ public class GetUserByRoleIdDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setLong(1, role_id);
+            _pstmt.setLong(1, _roleId);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

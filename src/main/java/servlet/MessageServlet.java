@@ -95,7 +95,7 @@ public class MessageServlet extends AbstractServlet {
     protected void getUserMessages (HttpServletRequest _request, HttpServletResponse _response) {
         try {
             HttpSession _session = _request.getSession();
-            long _userId = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 
@@ -116,14 +116,14 @@ public class MessageServlet extends AbstractServlet {
         Message _message = new Message();
 
         try {
-            _message.setCreator_id(Long.parseLong(_request.getParameter("creator_id")));
-            _message.setRecipient_id(Long.parseLong(_request.getParameter("recipient_id")));
-            _message.setParent_message_id(Long.parseLong(_request.getParameter("parent_message_id")));
+            _message.setCreatorId(Long.parseLong(_request.getParameter("creatorId")));
+            _message.setRecipientId(Long.parseLong(_request.getParameter("recipientId")));
+            _message.setParentMessageId(Long.parseLong(_request.getParameter("parentMessageId")));
             _message.setSubject(_request.getParameter("subject"));
-            _message.setMessage_body(_request.getParameter("message_body"));
-            _message.setIsRead(false);
-            _message.setCreation_date(new Timestamp(System.currentTimeMillis()));
-            _message.setExpiration_date(Timestamp.valueOf(_message.getCreation_date().toLocalDateTime().plusDays(15)));
+            _message.setMessageBody(_request.getParameter("messageBody"));
+            _message.setRead(false);
+            _message.setCreationDate(new Timestamp(System.currentTimeMillis()));
+            _message.setExpirationDate(Timestamp.valueOf(_message.getCreationDate().toLocalDateTime().plusDays(15)));
 
             JSONObject _result = new JSONObject();
 
@@ -142,15 +142,15 @@ public class MessageServlet extends AbstractServlet {
     private void updateMessage(HttpServletRequest _request, HttpServletResponse _response){
         Message _message = new Message();
 
-        long _messageId = Long.parseLong(_request.getParameter("message_id"));
+        long _messageId = Long.parseLong(_request.getParameter("messageId"));
 
         try {
-            _message.setCreator_id(Long.parseLong(_request.getParameter("creator_id")));
-            _message.setRecipient_id(Long.parseLong(_request.getParameter("recipient_id")));
-            _message.setParent_message_id(Long.parseLong(_request.getParameter("parent_message_id")));
+            _message.setCreatorId(Long.parseLong(_request.getParameter("creatorId")));
+            _message.setRecipientId(Long.parseLong(_request.getParameter("recipientId")));
+            _message.setParentMessageId(Long.parseLong(_request.getParameter("parentMessageId")));
             _message.setSubject(_request.getParameter("subject"));
-            _message.setMessage_body(_request.getParameter("message_body"));
-            _message.setIsRead(Boolean.parseBoolean(_request.getParameter("is_read")));
+            _message.setMessageBody(_request.getParameter("messageBody"));
+            _message.setRead(Boolean.parseBoolean(_request.getParameter("isRead")));
 
             JSONObject _result = new JSONObject();
 
@@ -169,7 +169,7 @@ public class MessageServlet extends AbstractServlet {
 
     private void removeMessage(HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _messageId = Long.parseLong(_request.getParameter("message_id"));
+            long _messageId = Long.parseLong(_request.getParameter("messageId"));
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
@@ -190,7 +190,7 @@ public class MessageServlet extends AbstractServlet {
 
     private void readMessage(HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _messageId = Long.parseLong(_request.getParameter("message_id"));
+            long _messageId = Long.parseLong(_request.getParameter("messageId"));
 
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);

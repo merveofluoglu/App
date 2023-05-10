@@ -27,13 +27,13 @@
   <div class="card-body">
    <form method="post" class="form-group" action="${pageContext.request.contextPath}/postFiles/add">
     <div class="form-group">
-     <label for="post_id">Post Id: </label> <input type="text"
-                                                   class="form-control" name="post_id" size="50" />
+     <label for="postId">Post Id: </label>
+     <input id="postId" type="text" class="form-control" name="postId" size="50" />
     </div>
 
     <div class="form-group">
-     <label for="file">File:</label> <input
-            type="file" name="file" />
+     <label for="file">File:</label>
+     <input id="file" type="file" name="file" />
     </div>
     <input type="submit" value="Save" class="btn btn-success">
    </form>

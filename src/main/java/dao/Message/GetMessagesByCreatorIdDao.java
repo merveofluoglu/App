@@ -30,7 +30,7 @@ public class GetMessagesByCreatorIdDao extends AbstractDAO {
     }
 
 
-    public List<Message> getMessagesByCreatorId(long creator_id) throws SQLException, ResourceNotFoundException {
+    public List<Message> getMessagesByCreatorId(long _creatorId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -38,7 +38,7 @@ public class GetMessagesByCreatorIdDao extends AbstractDAO {
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, creator_id);
+            _pstmt.setObject(1, _creatorId);
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {

@@ -1,40 +1,40 @@
 package resource;
 
 public class SubCategory {
-    private long subcategory_id;
-    private String subcategory_name;
-    private long category_id;
+    private long subcategoryId;
+    private String subcategoryName;
+    private long categoryId;
 
     public SubCategory() {
     }
 
-    public SubCategory(long subcategory_id, String subcategory_name, long category_id) {
-        this.subcategory_id = subcategory_id;
-        this.subcategory_name = subcategory_name;
-        this.category_id = category_id;
+    public SubCategory(long subcategoryId, String subcategoryName, long categoryId) {
+        this.subcategoryId = subcategoryId;
+        this.subcategoryName = subcategoryName;
+        this.categoryId = categoryId;
     }
 
-    public long getSubcategory_id() {
-        return subcategory_id;
+    public long getSubcategoryId() {
+        return subcategoryId;
     }
 
-    public void setSubcategory_id(long subcategory_id) {
-        this.subcategory_id = subcategory_id;
+    public void setSubcategoryId(long subcategoryId) {
+        this.subcategoryId = subcategoryId;
     }
 
-    public String getSubcategory_name() {
-        return subcategory_name;
+    public String getSubcategoryName() {
+        return subcategoryName;
     }
 
-    public void setSubcategory_name(String subcategory_name) {
-        this.subcategory_name = subcategory_name;
+    public void setSubcategoryName(String subcategoryName) {
+        this.subcategoryName = subcategoryName;
     }
 
-    public long getCategory_id() {
-        return category_id;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(long category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 }

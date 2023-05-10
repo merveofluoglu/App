@@ -112,6 +112,7 @@
     </div>
   </div>
 </div>
+</div>
 
 <!---------DELETE USER--------->
 
@@ -252,12 +253,12 @@
     const updateUser = () => {
 
       const _data = {
-        user_id: parseInt($("#editUser [name='UserId']").val()),
+        userId: parseInt($("#editUser [name='UserId']").val()),
         name: $("#editUser [name='Name']").val(),
         surname: $("#editUser [name='Surname']").val(),
         email: $("#editUser [name='Email']").val(),
         password: $("#editUser [name='Password']").val(),
-        pp_path: $("#editUser [name='UserppPath']").val()
+        ppPath: $("#editUser [name='UserppPath']").val()
       };
 
       $.ajax({
@@ -300,12 +301,12 @@
             bDestroy: true,
             dom: "Bfrtip",
             columns: [
-              { title: "User Id", data: "userID" },
+              { title: "User Id", data: "userId" },
               { title: "Name", data: "name" },
               { title: "Surname", data: "surname" },
               { title: "Email", data: "email" },
-              { title: "Creation Date", data: "creation_date" },
-              { title: "Update Date", data: "update_date" },
+              { title: "Creation Date", data: "creationDate" },
+              { title: "Update Date", data: "updateDate" },
             ],
             select: true,
             buttons: [{
@@ -374,16 +375,16 @@
             ]
           }).off("select")
                   .on("select", function (e, dt, type, indexes) {
-                    _selectedId = dt.data().userID;
+                    _selectedId = dt.data().userId;
                     _selectedName = dt.data().name;
                     _selectedSurname = dt.data().surname;
                     _selectedEmail = dt.data().email;
                     _selectedPassword = dt.data().password;
-                    _selectedRoleId = dt.data().role_id;
-                    _selectedSCreationDate = dt.data().creation_date;
-                    _selectedUpdateDate = dt.data().update_date;
-                    _selectedProfilePath = dt.data().pp_path;
-                    _selectedIsDeleted = dt.data().is_deleted;
+                    _selectedRoleId = dt.data().roleId;
+                    _selectedSCreationDate = dt.data().creationDate;
+                    _selectedUpdateDate = dt.data().updateDate;
+                    _selectedProfilePath = dt.data().ppPath;
+                    _selectedIsDeleted = dt.data().isDeleted;
 
                   });
         }

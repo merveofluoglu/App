@@ -40,7 +40,6 @@
 
 <!---------ADD SubCategory--------->
 
-
 <div class="modal fade" id="addSubCategory" tabindex="-1">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -68,7 +67,7 @@
   </div>
 </div>
 
-  <!---------EDIT SubCategory--------->
+<!---------EDIT SubCategory--------->
 
 <div class="modal fade" id="editSubCategory" tabindex="-1">
   <div class="modal-dialog" role="document">
@@ -132,8 +131,8 @@
 
   const addSubCategory = () => {
     const _data = {
-      category_id: $("#addSubCategory [name='CategoryId']").val(),
-      subcategory_name: $("#addSubCategory [name='SubCategoryName']").val()
+      categoryId: $("#addSubCategory [name='CategoryId']").val(),
+      subcategoryName: $("#addSubCategory [name='SubCategoryName']").val()
     };
     $.ajax({
               url: "${pageContext.request.contextPath}/subcategory/add",
@@ -171,9 +170,9 @@
   const updateSubCategory = () => {
 
     const _data = {
-      subcategory_id: $("#editSubCategory [name='SubCategoryId']").val(),
-      category_id: $("#editCategory [name='CategoryId']").val(),
-      subcategory_name: $("#editSubCategory [name='SubCategoryName']").val()
+      subcategoryId: $("#editSubCategory [name='SubCategoryId']").val(),
+      categoryId: $("#editCategory [name='CategoryId']").val(),
+      subcategoryName: $("#editSubCategory [name='SubCategoryName']").val()
 
     };
 
@@ -210,9 +209,9 @@
           bDestroy: true,
           dom: "Bfrtip",
           columns: [
-            { title: "Sub Category Name", data: "subcategory_name" },
-            { title: "Sub Category Id", data: "subcategory_id" },
-            { title: "Category Id", data: "category_id" }
+            { title: "Sub Category Name", data: "subcategoryName" },
+            { title: "Sub Category Id", data: "subcategoryId" },
+            { title: "Category Id", data: "categoryId" }
           ],
           select: true,
           buttons: [{
@@ -263,10 +262,9 @@
           ]
         }).off("select")
                 .on("select", function (e, dt, type, indexes) {
-                  _selectedId = dt.data().subcategory_id;
-                  _selectedCategoryId = dt.data().category_id;
-                  _selectedSubCategoryId = dt.data().subcategory_id;
-                  _selectedSubCategoryName = dt.data().subcategory_name;
+                  _selectedId = dt.data().subcategoryId;
+                  _selectedCategoryId = dt.data().categoryId;
+                  _selectedSubCategoryName = dt.data().subcategoryName;
                 });
       }
     });

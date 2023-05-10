@@ -144,11 +144,11 @@
 
     const addReview = () => {
         const _data = {
-            user_id: $("#addReview [name='UserId']").val(),
-            seller_id: $("#addReview [name='SellerId']").val(),
-            post_id: $("#addReview [name='PostId']").val(),
+            userId: $("#addReview [name='UserId']").val(),
+            sellerId: $("#addReview [name='SellerId']").val(),
+            postId: $("#addReview [name='PostId']").val(),
             description: $("#addReview [name='Description']").val(),
-            point_scale: $("#addReview [name='Point Scale']").val()
+            pointScale: $("#addReview [name='PointScale']").val()
         };
         $.ajax({
                 url: "${pageContext.request.contextPath}/review/add",
@@ -186,12 +186,12 @@
     const updateReview = () => {
 
         const _data = {
-            review_id: parseInt($("#editReview [name='ReviewId']").val()),
-            user_id: $("#editReview [name='UserId']").val(),
-            seller_id: $("#editReview [name='SellerId']").val(),
-            post_id: $("#editReview [name='PostId']").val(),
+            reviewId: parseInt($("#editReview [name='ReviewId']").val()),
+            userId: $("#editReview [name='UserId']").val(),
+            sellerId: $("#editReview [name='SellerId']").val(),
+            postId: $("#editReview [name='PostId']").val(),
             description: $("#editReview [name='Description']").val(),
-            point_scale: $("#editReview [name='Point Scale']").val()
+            pointScale: $("#editReview [name='PointScale']").val()
         };
 
         $.ajax({
@@ -230,12 +230,12 @@
                     bDestroy: true,
                     dom: "Bfrtip",
                     columns: [
-                        { title: "Id", data: "review_id" },
-                        { title: "User Id", data: "user_id" },
-                        { title: "Seller Id", data: "seller_id" },
-                        { title: "Post Id", data: "post_id" },
+                        { title: "Id", data: "reviewId" },
+                        { title: "User Id", data: "userId" },
+                        { title: "Seller Id", data: "sellerId" },
+                        { title: "Post Id", data: "postId" },
                         { title: "Description", data: "description" },
-                        { title: "Point Scale", data: "point_scale" }
+                        { title: "Point Scale", data: "pointScale" }
                     ],
                     select: true,
                     buttons: [{
@@ -292,12 +292,12 @@
                     ]
                 }).off("select")
                     .on("select", function (e, dt, type, indexes) {
-                        _selectedId = dt.data().review_id;
-                        _selectedUserId = dt.data().user_id;
-                        _selectedSellerId = dt.data().seller_id;
-                        _selectedPostId = dt.data().post_id;
+                        _selectedId = dt.data().reviewId;
+                        _selectedUserId = dt.data().userId;
+                        _selectedSellerId = dt.data().sellerId;
+                        _selectedPostId = dt.data().postId;
                         _selectedDescription = dt.data().description;
-                        _selectedPointScale = dt.data().point_scale;
+                        _selectedPointScale = dt.data().pointScale;
                     });
             }
         });

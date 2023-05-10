@@ -2,7 +2,7 @@ package resource;
 import java.sql.Timestamp;
 import java.util.Objects;
 public class User {
-    private long user_id;
+    private long userId;
 
     private String name;
 
@@ -12,50 +12,49 @@ public class User {
 
     private String password;
 
-    private long role_id;
+    private long roleId;
 
-    private Timestamp creation_date;
+    private Timestamp creationDate;
 
-    private Timestamp update_date;
+    private Timestamp updateDate;
 
-    private byte[] pp_path;
+    private byte[] ppPath;
 
-    private boolean is_deleted;
-
-    public User(long user_id,String name,String surname,String email,String password,long role_id,Timestamp creation_date,Timestamp update_date,byte[] pp_path,boolean is_deleted){
-        this.user_id = user_id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.role_id = role_id;
-        this.creation_date = creation_date;
-        this.update_date = update_date;
-        this.pp_path = pp_path;
-        this.is_deleted = is_deleted;
-    }
-
-    public User(long user_id,String name,String surname,String email,String password,long role_id,Timestamp creation_date,Timestamp update_date,boolean is_deleted){
-        this.user_id = user_id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.role_id = role_id;
-        this.creation_date = creation_date;
-        this.update_date = update_date;
-        this.is_deleted = is_deleted;
-    }
+    private boolean isDeleted;
 
     public User(){}
 
-    public long getUserID() {
-        return user_id;
+    public User(long userId, String name, String surname, String email, String password, long roleId, Timestamp creationDate, Timestamp updateDate, byte[] ppPath, boolean isDeleted) {
+        this.userId = userId;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.roleId = roleId;
+        this.creationDate = creationDate;
+        this.updateDate = updateDate;
+        this.ppPath = ppPath;
+        this.isDeleted = isDeleted;
     }
 
-    public void setUserID(Long user_id)
-    {
-        this.user_id = user_id;
+    public User(long userId, String name, String surname, String email, String password, long roleId, Timestamp creationDate, Timestamp updateDate, boolean isDeleted) {
+        this.userId = userId;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.roleId = roleId;
+        this.creationDate = creationDate;
+        this.updateDate = updateDate;
+        this.isDeleted = isDeleted;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -82,55 +81,51 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public long getRole_id(){
-        return role_id;
+    public long getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(Long role_id){
-        this.role_id = role_id;
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 
-    public Timestamp getCreation_date(){
-        return creation_date;
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 
-    public void setCreation_date(Timestamp creation_date){
-        this.creation_date = creation_date;
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public Timestamp getUpdate_date(){
-        return update_date;
+    public Timestamp getUpdateDate() {
+        return updateDate;
     }
 
-    public void setUpdate_date(Timestamp update_date){
-        this.update_date = update_date;
+    public void setUpdateDate(Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
 
-    public byte[] getProfile_photo(){
-        return pp_path;
+    public byte[] getPpPath() {
+        return ppPath;
     }
 
-    public void setProfile_photo(byte[] profile_photo){
-        this.pp_path = pp_path;
+    public void setPpPath(byte[] ppPath) {
+        this.ppPath = ppPath;
     }
 
-    public boolean getIsDeleted(){
-        return is_deleted;
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setIs_deleted(boolean is_deleted){
-        this.is_deleted = is_deleted;
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
-
-
-
-
 }

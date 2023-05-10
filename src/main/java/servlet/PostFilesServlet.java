@@ -110,14 +110,14 @@ public class PostFilesServlet extends AbstractServlet {
 
         PostFiles _postFiles = new PostFiles();
 
-        long _fileId = Long.parseLong(_request.getParameter("file_id"));
+        long _fileId = Long.parseLong(_request.getParameter("fileId"));
 
         try {
-            _postFiles.setFile_id(Long.parseLong(_request.getParameter("file_id")));
-            _postFiles.setPost_id(Long.parseLong(_request.getParameter("post_id")));
+            _postFiles.setFileId(Long.parseLong(_request.getParameter("fileId")));
+            _postFiles.setPostId(Long.parseLong(_request.getParameter("postId")));
             _postFiles.setFile(_request.getParameter("file").getBytes());
-            _postFiles.setIs_deleted(false);
-            _postFiles.setFile_media_type(_request.getParameter("file_media_type"));
+            _postFiles.setDeleted(false);
+            _postFiles.setFileMediaType(_request.getParameter("fileMediaType"));
 
             JSONObject _result = new JSONObject();
 
@@ -161,10 +161,10 @@ public class PostFilesServlet extends AbstractServlet {
         PostFiles _postFiles = new PostFiles();
 
         try {
-            _postFiles.setPost_id(Long.parseLong(_request.getParameter("post_id")));
+            _postFiles.setPostId(Long.parseLong(_request.getParameter("postId")));
             _postFiles.setFile(_request.getParameter("file").getBytes());
-            _postFiles.setIs_deleted(false);
-            _postFiles.setFile_media_type(_request.getParameter("file_media_type"));
+            _postFiles.setDeleted(false);
+            _postFiles.setFileMediaType(_request.getParameter("fileMediaType"));
 
             JSONObject _result = new JSONObject();
 
@@ -237,36 +237,36 @@ public class PostFilesServlet extends AbstractServlet {
     }
 
     private PostFiles parseRequest(HttpServletRequest _request) throws ServletException, IOException {
-        long file_id = -1;
-        long post_id = -1;
+        long fileId = -1;
+        long postId = -1;
         byte[] file = null;
-        boolean is_deleted = false;
-        String file_media_type = null;
+        boolean isDeleted = false;
+        String fileMediaType = null;
 
         for (Part p : _request.getParts()) {
             switch (p.getName()) {
-                case "file_id":
+                case "fileId":
                     try (InputStream is = p.getInputStream()) {
-                        file_id = Long.parseLong(new String(is.readAllBytes(),
+                        fileId = Long.parseLong(new String(is.readAllBytes(),
                                 StandardCharsets.UTF_8.toString().trim()));
                     }
                     break;
-                case "post_id":
+                case "postId":
                     try (InputStream is = p.getInputStream()) {
-                        post_id = Long.parseLong(new String(is.readAllBytes(),
+                        postId = Long.parseLong(new String(is.readAllBytes(),
                                 StandardCharsets.UTF_8.toString().trim()));
                     }
                     break;
-                case "is_deleted":
+                case "isDeleted":
                     try (InputStream is = p.getInputStream()) {
-                        is_deleted = Boolean.parseBoolean(new String(is.readAllBytes(),
+                        isDeleted = Boolean.parseBoolean(new String(is.readAllBytes(),
                                 StandardCharsets.UTF_8.toString().trim()));
                     }
                     break;
                 case "file":
-                    file_media_type = p.getContentType();
+                    fileMediaType = p.getContentType();
 
-                    switch (file_media_type.toLowerCase().trim()) {
+                    switch (fileMediaType.toLowerCase().trim()) {
 
                         case "image/png":
                         case "image/jpeg":
@@ -283,20 +283,20 @@ public class PostFilesServlet extends AbstractServlet {
                     break;
             }
         }
-        return new PostFiles(file_id, post_id, file, is_deleted, file_media_type);
+        return new PostFiles(fileId, postId, file, isDeleted, fileMediaType);
     }
 
     private void loadPostFile (HttpServletRequest _request, HttpServletResponse _response) {
 
-        long file_id = Long.parseLong(_request.getParameter("file_id"));
+        long file_id = Long.parseLong(_request.getParameter("fileId"));
         PostFiles postFiles = null;
 
         try {
-            file_id = Long.parseLong(_request.getParameter("file_id"));
+            file_id = Long.parseLong(_request.getParameter("fileId"));
             postFiles = (PostFiles) new LoadPostFileDao(getConnection(), file_id).access().getOutputParam();
 
             if(postFiles.hasFile()) {
-                _response.setContentType(postFiles.getFile_media_type());
+                _response.setContentType(postFiles.getFileMediaType());
                 _response.getOutputStream().write(postFiles.getFile());
                 _response.getOutputStream().flush();
             }
@@ -313,7 +313,7 @@ public class PostFilesServlet extends AbstractServlet {
     private void getPostFilesOp (HttpServletRequest _request, HttpServletResponse _response) {
 
         try {
-            long _id = parseLong(_request.getParameter("file_id"));
+            long _id = parseLong(_request.getParameter("fileId"));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 

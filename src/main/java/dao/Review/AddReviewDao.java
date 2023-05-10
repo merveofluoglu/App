@@ -30,13 +30,13 @@ public class AddReviewDao extends AbstractDAO {
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, review.getUser_id());
-            _pstmt.setLong(2, review.getSeller_id());
-            _pstmt.setLong(3, review.getPost_id());
-            _pstmt.setDouble(4, review.getPoint_scale());
+            _pstmt.setLong(1, review.getUserId());
+            _pstmt.setLong(2, review.getSellerId());
+            _pstmt.setLong(3, review.getPostId());
+            _pstmt.setDouble(4, review.getPointScale());
             _pstmt.setString(5, review.getDescription());
-            _pstmt.setTimestamp(6, review.getCreate_date());
-            _pstmt.setBoolean(7, review.isIs_deleted());
+            _pstmt.setTimestamp(6, review.getCreateDate());
+            _pstmt.setBoolean(7, review.isDeleted());
 
             _rs = _pstmt.executeUpdate();
 

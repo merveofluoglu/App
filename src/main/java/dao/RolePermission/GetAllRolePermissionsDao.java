@@ -30,7 +30,7 @@ public class GetAllRolePermissionsDao extends AbstractDAO {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
-        List<RolePermission> _role_permissions = new ArrayList<>();
+        List<RolePermission> _rolePermissions = new ArrayList<>();
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
@@ -41,7 +41,7 @@ public class GetAllRolePermissionsDao extends AbstractDAO {
             }
 
             while (_rs.next()) {
-                _role_permissions.add(
+                _rolePermissions.add(
                         new RolePermission(
                                 _rs.getLong("role_permission_id"),
                                 _rs.getLong("role_id"),
@@ -59,7 +59,7 @@ public class GetAllRolePermissionsDao extends AbstractDAO {
             con.close();
         }
 
-        return _role_permissions;
+        return _rolePermissions;
     }
 
     @Override

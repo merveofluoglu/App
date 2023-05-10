@@ -21,7 +21,7 @@ public class GetUserByCreationDateDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> GetUserByCreationDateDAO(Timestamp creation_date) throws SQLException, ResourceNotFoundException {
+    public List<User> GetUserByCreationDateDAO(Timestamp _creationDate) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -30,7 +30,7 @@ public class GetUserByCreationDateDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setTimestamp(1, creation_date);
+            _pstmt.setTimestamp(1, _creationDate);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

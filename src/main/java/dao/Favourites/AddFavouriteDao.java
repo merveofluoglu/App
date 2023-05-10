@@ -32,8 +32,8 @@ public class AddFavouriteDao extends AbstractDAO {
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, _fav.getUser_id());
-            _pstmt.setLong(2, _fav.getPost_id());
+            _pstmt.setLong(1, _fav.getUserId());
+            _pstmt.setLong(2, _fav.getPostId());
 
             _rs = _pstmt.executeUpdate();
 

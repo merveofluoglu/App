@@ -32,13 +32,13 @@ public class UpdatePostByIdDao extends AbstractDAO {
             _pstmt = con.prepareStatement(STATEMENT);
             _pstmt.setString(1, _post.getName());
             _pstmt.setString(2, _post.getDescription());
-            _pstmt.setLong(3, _post.getCustomer_id());
+            _pstmt.setLong(3, _post.getCustomerId());
             _pstmt.setDouble(4, _post.getPrice());
             _pstmt.setString(5, _post.getStatus());
-            _pstmt.setBoolean(6, _post.isIs_deleted());
-            _pstmt.setBoolean(7, _post.isIs_sold());
-            _pstmt.setTimestamp(8, _post.getSold_date());
-            _pstmt.setTimestamp(9, _post.getUpdate_date());
+            _pstmt.setBoolean(6, _post.isDeleted());
+            _pstmt.setBoolean(7, _post.isSold());
+            _pstmt.setTimestamp(8, _post.getSoldDate());
+            _pstmt.setTimestamp(9, _post.getUpdateDate());
             _pstmt.setLong(10, _postId);
 
             _affectedRows = _pstmt.executeUpdate();

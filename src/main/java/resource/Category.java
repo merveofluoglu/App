@@ -2,26 +2,29 @@ package resource;
 
 
 public class Category {
-    private long category_id;
-    private String category_name;
-    public Category(long category_id, String category_name){
-        this.category_id=category_id;
-        this.category_name=category_name;
-    }
+    private long categoryId;
+    private String categoryName;
+
     public Category(){ }
-    public long getCategory_id() {
-        return category_id;
+
+    public Category(long categoryId, String categoryName) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
-    public void setCategory_id(long category_id) {
-        this.category_id = category_id;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

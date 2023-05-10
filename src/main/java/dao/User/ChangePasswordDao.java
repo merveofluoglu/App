@@ -24,7 +24,7 @@ public class ChangePasswordDao extends AbstractDAO {
 
     }
 
-    public int ChangePasswordDao(Long user_id, String password) throws SQLException {
+    public int ChangePasswordDao(Long _userId, String _password) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -32,8 +32,8 @@ public class ChangePasswordDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, password);
-            _pstmt.setLong(2, user_id);
+            _pstmt.setString(1, _password);
+            _pstmt.setLong(2, _userId);
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {

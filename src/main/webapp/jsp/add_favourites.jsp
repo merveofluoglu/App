@@ -8,11 +8,11 @@
 <body>
 <form method="POST" action="<c:url value="/favourite/addFavourite"/>" enctype="multipart/form-data">
 
-    <label for="user_id">User Id:</label>
-    <input id="user_id" name="user_id" type="number"/><br/>
+    <label for="userId">User Id:</label>
+    <input id="userId" name="userId" type="number"/><br/>
 
-    <label for="post_id">Post Id</label>
-    <input id="post_id" name="post_id" type="number"/><br/>
+    <label for="postId">Post Id</label>
+    <input id="postId" name="postId" type="number"/><br/>
 
     <button type="submit">Submit</button><br/>
 </form>

@@ -106,7 +106,6 @@
       </div>
     </div>
   </div>
-  </div>
 </div>
 
 <!---------DELETE MESSAGE--------->
@@ -128,8 +127,6 @@
     </div>
   </div>
 </div>
-</div>
-
 <!---------READ MESSAGE--------->
 <div class="modal fade" id="readMessage" tabindex="-1">
   <div class="modal-dialog" role="document">
@@ -149,7 +146,6 @@
     </div>
   </div>
 </div>
-</div>
 
 <script>
       $(document).ready(function () {
@@ -158,11 +154,11 @@
 
       const addMessage = () => {
         const _data = {
-          creator_id: parseInt($("#addMessage [name='CreatorId']").val()),
-          recipient_id: parseInt($("#addMessage [name='RecipientId']").val()),
-          parent_message_id: parseInt($("#addMessage [name='ParentMessageId']").val()),
+          creatorId: parseInt($("#addMessage [name='CreatorId']").val()),
+          recipientId: parseInt($("#addMessage [name='RecipientId']").val()),
+          parenMessageId: parseInt($("#addMessage [name='ParentMessageId']").val()),
           subject: $("#addMessage [name='Subject']").val(),
-          message_body: $("#addMessage [name='MessageBody']").val(),
+          messageBody: $("#addMessage [name='MessageBody']").val(),
         };
         console.log(_data)
         $.ajax({
@@ -185,12 +181,12 @@
       const updateMessage = () => {
 
         const _data = {
-          message_id: parseInt($("#editMessage [name='MessageId']").val()),
-          creator_id: parseInt($("#editMessage [name='CreatorId']").val()),
-          recipient_id: parseInt($("#editMessage [name='RecipientId']").val()),
-          parent_message_id: parseInt($("#editMessage [name='ParentMessageId']").val()),
+          messageId: parseInt($("#editMessage [name='MessageId']").val()),
+          creatorId: parseInt($("#editMessage [name='CreatorId']").val()),
+          recipientId: parseInt($("#editMessage [name='RecipientId']").val()),
+          parentMessageId: parseInt($("#editMessage [name='ParentMessageId']").val()),
           subject: $("#editMessage [name='Subject']").val(),
-          message_body: $("#editMessage [name='MessageBody']").val(),
+          messageBody: $("#editMessage [name='MessageBody']").val(),
         };
         console.log("Update data")
         console.log(_data)
@@ -214,7 +210,7 @@
       const deleteMessage = () => {
 
         const _data = {
-          message_id: parseInt($("#deleteMessage [name='MessageId']").val()),
+          messageId: parseInt($("#deleteMessage [name='MessageId']").val()),
         };
         $.ajax({
                   url: '${pageContext.request.contextPath}/message/delete',
@@ -236,7 +232,7 @@
       const readMessage = () => {
 
         const _data = {
-          message_id: parseInt($("#readMessage [name='MessageId']").val()),
+          messageId: parseInt($("#readMessage [name='MessageId']").val()),
         };
         $.ajax({
                   url: '${pageContext.request.contextPath}/message/read',
@@ -275,12 +271,12 @@
               bDestroy: true,
               dom: "Bfrtip",
               columns: [
-                { title: "Id", data: "message_id" },
-                { title: "CreatorId", data: "creator_id" },
-                { title: "RecipientId", data: "recipient_id" },
-                { title: "ParentMessageId", data: "parent_message_id" },
+                { title: "Id", data: "messageId" },
+                { title: "CreatorId", data: "creatorId" },
+                { title: "RecipientId", data: "recipientId" },
+                { title: "ParentMessageId", data: "parentMessageId" },
                 { title: "Subject", data: "subject" },
-                { title: "MessageBody", data: "message_body" },
+                { title: "MessageBody", data: "messageBody" },
                 { title: "IsRead", data: "isRead" },
 
               ],
@@ -303,12 +299,12 @@
               ]
             }).off("select")
                     .on("select", function (e, dt, type, indexes) {
-                      _selectedId = dt.data().message_id;
-                      _selectedCreatorId = dt.data().creator_id;
-                      _selectedRecipientId = dt.data().recipient_id;
-                      _selectedParentMessageId = dt.data().parent_message_id;
+                      _selectedId = dt.data().messageId;
+                      _selectedCreatorId = dt.data().creatorId;
+                      _selectedRecipientId = dt.data().recipientId;
+                      _selectedParentMessageId = dt.data().parentMessageId;
                       _selectedSubject = dt.data().subject;
-                      _selectedMessageBody = dt.data().message_body;
+                      _selectedMessageBody = dt.data().messageBody;
                       _selectedIsRead = dt.data().isRead;
                     });
           }

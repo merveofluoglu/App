@@ -25,7 +25,7 @@ public class UpdateRoleDAO extends AbstractDAO {
         super(con);
     }
 
-    public int updateRoleById(Role role, long role_id) throws SQLException {
+    public int updateRoleById(Role _role, long _roleId) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -33,8 +33,8 @@ public class UpdateRoleDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, role.getName());
-            _pstmt.setLong(2, role_id);
+            _pstmt.setString(1, _role.getName());
+            _pstmt.setLong(2, _roleId);
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {

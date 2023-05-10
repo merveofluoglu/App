@@ -80,7 +80,7 @@ public class SubCategoryServlet extends AbstractServlet {
 
         SubCategory _SubCategory = new SubCategory();
 
-        long _SubCategoryId = parseLong(_request.getParameter("subcategory_id"));
+        long _SubCategoryId = parseLong(_request.getParameter("subcategoryId"));
 
         HttpSession _session = _request.getSession();
 
@@ -90,7 +90,7 @@ public class SubCategoryServlet extends AbstractServlet {
                 throw new Exception("You don't have access to this area!");
             }
 
-            _SubCategory.setSubcategory_name(_request.getParameter("subcategory_name"));
+            _SubCategory.setSubcategoryName(_request.getParameter("subcategoryName"));
 
             JSONObject _result = new JSONObject();
 
@@ -153,15 +153,15 @@ public class SubCategoryServlet extends AbstractServlet {
                 throw new Exception("You don't have access to this area!");
             }
 
-            _SubCategory.setSubcategory_name(_request.getParameter("subcategory_name"));
+            _SubCategory.setSubcategoryName(_request.getParameter("subcategoryName"));
 
-            var _checkSubCategory = new GetSubCategoryByNameDao(getConnection()).getSubCategoriesByName(_SubCategory.getSubcategory_name());
+            var _checkSubCategory = new GetSubCategoryByNameDao(getConnection()).getSubCategoriesByName(_SubCategory.getSubcategoryName());
 
             if(!_checkSubCategory.isEmpty()) {
                 throw new Exception("There is already a subcategory with that name! Please choose another name!");
             }
 
-            _SubCategory.setCategory_id(parseLong(_request.getParameter("category_id")));
+            _SubCategory.setCategoryId(parseLong(_request.getParameter("categoryId")));
 
             JSONObject _result = new JSONObject();
 
@@ -220,7 +220,7 @@ public class SubCategoryServlet extends AbstractServlet {
 
     private void getSubCategoryDetailsOp(HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _id = parseLong(_request.getParameter("subcategory_id"));
+            long _id = parseLong(_request.getParameter("subcategoryId"));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 

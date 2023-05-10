@@ -23,7 +23,7 @@ public class GetRolePermissionByIdDao extends AbstractDAO {
         super(con);
     }
 
-    public RolePermission getRolePermissionById(long _role_permission_id) throws SQLException, ResourceNotFoundException {
+    public RolePermission getRolePermissionById(long _rolePermissionId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs =null;
@@ -32,7 +32,7 @@ public class GetRolePermissionByIdDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setLong(1, _role_permission_id);
+            _pstmt.setLong(1, _rolePermissionId);
             _rs= _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {

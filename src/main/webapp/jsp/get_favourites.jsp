@@ -20,9 +20,9 @@
 <tbody>
 <c:forEach var="data" items="${favourites}">
     <tr>
-        <td>${data.favourite_id}</td>
-        <td>${data.user_id}</td>
-        <td>${data.post_id}</td>
+        <td>${data.favouriteId}</td>
+        <td>${data.userId}</td>
+        <td>${data.postId}</td>
     </tr>
 </c:forEach>
 </tbody>

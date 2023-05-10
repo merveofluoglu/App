@@ -1,57 +1,65 @@
 package resource;
 
 public class PostFiles {
-    private long file_id;
-    private long post_id;
+    private long fileId;
+    private long postId;
     private byte[] file;
-    private boolean is_deleted;
+    private boolean isDeleted;
 
-    private String file_media_type;
-
-    public PostFiles(long file_id, long post_id, byte[] file, boolean is_deleted, String file_media_type) {
-        this.file_id = file_id;
-        this.post_id = post_id;
-        this.file = file;
-        this.is_deleted = is_deleted;
-        this.file_media_type = file_media_type;
-    }
+    private String fileMediaType;
 
     public PostFiles() {}
 
-    public long getFile_id() {
-        return file_id;
+    public PostFiles(long fileId, long postId, byte[] file, boolean isDeleted, String fileMediaType) {
+        this.fileId = fileId;
+        this.postId = postId;
+        this.file = file;
+        this.isDeleted = isDeleted;
+        this.fileMediaType = fileMediaType;
     }
 
-    public void setFile_id(long file_id) {
-        this.file_id = file_id;
+    public long getFileId() {
+        return fileId;
     }
 
-    public long getPost_id() {
-        return post_id;
+    public void setFileId(long fileId) {
+        this.fileId = fileId;
     }
 
-    public void setPost_id(long post_id) {
-        this.post_id = post_id;
+    public long getPostId() {
+        return postId;
     }
 
-    public byte[] getFile() { return file; }
-
-    public void setFile(byte[] file) { this.file = file; }
-
-    public boolean isIs_deleted() { return is_deleted; }
-
-    public void setIs_deleted(boolean is_deleted) { this.is_deleted = is_deleted; }
-
-    public String getFile_media_type() {
-        return file_media_type;
+    public void setPostId(long postId) {
+        this.postId = postId;
     }
 
-    public void setFile_media_type(String file_media_type) {
-        this.file_media_type = file_media_type;
+    public byte[] getFile() {
+        return file;
+    }
+
+    public void setFile(byte[] file) {
+        this.file = file;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public String getFileMediaType() {
+        return fileMediaType;
+    }
+
+    public void setFileMediaType(String fileMediaType) {
+        this.fileMediaType = fileMediaType;
     }
 
     public boolean hasFile() {
-        return file != null && file.length > 0 && file_media_type != null && !file_media_type.isBlank();
+        return file != null && file.length > 0 && fileMediaType != null && !fileMediaType.isBlank();
     }
 
     public int getFileSize() { return file != null ? file.length : Integer.MIN_VALUE; }

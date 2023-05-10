@@ -28,14 +28,14 @@ public class DeleteRolePermissionByIdDao extends AbstractDAO {
 
     }
 
-    public String deleteRolePermission(long role_permission_id) throws SQLException, ResourceNotFoundException {
+    public String deleteRolePermission(long _rolePermissionId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, role_permission_id);
+            _pstmt.setObject(1, _rolePermissionId);
 
             _affectedRows = _pstmt.executeUpdate();
 

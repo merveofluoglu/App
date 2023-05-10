@@ -29,8 +29,8 @@
 
 
                 <div class="form-group">
-                    <label>File:</label> <input
-                        type="file" name="file" />
+                    <label>File:</label>
+                    <input type="file" name="file" />
                 </div>
                 <input type="submit" value="Save" class="btn btn-success">
             </form>

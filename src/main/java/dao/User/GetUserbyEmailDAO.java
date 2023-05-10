@@ -24,7 +24,7 @@ public class GetUserbyEmailDAO extends AbstractDAO {
         super(con);
     }
 
-    public List<User> GetUserbyEmailDAO(String email) throws SQLException, ResourceNotFoundException {
+    public List<User> GetUserbyEmailDAO(String _email) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -33,7 +33,7 @@ public class GetUserbyEmailDAO extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setString(1, email);
+            _pstmt.setString(1, _email);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

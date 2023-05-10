@@ -39,8 +39,8 @@ public class CreateRolePermissionDao extends AbstractDAO {
 
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, _rolepermission.getRole_id());
-            _pstmt.setLong(2, _rolepermission.getPermission_id());
+            _pstmt.setLong(1, _rolepermission.getRoleId());
+            _pstmt.setLong(2, _rolepermission.getPermissionId());
 
             _rs = _pstmt.executeUpdate();
 

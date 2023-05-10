@@ -21,7 +21,7 @@ public class GetUserByUseridDAO extends AbstractDAO{
         super(con);
     }
 
-    public User GetUserByUseridDAO(Long user_id) throws SQLException, ResourceNotFoundException {
+    public User GetUserByUseridDAO(Long _userId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs =null;
@@ -30,7 +30,7 @@ public class GetUserByUseridDAO extends AbstractDAO{
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, user_id);
+            _pstmt.setObject(1, _userId);
             _rs= _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
