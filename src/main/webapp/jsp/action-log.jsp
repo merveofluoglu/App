@@ -102,7 +102,7 @@
 
             <li class="nav-item">
                 <a
-                        href="system-log.jsp"
+                        href="action-log.jsp"
                         aria-expanded="false"
                         aria-label="Toggle navigation"
                 >
@@ -113,24 +113,7 @@
                   />
                 </svg>
               </span>
-                    <span class="text">System Logs</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a
-                        href="user-log.jsp"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                >
-              <span class="icon">
-                <svg width="22" height="22" viewBox="0 0 22 22">
-                  <path
-                          d="M17.4167 4.58333V6.41667H13.75V4.58333H17.4167ZM8.25 4.58333V10.0833H4.58333V4.58333H8.25ZM17.4167 11.9167V17.4167H13.75V11.9167H17.4167ZM8.25 15.5833V17.4167H4.58333V15.5833H8.25ZM19.25 2.75H11.9167V8.25H19.25V2.75ZM10.0833 2.75H2.75V11.9167H10.0833V2.75ZM19.25 10.0833H11.9167V19.25H19.25V10.0833ZM10.0833 13.75H2.75V19.25H10.0833V13.75Z"
-                  />
-                </svg>
-              </span>
-                    <span class="text">User Logs</span>
+                    <span class="text">Logs</span>
                 </a>
             </li>
         </ul>
@@ -235,88 +218,20 @@
         <div class="container-fluid">
             <!---------DATATABLE--------->
 
-            <table id="Category" class="display" width="100%">
+            <table id="ActionLog" class="display" width="100%">
                 <thead>
                 <tr>
-                    <th id="CategoryId">Category Id</th>
-                    <th id="CategoryName">Category Name</th>
+                    <th id="actionId">Action Id</th>
+                    <th id="isSystemAct">Is System Act?</th>
+                    <th id="isUserAct">Is User Act?</th>
+                    <th id="description">Description</th>
+                    <th id="logDate">Log Date</th>
+                    <th id="userId">User Id</th>
                 </tr>
                 </thead>
             </table>
-
-            <!---------Add Category--------->
-
-            <div class="modal fade" id="addCategory" tabindex="-1">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Add Category</h4>
-                            <button type="button" class="btn-close" target="#addCategory" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Category Name:</label>
-                                <input type="text" name="CategoryName" id="CategoryName" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-toolbar" target="#addCategory" data-bs-dismiss="modal">Close</button>
-                            <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addCategory()">Add</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!---------Edit Category--------->
-
-            <div class="modal fade" id="editCategory" tabindex="-1">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Edit Category</h4>
-                            <button type="button" class="btn-close" target="#editCategory" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" >
-                            <div class="form-group" style="display:none">
-                                <label>Category Id: </label>
-                                <input type="text" name="CategoryId" id="CategoryId" class="form-control" readonly="readonly"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Category Name:</label>
-                                <input type="text" name="CategoryName" id="CategoryName" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-toolbar" target="#editCategory" data-bs-dismiss="modal">Close</button>
-                            <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="updateCategory()">Edit</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!---------Delete Category--------->
-
-            <div id="dialog" class="modal fade" role="dialog" style="display:none">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title">Delete Category</h3>
-                            <button type="button" class="btn-close" target="#dialog" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Do you want to delete this category?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-toolbar" target="#dialog" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="confirm" class="btn btn-danger">Confirm</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-            <!-- end container -->
+        <!-- end container -->
     </section>
     <!-- ========== section end ========== -->
 
@@ -336,155 +251,27 @@
         FillDatatable();
     });
     var table;
-    const addCategory = () => {
-        const _data = {
-            categoryName: $("#addCategory [name='CategoryName']").val(),
-        };
-
-        if(!checkValidity(_data)) {
-            return;
-        }
-
-        $.ajax({
-                url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/category/add",
-                method: "POST",
-                data: _data,
-                success: function (response) {
-                    $('#addCategory').modal('hide');
-                    table.destroy();
-                    FillDatatable();
-                    toastr.success("Category Creation Successfully!");
-                },
-                error: function (response) {
-                    toastr.error(response.statusText);
-                }
-            }
-        );
-    }
-
-    const removeCategory = (id) => {
-        $.ajax({
-                url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/category/delete/' + id,
-                method: "POST",
-                success: function (response) {
-                    table.destroy();
-                    FillDatatable();
-                    toastr.error("Category Deleting Successfully");
-                },
-                error: function () {
-                    alert("error");
-                }
-            }
-        );
-    }
-
-    const updateCategory = () => {
-
-        const _data = {
-            categoryId: $("#editCategory [name='CategoryId']").val(),
-            categoryName: $("#editCategory [name='CategoryName']").val(),
-        };
-
-        if(!checkValidity(_data)) {
-            return;
-        }
-
-        $.ajax({
-                url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/category/update',
-                method: "POST",
-                data: _data,
-                success: function (response) {
-                    $('#editCategory').modal('hide');
-                    table.destroy();
-                    FillDatatable();
-                    toastr.info("Category Updating Successfully");
-                },
-                error: function () {
-                    alert("error");
-                }
-            }
-        );
-    }
-
-    checkValidity = (data) => {
-        if(data.categoryName == "" || data.categoryName == null || data.categoryName == undefined) {
-            toastr.error("Please fill all sections!");
-            return false;
-        }
-        return true;
-    }
 
     const FillDatatable = () => {
 
-        let _selectedId = 0;
-        let _selectedCategoryName;
-
         $.ajax({
-            url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/category/getAll',
+            url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/actionlog/getLogs',
             method: "GET",
             success: function (data) {
 
-                table = $('#Category').DataTable({
-                    data: JSON.parse(data).data,
+                table = $('#ActionLog').DataTable({
+                    data: data.data,
                     bDestroy: true,
                     dom: "Bfrtip",
                     columns: [
-                        { title: "Id", data: "categoryId" },
-                        { title: "Category Name", data: "categoryName" },
-                    ],
-                    select: true,
-                    buttons: [{
-                        text: "Delete",
-                        className: 'btn btn-danger',
-                        atr: {
-                            id: 'delete'
-                        },
-                        action: function () {
-                            if (_selectedId == 0)
-                                alert("Please select a row!");
-                            else {
-                                $("#dialog").modal('show');
-
-                                $("#confirm").off('click').click(function () {
-                                    $('#dialog').modal('hide');
-                                    removeCategory(_selectedId);
-                                });
-                            }
-                        }
-                    },
-                        {
-                            text: "Edit",
-                            className: 'btn btn-secondary',
-                            atr: {
-                                id: 'edit'
-                            },
-                            action: function () {
-                                if (_selectedId == 0)
-                                    alert("Please select a row!");
-                                else {
-                                    $("#editCategory [name='CategoryId']").val(_selectedId);
-                                    $("#editCategory [name='CategoryName']").val(_selectedCategoryName);
-                                    $("#editCategory").modal('show');
-                                }
-                            }
-                        },
-                        {
-                            text: "Add Category",
-                            className: 'btn btn-primary',
-                            atr: {
-                                id: 'add'
-                            },
-                            action: function () {
-                                $("#addCategory [name='CategoryName']").val("");
-                                $("#addCategory").modal('show');
-                            }
-                        }
+                        { title: "Action Id", data: "actionId" },
+                        { title: "Is User Act?", data: "userAct" },
+                        { title: "Is System Act?", data: "systemAct" },
+                        { title: "Decription", data: "description" },
+                        { title: "Log Date", data: "actionDate" },
+                        { title: "User Id", data: "userId" },
                     ]
-                }).off("select")
-                    .on("select", function (e, dt, type, indexes) {
-                        _selectedId = dt.data().categoryId;
-                        _selectedCategoryName = dt.data().categoryName;
-                    });
+                })
             }
         });
 

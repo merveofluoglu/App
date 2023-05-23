@@ -17,7 +17,7 @@
     <%
         String role = (String) session.getAttribute("role");
         if (Objects.equals(role, "admin")) { %>
-            <br/><a href="${pageContext.request.contextPath}/jsp/admin-dashboard.jsp" >Admin Dashboard</a>
+            <br/><a href="${pageContext.request.contextPath}/jsp/admin-dashboard/index.html" >Admin Dashboard</a>
     <% }
     %>
 </body>
