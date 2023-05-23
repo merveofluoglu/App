@@ -202,7 +202,6 @@
                                             <div class="info">
                                                 <h6>Admin</h6>
                                                 <div class="image">
-                                                    <span class="status"></span>
                                                 </div>
                                             </div>
                                         </div>

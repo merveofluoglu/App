@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.ActionLog.AddActionLogDao;
 import dao.Category.*;
 
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
+import resource.ActionLog;
 import resource.Category;
 import resource.SubCategory;
 import utils.ErrorCode;
@@ -17,6 +19,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import static java.lang.Long.parseLong;
 
@@ -60,10 +63,13 @@ public class SubCategoryServlet extends AbstractServlet {
 
     private void getAllSubCategories(HttpServletRequest _request, HttpServletResponse _response) {
         try {
+            HttpSession _session = _request.getSession();
 
             JSONObject _result = new JSONObject();
 
             _result.put("data", new GetAllSubCategoryDao(getConnection()).getAllSubCategories());
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "All sub categories fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 
@@ -78,13 +84,12 @@ public class SubCategoryServlet extends AbstractServlet {
 
     private void updateSubCategory (HttpServletRequest _request, HttpServletResponse _response){
 
-        SubCategory _SubCategory = new SubCategory();
-
-        long _SubCategoryId = parseLong(_request.getParameter("subcategoryId"));
-
-        HttpSession _session = _request.getSession();
-
         try {
+            SubCategory _SubCategory = new SubCategory();
+
+            long _SubCategoryId = parseLong(_request.getParameter("subcategoryId"));
+
+            HttpSession _session = _request.getSession();
 
             if(_session.getAttribute("role") != "admin") {
                 throw new Exception("You don't have access to this area!");
@@ -95,6 +100,8 @@ public class SubCategoryServlet extends AbstractServlet {
             JSONObject _result = new JSONObject();
 
             _result.put("data", new UpdateSubCategoryDao(getConnection()).updateSubCategory(_SubCategory, _SubCategoryId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Sub category with "+ _SubCategoryId +" have been updated!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 
@@ -128,9 +135,9 @@ public class SubCategoryServlet extends AbstractServlet {
 
             _result.put("affectedRow", new DeleteSubCategoryDao(getConnection()).DeleteSubCategory(_SubCategoryId));
 
-            _response.getWriter().write(_result.toString());
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Sub category with "+ _SubCategoryId +" have been deleted!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
-            //After jsp files prepared, request dispatcher will be implemented!!
+            _response.getWriter().write(_result.toString());
 
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -167,6 +174,8 @@ public class SubCategoryServlet extends AbstractServlet {
 
             _result.put("data", new CreateSubCategoryDao(getConnection()).CreateSubCategory(_SubCategory));
 
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "New sub category added to the category with "+ _request.getParameter("categoryId") +" category id!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
 
         } catch (Exception _e) {
@@ -177,13 +186,21 @@ public class SubCategoryServlet extends AbstractServlet {
 
     private void getSubCategoriesByCategoryId(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
         try {
+            HttpSession _session = _request.getSession();
+
             long _id = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 
             JSONObject _result = new JSONObject();
+
             _result.put("data", new GetSubCategoriesByCategoryIdDao(getConnection()).GetSubCategoriesByCategoryId(_id));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Sub category with "+ _id +" subcategory id details fetched!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
+
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
         } catch (ResourceNotFoundException _e) {

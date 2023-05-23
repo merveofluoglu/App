@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.ActionLog.AddActionLogDao;
 import dao.Favourites.AddFavouriteDao;
 import dao.Favourites.RemoveFavouriteDao;
 import dao.Favourites.RemoveFavouritesByPostIdDao;
@@ -11,12 +12,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONException;
 import org.json.JSONObject;
+import resource.ActionLog;
 import resource.Favourites;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class FavouritesServlet extends AbstractServlet{
 
@@ -66,6 +69,8 @@ public class FavouritesServlet extends AbstractServlet{
 
             _req.setAttribute("favourites", data);
 
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User favourites fetched!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _req.getServletContext().getRequestDispatcher("/jsp/get_favourites.jsp").forward(_req,_resp);
 
             _resp.getWriter().write(_result.toString());
@@ -103,6 +108,8 @@ public class FavouritesServlet extends AbstractServlet{
 
             _result.put("data", new AddFavouriteDao(getConnection()).addFavourite(_fav));
 
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with "+ _postId + " post id have been added to the favourites!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _resp.getWriter().write(_result.toString());
 
         } catch (NumberFormatException _e) {
@@ -117,13 +124,18 @@ public class FavouritesServlet extends AbstractServlet{
 
     private void removeFavourite(HttpServletRequest _req, HttpServletResponse _resp) {
         try {
+            HttpSession _session = _req.getSession();
+
             long _postId = Long.parseLong(_req.getParameter("postId"));
 
             _resp.setContentType("application/json");
             _resp.setStatus(HttpServletResponse.SC_OK);
+
             JSONObject _result = new JSONObject();
 
             _result.put("affectedRow", new RemoveFavouritesByPostIdDao(getConnection()).removeFavouritesByPostIdDao(_postId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId + " has been removed from favourites!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _resp.getWriter().write(_result.toString());
 

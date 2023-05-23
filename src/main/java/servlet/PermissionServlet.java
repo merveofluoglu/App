@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.ActionLog.AddActionLogDao;
 import dao.Permission.*;
 
 import dao.Post.DeletePostByIdDao;
@@ -10,6 +11,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
+import resource.ActionLog;
 import resource.Permission;
 import resource.RolePermission;
 import utils.ErrorCode;
@@ -17,6 +19,7 @@ import utils.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +70,12 @@ public class PermissionServlet extends AbstractServlet{
 
     private void deletePermission(HttpServletRequest _request, HttpServletResponse _response) throws IOException, ResourceNotFoundException {
         try {
+            HttpSession _session = _request.getSession();
+
             long _permissionId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+
             JSONObject _result = new JSONObject();
+
             List<RolePermission> _rolePermissions = new ArrayList<>();
 
             _rolePermissions = new GetRolePermissionByPermissionIdDao(getConnection()).getRolePermissionByPermissionId(_permissionId);
@@ -78,6 +85,8 @@ public class PermissionServlet extends AbstractServlet{
             }
 
             _result.put("affectedRow", new DeletePermissionByIdDao(getConnection()).DeletePermissionById(_permissionId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Permission with " + _permissionId + " permission id deleted!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
         } catch (SQLException _e) {
@@ -93,12 +102,16 @@ public class PermissionServlet extends AbstractServlet{
         long _permissionId = Long.parseLong(_request.getParameter("permissionId"));
 
         try {
+            HttpSession _session = _request.getSession();
+
             _permission.setPermissionId(_permissionId);
             _permission.setName(_request.getParameter("name"));
 
             JSONObject _result = new JSONObject();
 
             _result.put("data", new UpdatePermissionByIdDao(getConnection()).UpdatePermissionById(_permission, _permissionId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Permission with " + _permissionId + " permission id updated!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 
@@ -138,6 +151,9 @@ public class PermissionServlet extends AbstractServlet{
             _result.put("data", new CreateRolePermissionDao(getConnection()).createRolePermission(_rolePermission));
             _rolePermission.setRoleId(0L);
             _result.put("data", new CreateRolePermissionDao(getConnection()).createRolePermission(_rolePermission));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "New permission added!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
 
             //After jsp files prepared, request dispatcher will be implemented!!
@@ -152,11 +168,20 @@ public class PermissionServlet extends AbstractServlet{
 
         // This method returns a permission.
         try {
+            HttpSession _session = _request.getSession();
+
             long _id = parseLong(_request.getParameter("permissionId"));
+
             JSONObject _result = new JSONObject();
+
             _result.put("data", new GetPermissionByIdDao(getConnection()).getPermissionById(_id));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Permission with " + _id + " permission id details fetched!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.setContentType("application/json");
+
             _response.setStatus(HttpServletResponse.SC_OK);
+
             _response.getWriter().write(_result.toString());
 
         } catch (SQLException _e) {
@@ -172,8 +197,14 @@ public class PermissionServlet extends AbstractServlet{
 
         // This method returns a json array with the roles.
         try {
+            HttpSession _session = _request.getSession();
+
             JSONObject _result = new JSONObject();
+
             _result.put("data",new GetAllPermissionsDao(getConnection()).getAllPermissions());
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "All permissions fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
 
         } catch (SQLException _e) {

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import static java.lang.Long.parseLong;
@@ -65,9 +66,14 @@ public class PostServlet extends AbstractServlet {
 
     private void getAllPosts (HttpServletRequest _req, HttpServletResponse _resp) {
         try {
+
+            HttpSession _session = _req.getSession();
+
             JSONObject _result = new JSONObject();
 
             _result.put("data",new GetAllPostsDao(getConnection()).getAllPosts());
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "All posts fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _resp.getWriter().write(_result.toString());
 
@@ -114,6 +120,8 @@ public class PostServlet extends AbstractServlet {
 
             _result.put("data", new UpdatePostByIdDao(getConnection()).updatePostById(_post, _postId));
 
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with "+ _postId +" post id updated!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
 
             //After jsp files prepared, request dispatcher will be implemented!!
@@ -156,6 +164,8 @@ public class PostServlet extends AbstractServlet {
 
             _result.put("affectedRow", new DeletePostByIdDao(getConnection()).deletePost(_postId));
 
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with "+ _postId +" post id and post files deleted!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
 
         } catch (SQLException _e) {
@@ -180,6 +190,8 @@ public class PostServlet extends AbstractServlet {
 
             _result.put("affectedRow", new BuyPostByPostIdDao(getConnection()).buyPost(_postId, _customerId));
 
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id have been bought!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
 
 
@@ -201,6 +213,8 @@ public class PostServlet extends AbstractServlet {
             JSONObject _result = new JSONObject();
 
             _result.put("data", new GetPostsByCustomerIdDao(getConnection()).getPostsByCustomerId(_customerId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "User orders fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 
@@ -224,6 +238,8 @@ public class PostServlet extends AbstractServlet {
             JSONObject _result = new JSONObject();
 
             _result.put("data", new GetPostsByUserIdDao(getConnection()).getPostsByUserId(_customerId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "User posts fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 
@@ -277,12 +293,18 @@ public class PostServlet extends AbstractServlet {
 
     private void getPostDetailsOp (HttpServletRequest _request, HttpServletResponse _response) {
         try {
+            HttpSession _session = _request.getSession();
+
             long _id = parseLong(_request.getParameter("postId"));
+
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 
             JSONObject _result = new JSONObject();
+
             _result.put("data", new GetPostByIdDao(getConnection()).getPostById(_id));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "Post details with "+ _id +" post id fetched", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 
