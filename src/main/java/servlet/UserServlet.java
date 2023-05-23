@@ -68,7 +68,11 @@ public class UserServlet extends AbstractServlet{
             getProfileData(_request, _response);
         }
         else{
-            logoutOperations(_request, _response);
+            try {
+                logoutOperations(_request, _response);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -266,6 +270,9 @@ public class UserServlet extends AbstractServlet{
                     newUser.setPpPath(null);
                     JSONObject _result = new JSONObject();
                     _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
+
+                    new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "New user registered!", new Timestamp(System.currentTimeMillis()), 0));
+
                     _response.getWriter().write(_result.toString());
                 }
                 else{
@@ -283,12 +290,14 @@ public class UserServlet extends AbstractServlet{
                             newUser.setPpPath(null);
                             JSONObject _result = new JSONObject();
                             _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
+                            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "New user registered!", new Timestamp(System.currentTimeMillis()), 0));
                             _response.getWriter().write(_result.toString());
                         }
                         else{
                             checkuser.setDeleted(false);
                             JSONObject _result = new JSONObject();
                             _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(checkuser.getUserId(),checkuser));
+                            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "New user registered!", new Timestamp(System.currentTimeMillis()), 0));
                             _response.getWriter().write(_result.toString());
                         }
 
@@ -301,12 +310,13 @@ public class UserServlet extends AbstractServlet{
             writeError(_response, ErrorCode.INTERNAL_ERROR);
         }
     }
-    private void logoutOperations(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    private void logoutOperations(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
 
         try {
+
             HttpSession _session = req.getSession();
 
-            long _userId = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
             /*
             String _user = String.valueOf(_userId);
             String _role = (String) _session.getAttribute("role");
@@ -334,6 +344,8 @@ public class UserServlet extends AbstractServlet{
             resp.getWriter().write(res.toString());
 
              */
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User logged out!", new Timestamp(System.currentTimeMillis()), _userId));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -345,7 +357,7 @@ public class UserServlet extends AbstractServlet{
     private void changePassword(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
             HttpSession _session = _request.getSession();
-            long _userId = (long) _session.getAttribute("user_id");
+            long _userId = (long) _session.getAttribute("userId");
             String password = _request.getParameter("password");
             _response.setContentType("application/json");
             JSONObject res = new JSONObject();
@@ -353,6 +365,8 @@ public class UserServlet extends AbstractServlet{
             PrintWriter out = _response.getWriter();
 
             res.put("data", new ChangePasswordDao(getConnection()).ChangePasswordDao(_userId,password));
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User changed password!", new Timestamp(System.currentTimeMillis()), _userId));
+
             _response.getWriter().write(res.toString());
             _response.sendRedirect(_request.getContextPath() + "/jsp/login.jsp");
         } catch (Exception e) {
@@ -372,6 +386,8 @@ public class UserServlet extends AbstractServlet{
             _response.setStatus(HttpServletResponse.SC_OK);
 
             res.put("data", new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userId,pp_path));
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User changed profile photo!", new Timestamp(System.currentTimeMillis()), _userId));
+
             _response.getWriter().write(res.toString());
             _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
 
@@ -428,6 +444,7 @@ public class UserServlet extends AbstractServlet{
                 _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
                 JSONObject _result = new JSONObject();
                 _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
+                new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User have been updated!", new Timestamp(System.currentTimeMillis()), _userId));
                 _response.getWriter().write(_result.toString());
                 _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
             }
@@ -446,6 +463,7 @@ public class UserServlet extends AbstractServlet{
             _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User details fetched!", new Timestamp(System.currentTimeMillis()), _userId));
             _response.getWriter().write(_result.toString());
 
         } catch (SQLException _e) {
@@ -468,6 +486,7 @@ public class UserServlet extends AbstractServlet{
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.getWriter().write(_result.toString());
             _session.setAttribute("data",_result.getJSONObject("data"));
+        new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User profile fetched!", new Timestamp(System.currentTimeMillis()), _userId));
             _request.getRequestDispatcher("jsp/profile.jsp").forward(_request, _response);
         } catch (SQLException _e) {
             throw new RuntimeException(_e);
@@ -485,9 +504,16 @@ public class UserServlet extends AbstractServlet{
         // This method returns a json array with the roles.
         ArrayList<User> _users;
         try {
+            HttpSession _session = _request.getSession();
+
             Timestamp _creation_date = Timestamp.valueOf(_request.getParameter("creationDate"));
+
             JSONObject _result = new JSONObject();
+
             _result.put("data",new GetUserByCreationDateDAO(getConnection()).GetUserByCreationDateDAO(_creation_date));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User profile fetched!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.setContentType("application/json");
             _response.getWriter().write(_result.toString());
@@ -524,8 +550,14 @@ public class UserServlet extends AbstractServlet{
     private void getAllUsersOp (HttpServletRequest _request, HttpServletResponse _response) {
 
         try {
+            HttpSession _session = _request.getSession();
+
             JSONObject _result = new JSONObject();
+
             _result.put("data",new GetAllUsersDAO(getConnection()).getAllUsers());
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "All users have been fetched!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
             _response.getWriter().write(_result.toString());
 
         } catch (SQLException _e) {
