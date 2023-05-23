@@ -36,7 +36,7 @@ public class GetSystemLogDao extends AbstractDAO {
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new SQLException("No System Logs to Show!");
+                return _systemLogs;
             }
 
             while (_rs.next()) {

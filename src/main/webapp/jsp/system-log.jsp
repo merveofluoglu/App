@@ -235,134 +235,16 @@
     <div class="container-fluid">
       <!---------DATATABLE--------->
 
-      <table id="User" class="display" width="100%">
+      <table id="ActionLog" class="display" width="100%">
         <thead>
         <tr>
-          <th id="UserId">User Id</th>
-          <th id="Name">Name</th>
-          <th id="Surname">Surname</th>
-          <th id="Email">Email</th>
-          <th id="CreationDate">Creation Date</th>
-          <th id="UpdateDate">Update Date</th>
+          <th id="actionId">Action Id</th>
+          <th id="description">Description</th>
+          <th id="logDate">Log Date</th>
+          <th id="userId">User Id</th>
         </tr>
         </thead>
       </table>
-
-      <!---------ADD USER--------->
-
-      <div class="modal fade" id="addUser" tabindex="-1">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="myModalLabel">Add User</h4>
-              <button type="button" class="btn-close" target="#addEUser" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label>Name: </label>
-                <input type="text" name="Name" id="Name" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>Surname:</label>
-                <input type="text" name="Surname" id="Surname" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>Email:</label>
-                <input type="email" name="Email" id="Email" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>Password:</label>
-                <input type="password" name="Password" id="Password" class="form-control" />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-toolbar" target="#addUser" data-bs-dismiss="modal">Close</button>
-              <button class="btn btn-success" id="register" data-dismiss="modal" onclick="addUser()">Add</button>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!---------EDIT USER--------->
-
-      <div class="modal fade" id="editUser" tabindex="-1">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="myModalLabel">Edit User</h4>
-              <button type="button" class="btn-close" target="#editUser" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="form-group" style="display:none">
-                <label>ID:</label>
-                <input type="number" name="UserId" id="UserId" class="form-control" readonly="readonly" />
-              </div>
-              <div class="form-group">
-                <label>Name: </label>
-                <input type="text" name="Name" id="Name" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>Surname:</label>
-                <input type="text" name="Surname" id="Surname" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>Email:</label>
-                <input type="email" name="Email" id="Email" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label>Password:</label>
-                <input type="password" name="Password" id="Password" class="form-control" />
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-toolbar" target="#editUser" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="updateUser()">Edit</button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!---------DELETE USER--------->
-
-      <div id="dialog" class="modal fade" role="dialog" style="display:none">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3 class="modal-title">Delete User</h3>
-              <button type="button" class="btn-close" target="#dialog" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>Do you want to delete this user?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-toolbar" target="#dialog" data-bs-dismiss="modal">Close</button>
-              <button type="button" id="confirm" class="btn btn-danger">Confirm</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!---------GET BY ID USER MODAL--------->
-
-      <div id="dialogId" class="modal fade" role="dialog" style="display:none">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h3 class="modal-title">User Get By Id</h3>
-              <button type="button" class="btn-close" target="#dialogId" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>Do you want to retrieve this user?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-toolbar" target="#dialogId" data-bs-dismiss="modal">Close</button>
-              <button type="button" id="confirmId" class="btn btn-danger">Confirm</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <!-- end container -->
   </section>
@@ -383,180 +265,31 @@
   $(document).ready(function () {
     FillDatatable();
   });
-
   var table;
-
-  const addUser = () => {
-    const _data = {
-      name: $("#addUser [name='Name']").val(),
-      surname: $("#addUser [name='Surname']").val(),
-      email: $("#addUser [name='Email']").val(),
-      password: $("#addUser [name='Password']").val(),
-    };
-    $.ajax({
-              url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/user/register",
-              method: "POST",
-              data: _data,
-              success: function (response) {
-                $('#addUser').modal('hide');
-                table.destroy();
-                FillDatatable();
-                toastr.success(response);
-              },
-              error: function () {
-                alert("error");
-              }
-            }
-    );
-  }
-
-  const removeUser = (id) => {
-    $.ajax({
-              url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/user/delete/' + id,
-              method: "POST",
-              success: function (response) {
-                table.destroy();
-                FillDatatable();
-                toastr.error("User deleted succesfully!");
-              },
-              error: function () {
-                alert("error");
-              }
-            }
-    );
-  }
-
-  const updateUser = () => {
-
-    const _data = {
-      userId: parseInt($("#editUser [name='UserId']").val()),
-      name: $("#editUser [name='Name']").val(),
-      surname: $("#editUser [name='Surname']").val(),
-      email: $("#editUser [name='Email']").val(),
-      password: $("#editUser [name='Password']").val(),
-      ppPath: $("#editUser [name='UserppPath']").val()
-    };
-
-    $.ajax({
-              url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/user/update',
-              method: "POST",
-              data: _data,
-              success: function (response) {
-                $('#editUser').modal('hide');
-                table.destroy();
-                FillDatatable();
-                toastr.info("User updated succesfully!");
-              },
-              error: function () {
-                alert("error");
-              }
-            }
-    );
-  }
 
   const FillDatatable = () => {
 
-    let _selectedId = 0;
-    let _selectedName;
-    let _selectedSurname;
-    let _selectedEmail;
-    let _selectedPassword;
-    let _selectedRoleId = 1;
-    let _selectedSCreationDate;
-    let _selectedUpdateDate;
-    let _selectedProfilePath;
-    let _selectedIsDeleted = false;
-
     $.ajax({
-      url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/user/getAll',
+      url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/actionlog/getSystemLog',
       method: "GET",
       success: function (data) {
 
-        table = $('#User').DataTable({
-          data: JSON.parse(data).data,
+        table = $('#ActionLog').DataTable({
+          data: data.data,
           bDestroy: true,
           dom: "Bfrtip",
           columns: [
+            { title: "Action Id", data: "actionId" },
+            { title: "Decription", data: "description" },
+            { title: "Log Date", data: "actionDate" },
             { title: "User Id", data: "userId" },
-            { title: "Name", data: "name" },
-            { title: "Surname", data: "surname" },
-            { title: "Email", data: "email" },
-            { title: "Creation Date", data: "creationDate" },
-            { title: "Update Date", data: "updateDate" },
-          ],
-          select: true,
-          buttons: [{
-            text: "Delete",
-            className: 'btn btn-danger',
-            atr: {
-              id: 'delete'
-            },
-            action: function () {
-              if (_selectedId == 0)
-                alert("Please select a row!");
-              else {
-                $("#dialog").modal('show');
-
-                $("#confirm").off('click').click(function () {
-                  $('#dialog').modal('hide');
-                  removeUser(_selectedId);
-                });
-              }
-            }
-          },
-            {
-              text: "Edit",
-              className: 'btn btn-secondary',
-              atr: {
-                id: 'edit'
-              },
-              action: function () {
-                if (_selectedId == 0)
-                  alert("Please select a row!");
-                else {
-                  $("#editUser [name='UserId']").val(_selectedId);
-                  $("#editUser [name='Name']").val(_selectedName);
-                  $("#editUser [name='Surname']").val(_selectedSurname);
-                  $("#editUser [name='Email']").val(_selectedEmail);
-                  $("#editUser [name='Password']").val(_selectedPassword);
-                  $("#editUser [name='UserppPath']").val(_selectedProfilePath);
-                  $("#editUser").modal('show');
-                }
-              }
-            },
-            {
-              text: "Register",
-              className: 'btn btn-primary',
-              atr: {
-                id: 'register'
-              },
-              action: function () {
-                $("#addUser [name='Name']").val("");
-                $("#addUser [name='Surname']").val("");
-                $("#addUser [name='Email']").val("");
-                $("#addUser [name='Password']").val("");
-                $("#addUser").modal('show');
-              }
-            }
           ]
-        }).off("select")
-                .on("select", function (e, dt, type, indexes) {
-                  _selectedId = dt.data().userId;
-                  _selectedName = dt.data().name;
-                  _selectedSurname = dt.data().surname;
-                  _selectedEmail = dt.data().email;
-                  _selectedPassword = dt.data().password;
-                  _selectedRoleId = dt.data().roleId;
-                  _selectedSCreationDate = dt.data().creationDate;
-                  _selectedUpdateDate = dt.data().updateDate;
-                  _selectedProfilePath = dt.data().ppPath;
-                  _selectedIsDeleted = dt.data().isDeleted;
-
-                });
+        })
       }
     });
 
   }
+
 
   const logout = () => {
     $.ajax({

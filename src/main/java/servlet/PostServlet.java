@@ -1,5 +1,6 @@
 package servlet;
 
+import dao.ActionLog.AddActionLogDao;
 import dao.Favourites.GetFavouritesByPostIdDao;
 import dao.Favourites.RemoveFavouriteDao;
 import dao.Post.*;
@@ -8,6 +9,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
+import resource.ActionLog;
 import resource.Favourites;
 import resource.Post;
 import utils.ErrorCode;
@@ -260,6 +262,8 @@ public class PostServlet extends AbstractServlet {
             JSONObject _result = new JSONObject();
 
             _result.put("data", new CreatePostDao(getConnection()).createPost(_post));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "New post added", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 

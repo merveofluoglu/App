@@ -8,11 +8,11 @@
   <title>Admin Dashboard</title>
 
   <!-- ========== All CSS files linkup ========= -->
-  <link rel="stylesheet" href="admin-dashboard/assets/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="admin-dashboard/assets/css/lineicons.css" />
-  <link rel="stylesheet" href="admin-dashboard/assets/css/fullcalendar.css" />
-  <link rel="stylesheet" href="admin-dashboard/assets/css/morris.css" />
-  <link rel="stylesheet" href="admin-dashboard/assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="assets/css/lineicons.css" />
+  <link rel="stylesheet" href="assets/css/fullcalendar.css" />
+  <link rel="stylesheet" href="assets/css/morris.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
   <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
 
   <link rel="stylesheet"
@@ -34,7 +34,7 @@
     <ul>
       <li class="nav-item">
         <a
-                href="user.jsp"
+                href="../user.jsp"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
         >
@@ -51,7 +51,7 @@
 
       <li class="nav-item">
         <a
-                href="category.jsp"
+                href="../category.jsp"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
         >
@@ -68,7 +68,7 @@
 
       <li class="nav-item">
         <a
-                href="sub_category.jsp"
+                href="../sub_category.jsp"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
         >
@@ -85,7 +85,7 @@
 
       <li class="nav-item">
         <a
-                href="permission.jsp"
+                href="../permission.jsp"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
         >
@@ -102,7 +102,7 @@
 
       <li class="nav-item">
         <a
-                href="system-log.jsp"
+                href="../system-log.jsp"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
         >
@@ -119,7 +119,7 @@
 
       <li class="nav-item">
         <a
-                href="user-log.jsp"
+                href="../user-log.jsp"
                 aria-expanded="false"
                 aria-label="Toggle navigation"
         >
@@ -154,7 +154,7 @@
               >
                 <i class="lni lni-chevron-left me-2"></i> Menu
               </button>
-            </div>
+        </div>
             <div class="col-lg-7 col-md-7 col-6">
               <div class="header-right">
                 <!-- application -->
@@ -164,7 +164,7 @@
                           type="button"
                           id="to-application"
                           style="width: 180px; background: rgb(243 244 245)"
-                  ><a href="main.jsp" style="color: black;">
+                  ><a href="../main.jsp" style="color: black;">
                     <i class="lni lni-grid-alt"></i> To Application
                   </a>
                   </button>
@@ -178,53 +178,52 @@
                   <button
                           class="btn btn-info"
                           type="button"
-                          id="to-profile"
+                          id="to-application"
                           style="width: 160px; background: rgb(23 162 184)"
-                  ><a href="profile.jsp" style="color: white;">
+                  ><a href="../profile.jsp" style="color: white;">
                     <i class="lni lni-user"></i> View Profile
                   </a>
                   </button>
                 </div>
               </div>
             </div>
-            <div class="col-lg-7 col-md-7 col-6">
-              <div class="header-right">
-                <!-- profile start -->
-                <div class="profile-box ml-15">
-                  <button
-                          class="dropdown-toggle bg-transparent border-0"
-                          type="button"
-                          id="profile"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                  >
-                    <div class="profile-info">
-                      <div class="info">
-                        <h6>Admin</h6>
-                        <div class="image">
-                          <span class="status"></span>
-                        </div>
-                      </div>
+        <div class="col-lg-7 col-md-9 col-6">
+          <div class="header-right">
+            <!-- profile start -->
+            <div class="profile-box ml-15">
+              <button
+                      class="dropdown-toggle bg-transparent border-0"
+                      type="button"
+                      id="profile"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+              >
+                <div class="profile-info">
+                  <div class="info">
+                    <h6>Admin</h6>
+                    <div class="image">
                     </div>
-
-                    <i class="lni lni-chevron-down"></i>
-                  </button>
-                  <ul
-                          class="dropdown-menu dropdown-menu-end"
-                          aria-labelledby="profile"
-                  >
-                    <li>
-                      <a onclick="logout()">
-                        <i class="lni lni-exit"></i> Sign Out
-                      </a>
-                    </li>
-                  </ul>
+                  </div>
                 </div>
-                <!-- profile end -->
-              </div>
+
+                <i class="lni lni-chevron-down"></i>
+              </button>
+              <ul
+                      class="dropdown-menu dropdown-menu-end"
+                      aria-labelledby="profile"
+              >
+                <li>
+                  <a onclick="logout()">
+                    <i class="lni lni-exit"></i> Sign Out
+                  </a>
+                </li>
+              </ul>
             </div>
+            <!-- profile end -->
           </div>
         </div>
+      </div>
+    </div>
       </div>
     </div>
   </header>
@@ -580,14 +579,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!-- ========= All Javascript files linkup ======== -->
-<script src="admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
-<script src="admin-dashboard/assets/js/Chart.min.js"></script>
-<script src="admin-dashboard/assets/js/dynamic-pie-chart.js"></script>
-<script src="admin-dashboard/assets/js/moment.min.js"></script>
-<script src="admin-dashboard/assets/js/fullcalendar.js"></script>
-<script src="admin-dashboard/assets/js/jvectormap.min.js"></script>
-<script src="admin-dashboard/assets/js/world-merc.js"></script>
-<script src="admin-dashboard/assets/js/polyfill.js"></script>
-<script src="admin-dashboard/assets/js/main.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/Chart.min.js"></script>
+<script src="assets/js/dynamic-pie-chart.js"></script>
+<script src="assets/js/moment.min.js"></script>
+<script src="assets/js/fullcalendar.js"></script>
+<script src="assets/js/jvectormap.min.js"></script>
+<script src="assets/js/world-merc.js"></script>
+<script src="assets/js/polyfill.js"></script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>

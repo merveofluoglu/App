@@ -14,6 +14,7 @@ import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -36,50 +37,6 @@ public class ActionLogServlet extends AbstractServlet{
             getUserActionLog(_req, _resp);
         }
 
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest _req, HttpServletResponse _resp) throws ServletException, IOException {
-        String op = _req.getRequestURI().split("/", 5)[3];
-        switch (op) {
-            // the requested operation is login
-            case "add" :
-                try {
-                    addActionLog(_req,_resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-
-            // the requested operation is unknown
-            default :
-                writeError(_resp, ErrorCode.OPERATION_UNKNOWN);
-                break;
-        }
-    }
-
-    private void addActionLog(HttpServletRequest _req, HttpServletResponse _resp) throws SQLException, IOException, ResourceNotFoundException {
-
-        ActionLog _actionLog = null;
-
-        try {
-            _actionLog.setUserAct(Boolean.parseBoolean(_req.getParameter("is_user_act")));
-            _actionLog.setSystemAct(Boolean.parseBoolean(_req.getParameter("is_system_act")));
-            _actionLog.setDescription(_req.getParameter("description"));
-            _actionLog.setActionDate(new Timestamp(System.currentTimeMillis()));
-            _actionLog.setUserId(Long.parseLong(_req.getParameter("user_id")));
-
-            JSONObject _result = new JSONObject();
-
-            _result.put("data", new AddActionLogDao(getConnection()).addActionLog(_actionLog));
-
-            _resp.getWriter().write(_result.toString());
-
-        } catch (Exception _e) {
-            throw new RuntimeException(_e);
-        }
     }
 
     private void getActionLog(HttpServletRequest _req, HttpServletResponse _resp) throws SQLException, IOException {

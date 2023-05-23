@@ -158,6 +158,7 @@ public class UserServlet extends AbstractServlet{
         boolean logAccess = false;
         ErrorCode errorCode = null;
         User _user = new User();
+        HttpSession session = _request.getSession();
         try {
             //take from the request, the parameters (email and password)
             String email = _request.getParameter("email");
@@ -191,7 +192,7 @@ public class UserServlet extends AbstractServlet{
             }
 
             if (logAccess) {
-                HttpSession session = _request.getSession();
+
                 session.setAttribute("userId", _user.getUserId());
                 session.setAttribute("user",_user);
                 boolean roleCheck = _user.getRoleId() == 0;
@@ -207,6 +208,7 @@ public class UserServlet extends AbstractServlet{
             } else {
                 _response.setStatus(errorCode.getHTTPCode());
             }
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User logged in!", new Timestamp(System.currentTimeMillis()), (Long) session.getAttribute("userId")));
 
         } catch (ResourceNotFoundException e) {
             errorCode = ErrorCode.WRONG_CREDENTIALS;
