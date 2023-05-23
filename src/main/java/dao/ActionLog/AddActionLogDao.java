@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 public class AddActionLogDao extends AbstractDAO {
 
-    private static final String STATEMENT = "INSERT INTO action_log ( is_user_act, is_system_act, description, action_date, user_id ) " +
-            "VALUES (?, ?, ?, ?, ?)";
+    private static final String STATEMENT = "INSERT INTO action_log (action_id, is_user_act, is_system_act, description, action_date, user_id ) " +
+            "VALUES (nextval('action_seq'), ?, ?, ?, ?, ?)";
 
     /**
      * Creates a new DAO object.

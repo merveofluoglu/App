@@ -13,6 +13,14 @@ public class ActionLog {
     private long userId;
     public ActionLog(){}
 
+    public ActionLog(boolean isUserAct, boolean isSystemAct, String description, Timestamp actionDate, long userId) {
+        this.isUserAct = isUserAct;
+        this.isSystemAct = isSystemAct;
+        this.description = description;
+        this.actionDate = actionDate;
+        this.userId = userId;
+    }
+
     public ActionLog(long actionId, boolean isUserAct, boolean isSystemAct, String description, Timestamp actionDate, long userId) {
         this.actionId = actionId;
         this.isUserAct = isUserAct;

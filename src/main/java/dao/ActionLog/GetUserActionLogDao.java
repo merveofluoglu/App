@@ -36,7 +36,7 @@ public class GetUserActionLogDao extends AbstractDAO {
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new SQLException("No User Logs to Show!");
+                return _userLogs;
             }
 
             while (_rs.next()) {
