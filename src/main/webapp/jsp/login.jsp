@@ -12,7 +12,7 @@
 <head>
     <title>Login</title>
   <!-- Custom Css -->
-  <link rel="stylesheet" href="/jsp/profile.css">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
@@ -77,12 +77,12 @@
 <form method="POST" action="${pageContext.request.contextPath}/user/login">
   <h3>Login</h3>
   <label for="email">Email</label>
-  <input type="text" placeholder="Email or Phone" id="email">
+  <input type="text" placeholder="Email or Phone" id="email" name="email">
 
   <label for="password">Password</label>
-  <input type="password" placeholder="Password" id="password">
+  <input type="password" placeholder="Password" id="password" name="password">
 
-  <button>Log In</button>
+  <button type="submit">Log In</button>
   <div class="social">
     <div class="go"><i class="fab fa-google"></i>  Google</div>
   </div>
@@ -90,7 +90,7 @@
 
 <form-small>
   <div style="margin-left: 3px;  font-size: 12px; margin-bottom: 10px; margin-right: 5px"> Do not have an account?
-    <button-register id="registerUser" >Register</button-register>
+    <button-register><a href="${pageContext.request.contextPath}/jsp/register.jsp"; style="color: #1a1d20">Register</a></button-register>
   </div>
 </form-small>
 

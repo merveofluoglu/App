@@ -39,7 +39,7 @@
     <div class="shape"></div>
     <div class="shape"></div>
 </div>
-<form id="reguser">
+<form id="reguser" method="POST" action="${pageContext.request.contextPath}/user/register">
     <h3>Register</h3>
     <label for="name">Name</label>
     <input type="text" placeholder="Name" name="name" id="name">
@@ -53,7 +53,7 @@
     <label for="password">Password</label>
     <input type="password" placeholder="Password" name="password" id="password">
 
-    <button onclick="reguser()">Sign Up</button>
+    <button type="submit">Sign Up</button>
     <div class="social">
         <div class="go"><i class="fab fa-google"></i>Google</div>
     </div>
