@@ -274,6 +274,7 @@ public class UserServlet extends AbstractServlet{
                     new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "New user registered!", new Timestamp(System.currentTimeMillis()), 0));
 
                     _response.getWriter().write(_result.toString());
+                    _response.sendRedirect(_request.getContextPath() + "/jsp/login.jsp");
                 }
                 else{
                     checkuser = _user.get(_user.size()-1);
@@ -292,6 +293,7 @@ public class UserServlet extends AbstractServlet{
                             _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
                             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "New user registered!", new Timestamp(System.currentTimeMillis()), 0));
                             _response.getWriter().write(_result.toString());
+                            _response.sendRedirect(_request.getContextPath() + "/jsp/login.jsp");
                         }
                         else{
                             checkuser.setDeleted(false);
@@ -299,6 +301,7 @@ public class UserServlet extends AbstractServlet{
                             _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(checkuser.getUserId(),checkuser));
                             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "New user registered!", new Timestamp(System.currentTimeMillis()), 0));
                             _response.getWriter().write(_result.toString());
+                            _response.sendRedirect(_request.getContextPath() + "/jsp/login.jsp");
                         }
 
                     }

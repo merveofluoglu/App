@@ -6,6 +6,7 @@
 /*
  *  Owl Carousel - Core
  */
+@charset "UTF-8";
 .owl-carousel {
     display: none;
     width: 100%;
