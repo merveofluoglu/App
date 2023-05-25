@@ -19,7 +19,10 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
-
+  <link href="${pageContext.request.contextPath}/jsp/admin-dashboard/assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/css/login.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/css/fontawesome.css">
 </head>
 <body>
 
@@ -67,24 +70,31 @@
   <!-- End -->
 </div>
 <!-- Main -->
-<div class="main">
-  <h2>Welcome to Login Page</h2>
-  <div class="card">
-    <div class="card-body">
-      <form method="POST" action="${pageContext.request.contextPath}/user/login">
-        <label for="email">email:</label>
-        <input id="email" name="email" type="text"/><br/><br/>
-        <label for="password">password:</label>
-        <input id="password" name="password" type="password"/><br/><br/>
-        <button class="button" type="submit">Log In</button><br/>
-      </form>
-      <div style="margin-top: 15px; margin-left: 3px;  font-size: 9px;"> Do not have an account?
-        <button id="registerUser" >Register</button>
-      </div>
-    </div>
-  </div>
-
+<div class="background">
+  <div class="shape"></div>
+  <div class="shape"></div>
 </div>
+<form method="POST" action="${pageContext.request.contextPath}/user/login">
+  <h3>Login</h3>
+  <label for="email">Email</label>
+  <input type="text" placeholder="Email or Phone" id="email">
+
+  <label for="password">Password</label>
+  <input type="password" placeholder="Password" id="password">
+
+  <button>Log In</button>
+  <div class="social">
+    <div class="go"><i class="fab fa-google"></i>  Google</div>
+  </div>
+</form>
+
+<form-small>
+  <div style="margin-left: 3px;  font-size: 12px; margin-bottom: 10px; margin-right: 5px"> Do not have an account?
+    <button-register id="registerUser" >Register</button-register>
+  </div>
+</form-small>
+
+
 
 
 
