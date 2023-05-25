@@ -6,6 +6,8 @@ public class PostFiles {
     private byte[] file;
     private boolean isDeleted;
 
+    public String base64;
+
     private String fileMediaType;
 
     public PostFiles() {}
@@ -16,6 +18,14 @@ public class PostFiles {
         this.file = file;
         this.isDeleted = isDeleted;
         this.fileMediaType = fileMediaType;
+    }
+
+    public String getBase64() {
+        return base64;
+    }
+
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
 
     public long getFileId() {
