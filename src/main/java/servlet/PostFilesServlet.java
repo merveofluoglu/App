@@ -1,11 +1,14 @@
 package servlet;
 
+import dao.ActionLog.AddActionLogDao;
+import dao.Post.GetAllPostsDao;
 import dao.PostFiles.*;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.json.JSONObject;
+import resource.ActionLog;
 import resource.Post;
 import resource.PostFiles;
 import utils.ErrorCode;
@@ -15,7 +18,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import static java.lang.Long.parseLong;
@@ -87,14 +92,17 @@ public class PostFilesServlet extends AbstractServlet {
         try {
             JSONObject _result = new JSONObject();
 
-            _result.put("data",new GetPostFilesByIdDao(getConnection()).getPostFilesById());
             List<PostFiles> files = new GetPostFilesByIdDao(getConnection()).getPostFilesById();
-            byte[] data = files.get(0).getFile();
 
-            String str = new String(data,StandardCharsets.UTF_8.toString().trim());
+            for(int i=0;i<files.size();i++) {
+                String encoded = Base64.getEncoder().encodeToString(files.get(i).getFile());
 
-            _request.getSession().setAttribute("str",str);
-            _request.getRequestDispatcher("/jsp/uploadFile-result.jsp").forward(_request, _response);
+                files.get(i).setBase64(encoded);
+            }
+
+            _result.put("data",files);
+
+            _response.getWriter().write(_result.toString());
 
 
         } catch (SQLException _e) {
@@ -217,6 +225,7 @@ public class PostFilesServlet extends AbstractServlet {
     private void uploadPostFile(HttpServletRequest _request, HttpServletResponse _response) {
 
         PostFiles _postFiles = null;
+        JSONObject _result = new JSONObject();
 
         try {
             _postFiles = parseRequest(_request);
@@ -228,7 +237,9 @@ public class PostFilesServlet extends AbstractServlet {
         try {
             _request.setAttribute("postFiles", _postFiles);
 
-            _request.getRequestDispatcher("/jsp/uploadFile-result.jsp").forward(_request, _response);
+            _result.put("data",_postFiles);
+
+            _response.getWriter().write(_result.toString());
 
         } catch (Exception _e) {
             throw new RuntimeException(_e);

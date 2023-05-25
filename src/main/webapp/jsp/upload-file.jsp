@@ -25,7 +25,7 @@
  <h1 class="text-center">File Upload to Database</h1>
  <div class="card">
   <div class="card-body">
-   <form method="post" class="form-group" action="${pageContext.request.contextPath}/postFiles/add">
+   <form method="post" class="form-group" enctype= "multipart/form-data" action="${pageContext.request.contextPath}/postFiles/upload">
     <div class="form-group">
      <label for="postId">Post Id: </label>
      <input id="postId" type="text" class="form-control" name="postId" size="50" />
