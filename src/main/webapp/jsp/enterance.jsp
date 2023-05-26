@@ -22,6 +22,7 @@
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <!-- ***** Header Area Start ***** -->
 <header class="header-area header-sticky">
@@ -30,7 +31,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="${pageContext.request.contextPath}/jsp/mainpage.jsp" class="logo">
+                    <a href="${pageContext.request.contextPath}/jsp/enterance.jsp" class="logo">
                         DAMACANAN
                     </a>
                     <!-- ***** Logo End ***** -->
@@ -305,7 +306,7 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <fieldset>
-                                        <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Email" required="">
+                                        <input name="email" type="text" id="email" placeholder="Email" required="">
                                     </fieldset>
                                 </div>
                                 <div class="col-lg-4">
@@ -320,7 +321,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <fieldset>
-                                        <button type="submit" id="form-submit" class="button" onclick="sendMail(name,email,subject,message)">SEND</button>
+                                        <button id="form-submit" type="submit" class="button">SEND</button>
                                     </fieldset>
                                 </div>
                             </div>
@@ -361,10 +362,13 @@
 
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/isotope.min.js"></script>
 <script>
-    $('.nav li:first').addClass('active');
+    $(document).ready(function () {
+        $('.nav li:first').addClass('active');
+    });
 
-    var showSection = function showSection(section, isAnimate) {
+     showSection = (section, isAnimate) => {
         var
             direction = section.replace(/#/, ''),
             reqSection = $('.section').filter('[data-section="' + direction + '"]'),
@@ -380,33 +384,33 @@
 
     };
 
-    var sendMail = function sendMail(name, email, subject, message) {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.set('Authorization', 'Basic ' + btoa('7fca8fd33b92ae8cf3b62753f824907f'+":" +'007bb9bffdc57ab2eec8c13e4e4d3832'));
+    $('#contact').on('submit', function(event) {
+        event.preventDefault(); // prevent reload
 
-        const data = JSON.stringify({
-            "Messages": [{
-                "From": {"Email": "damacananapplication@gmail.com", "Name": "Damacanan Team"},
-                "To": [{"Email": email, "Name": name}],
-                "Subject": "We have received your message",
-                "TextPart": "We have received your message. We are going to return you as soon as possible."
-            }]
+        var formData = new FormData(this);
+        formData.append('service_id', 'service_7eq1jgk');
+        formData.append('template_id', 'template_rmx05yh');
+        formData.append('user_id', 'em-idJUpyufBKIgjt');
+        formData.append('from_name','DamacaNaN Team');
+        formData.append('to_name',$("#contact [name='name']").val());
+        formData.append('reply_to','damacananapplication@gmail.com');
+        formData.append('reply_to_email',$("#contact [name='email']").val());
+        $.ajax('https://api.emailjs.com/api/v1.0/email/send-form', {
+            type: 'POST',
+            data: formData,
+            contentType: false, // auto-detection
+            processData: false // no need to parse formData to string
+        }).done(function () {
+            document.getElementById("contact").reset();
+        }).fail(function (error) {
+            alert('Oops... ' + JSON.stringify(error));
         });
+    });
 
-        const requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: data,
-        };
 
-        fetch("https://api.mailjet.com/v3.1/send", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-    }
 
-    var checkSection = function checkSection() {
+
+    checkSection = () => {
         $('.section').each(function () {
             var
                 $this = $(this),
@@ -436,5 +440,5 @@
     });
 </script>
 </body>
-</body>
+
 </html>
