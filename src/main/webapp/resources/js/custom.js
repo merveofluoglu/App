@@ -1,7 +1,7 @@
 (function ($) {
 
     "use strict";
-    /*
+
         $(window).scroll(function() {
           var scroll = $(window).scrollTop();
           var box = $('.header-text').height();
@@ -32,7 +32,7 @@
               }
             });
 
-    */
+
     const Accordion = {
         settings: {
             // Expand the first item by default

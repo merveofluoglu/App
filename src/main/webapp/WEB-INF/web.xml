@@ -10,7 +10,7 @@
 	<description>Homework</description>
 
 	<welcome-file-list>
-		<welcome-file>/jsp/mainpage.jsp</welcome-file>
+		<welcome-file>/jsp/enterance.jsp</welcome-file>
 	</welcome-file-list>
 
 	<servlet>
