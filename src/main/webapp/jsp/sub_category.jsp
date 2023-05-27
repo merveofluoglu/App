@@ -10,8 +10,6 @@
   <!-- ========== All CSS files linkup ========= -->
   <link rel="stylesheet" href="admin-dashboard/assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="admin-dashboard/assets/css/lineicons.css" />
-  <link rel="stylesheet" href="admin-dashboard/assets/css/fullcalendar.css" />
-  <link rel="stylesheet" href="admin-dashboard/assets/css/morris.css" />
   <link rel="stylesheet" href="admin-dashboard/assets/css/main.css" />
   <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
 
@@ -201,8 +199,6 @@
                     <div class="profile-info">
                       <div class="info">
                         <h6>Admin</h6>
-                        <div class="image">
-                        </div>
                       </div>
                     </div>
 
@@ -422,7 +418,7 @@
     let _selectedSubCategoryName;
 
     $.ajax({
-      url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/subcategory/getAll',
+      url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + '/subcategory/getAllSubCategories',
       method: "GET",
       success: function (data) {
 
@@ -519,13 +515,6 @@
 
 <!-- ========= All Javascript files linkup ======== -->
 <script src="admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
-<script src="admin-dashboard/assets/js/Chart.min.js"></script>
-<script src="admin-dashboard/assets/js/dynamic-pie-chart.js"></script>
-<script src="admin-dashboard/assets/js/moment.min.js"></script>
-<script src="admin-dashboard/assets/js/fullcalendar.js"></script>
-<script src="admin-dashboard/assets/js/jvectormap.min.js"></script>
-<script src="admin-dashboard/assets/js/world-merc.js"></script>
-<script src="admin-dashboard/assets/js/polyfill.js"></script>
 <script src="admin-dashboard/assets/js/main.js"></script>
 </body>
 </html>
