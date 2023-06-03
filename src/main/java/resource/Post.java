@@ -18,6 +18,7 @@ public class Post {
     private Timestamp updateDate;
     private long categoryId;
     private long subcategoryId;
+    private String base64;
 
     public Post() {}
 
@@ -161,5 +162,13 @@ public class Post {
 
     public void setSubcategoryId(long subcategoryId) {
         this.subcategoryId = subcategoryId;
+    }
+
+    public String getBase64() {
+        return base64;
+    }
+
+    public void setBase64(String base64) {
+        this.base64 = base64;
     }
 }
