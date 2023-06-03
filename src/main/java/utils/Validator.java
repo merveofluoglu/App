@@ -26,7 +26,7 @@ public class Validator {
         return !StringUtils.isEmpty(password);
     }
 
-    public static boolean isAlphabetical(String val) {  return val.matches("^[a-zA-Z]*$"); }
+    public static boolean isAlphabetical(String val) {  return val.matches("^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]*$"); }
 
 
 }

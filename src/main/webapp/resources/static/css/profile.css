@@ -13,7 +13,7 @@ body {
 
 /* NavbarTop */
 .navbar-top {
-    background-color: #691010;
+    background-color: #a12c2f;
     color: #333;
     box-shadow: 0px 4px 8px 0px grey;
     height: 70px;
@@ -46,7 +46,7 @@ body {
 }
 
 .icon-count {
-    background-color: #ff0000;
+    background-color: #a12c2f;
     color: #fff;
     float: right;
     font-size: 11px;
@@ -57,9 +57,10 @@ body {
 
 /* End */
 
+
 /* Sidenav */
 .sidenav {
-    background-color: #691010;
+    background-color: #a12c2f;
     color: #333;
     border-bottom-right-radius: 25px;
     height: 86%;
@@ -116,7 +117,7 @@ body {
 .url a:hover, .url .active {
     background-color: #fff;
     border-radius: 28px;
-    color: #691010;
+    color: #a12c2f;
     margin-left: 14%;
     width: 65%;
 }
