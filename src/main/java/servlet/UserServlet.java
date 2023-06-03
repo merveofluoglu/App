@@ -208,7 +208,7 @@ public class UserServlet extends AbstractServlet{
                     session.setAttribute("role", "user");
 
                 }
-                _response.sendRedirect(_request.getContextPath() + "/jsp/main.jsp");
+                _response.sendRedirect(_request.getContextPath() + "/jsp/main-page/mainpage.jsp");
             } else {
                 _response.setStatus(errorCode.getHTTPCode());
             }

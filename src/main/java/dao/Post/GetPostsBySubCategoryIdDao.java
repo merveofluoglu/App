@@ -20,7 +20,7 @@ public class GetPostsBySubCategoryIdDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    protected GetPostsBySubCategoryIdDao(Connection con) {
+    public GetPostsBySubCategoryIdDao(Connection con) {
         super(con);
     }
 
