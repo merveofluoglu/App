@@ -162,7 +162,7 @@
                                             type="button"
                                             id="to-application"
                                             style="width: 180px; background: rgb(243 244 245)"
-                                    ><a href="main.jsp" style="color: black;">
+                                    ><a href="main-page/mainpage.jsp" style="color: black;">
                                         <i class="lni lni-grid-alt"></i> To Application
                                     </a>
                                     </button>
