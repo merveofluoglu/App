@@ -25,17 +25,44 @@
     <h1 class="text-center">Update Profile Photo</h1>
     <div class="card">
         <div class="card-body">
-            <form method="post" class="form-group" action="${pageContext.request.contextPath}/user/updatephoto">
+            <form method="post" class="form-group" enctype="multipart/form-data" action="${pageContext.request.contextPath}/user/upload" >
 
 
                 <div class="form-group">
                     <label>File:</label>
-                    <input type="file" name="file" />
+                    <input type="file" name="ppPath" />
                 </div>
-                <input type="submit" value="Save" class="btn btn-success">
+                <button onclick="updatePp()" value="Save" class="btn btn-success">
             </form>
         </div>
     </div>
 </div>
+
+<script>
+
+
+    updatePp = () => {
+        let data = document.getElementsByName("ppPath").values();
+
+        $.ajax({
+            method: "POST",
+            data: data,
+            url: "${pageContext.request.contextPath}/user/upload",
+            success: function (response) {
+
+                let data = JSON.parse(response).data;
+                data.forEach(elem => {
+                    let img = document.createElement('img');
+
+                    img.src = 'data:image/jpeg;base64,' + elem.base64;
+                    document.body.appendChild(img);
+
+                });
+
+            }
+        })
+    }
+
+</script>
 </body>
 </html>

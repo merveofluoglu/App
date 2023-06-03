@@ -10,8 +10,10 @@ import dao.Permission.GetPermissionByIdDao;
 import dao.Post.DeletePostByIdDao;
 import dao.Post.DeletePostByUserIdDao;
 import dao.Post.UpdatePostByIdDao;
+import dao.PostFiles.GetPostFilesByIdDao;
 import dao.Review.DeleteReviewDao;
 import dao.Review.GetReviewsByUserIdDao;
+import dao.User.UploadProfilePhotoDAO;
 import dao.User.*;
 
 import jakarta.servlet.*;
@@ -25,11 +27,14 @@ import utils.RestrictedActionException;
 import utils.Validator;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Properties;
 
@@ -97,8 +102,13 @@ public class UserServlet extends AbstractServlet{
             case "changepassword":
                 changePassword(_request,_response);
                 break;
+            /*
             case "updatephoto":
                 updatephoto(_request,_response);
+                break;
+            */
+            case "upload" :
+                uploadUserPP(_request, _response);
                 break;
 
             // the requested operation is unknown
@@ -330,14 +340,14 @@ public class UserServlet extends AbstractServlet{
                 _actionlog.setIs_user_act(true);
                 _actionlog.setIs_system_act(false);
                 _actionlog.setAction_date(new Timestamp(System.currentTimeMillis()));
-                _actionlog.setUser_id(_userId);
+                _actionlog.setUserId(_userId);
             }
             else{
                 _actionlog.setDescription("User #"+ _user +" logged out!");
                 _actionlog.setIs_user_act(true);
                 _actionlog.setIs_system_act(false);
                 _actionlog.setAction_date(new Timestamp(System.currentTimeMillis()));
-                _actionlog.setUser_id(_userId);
+                _actionlog.setUserId(_userId);
             }
             JSONObject res = new JSONObject();
             resp.setStatus(HttpServletResponse.SC_OK);
@@ -377,18 +387,18 @@ public class UserServlet extends AbstractServlet{
             writeError(_response, ErrorCode.INTERNAL_ERROR);
         }
     }
-
+    /*
     private void updatephoto(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
         try {
             HttpSession _session = _request.getSession();
             long _userId = (long) _session.getAttribute("userId");
             String password = _request.getParameter("password");
-            byte[] pp_path = _request.getParameter("file").getBytes();
+            byte[] ppPath = _request.getParameter("file").getBytes();
             _response.setContentType("application/json");
             JSONObject res = new JSONObject();
             _response.setStatus(HttpServletResponse.SC_OK);
 
-            res.put("data", new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userId,pp_path));
+            res.put("data", new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userId,ppPath));
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User changed profile photo!", new Timestamp(System.currentTimeMillis()), _userId));
 
             _response.getWriter().write(res.toString());
@@ -399,7 +409,52 @@ public class UserServlet extends AbstractServlet{
             writeError(_response, ErrorCode.INTERNAL_ERROR);
         }
     }
+    */
 
+    private void uploadUserPP(HttpServletRequest _request, HttpServletResponse _response) {
+
+        User _userPP = null;
+        JSONObject _result = new JSONObject();
+
+        try {
+            _userPP = parseRequest(_request);
+            new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userPP);
+        } catch (SQLException | ServletException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            _request.setAttribute("userPP", _userPP);
+
+            _result.put("data", _userPP);
+
+            _response.getWriter().write(_result.toString());
+
+            _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
+
+        } catch (Exception _e) {
+            throw new RuntimeException(_e);
+        }
+
+    }
+
+    private User parseRequest(HttpServletRequest _request) throws ServletException, IOException {
+        HttpSession _session = _request.getSession();
+        long userId = (long) _session.getAttribute("userId");
+        byte[] ppPath = null;
+
+        for (Part p : _request.getParts()) {
+            switch (p.getName()) {
+                case "ppPath":
+
+                    try (InputStream is = p.getInputStream()) {
+                        ppPath = is.readAllBytes();
+                    }
+                    break;
+            }
+        }
+        return new User(userId, ppPath);
+    }
 
 
     private void updateOperations(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
@@ -484,7 +539,12 @@ public class UserServlet extends AbstractServlet{
         try {
             long _userId = (long) _session.getAttribute("userId");
             JSONObject _result = new JSONObject();
-            _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId));
+
+            User users = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId);
+            String encoded = Base64.getEncoder().encodeToString(users.getPpPath());
+            users.setBase64(encoded);
+
+            _result.put("data", users);
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
             _response.getWriter().write(_result.toString());
