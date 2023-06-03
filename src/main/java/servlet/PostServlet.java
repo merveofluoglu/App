@@ -114,7 +114,21 @@ public class PostServlet extends AbstractServlet {
 
             long _subCategoryId = Long.parseLong(_req.getRequestURI().split("/", 5)[4]);
 
-            _result.put("data",new GetPostsBySubCategoryIdDao(getConnection()).getPostsBySubCategoryId(_subCategoryId));
+            List<Post> data = new GetPostsBySubCategoryIdDao(getConnection()).getPostsBySubCategoryId(_subCategoryId);
+
+            for(int i=0;i<data.size();i++) {
+
+                var post = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(data.get(i).getPostId());
+
+                if(post != null) {
+
+                    String encoded = Base64.getEncoder().encodeToString(post.getFile());
+                    data.get(i).setBase64(encoded);
+
+                }
+            }
+
+            _result.put("data", data);
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "All posts fetched from database by subcategoryId!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
@@ -255,7 +269,21 @@ public class PostServlet extends AbstractServlet {
             _response.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new GetPostsByCustomerIdDao(getConnection()).getPostsByCustomerId(_customerId));
+            List<Post> data = new GetPostsByCustomerIdDao(getConnection()).getPostsByCustomerId(_customerId);
+
+            for(int i=0;i<data.size();i++) {
+
+                var post = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(data.get(i).getPostId());
+
+                if(post != null) {
+
+                    String encoded = Base64.getEncoder().encodeToString(post.getFile());
+                    data.get(i).setBase64(encoded);
+
+                }
+            }
+
+            _result.put("data", data);
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "User orders fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
@@ -280,7 +308,21 @@ public class PostServlet extends AbstractServlet {
             _response.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new GetPostsByUserIdDao(getConnection()).getPostsByUserId(_customerId));
+            List<Post> data = new GetPostsByUserIdDao(getConnection()).getPostsByUserId(_customerId);
+
+            for(int i=0;i<data.size();i++) {
+
+                var post = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(data.get(i).getPostId());
+
+                if(post != null) {
+
+                    String encoded = Base64.getEncoder().encodeToString(post.getFile());
+                    data.get(i).setBase64(encoded);
+
+                }
+            }
+
+            _result.put("data", data);
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "User posts fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
@@ -345,7 +387,16 @@ public class PostServlet extends AbstractServlet {
 
             JSONObject _result = new JSONObject();
 
-            _result.put("data", new GetPostByIdDao(getConnection()).getPostById(_id));
+            Post data = new GetPostByIdDao(getConnection()).getPostById(_id);
+
+            var post = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(data.getPostId());
+
+            if(post != null) {
+                String encoded = Base64.getEncoder().encodeToString(post.getFile());
+                data.setBase64(encoded);
+            }
+
+            _result.put("data", data);
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "Post details with "+ _id +" post id fetched", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
