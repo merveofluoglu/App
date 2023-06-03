@@ -28,7 +28,7 @@ import static java.lang.Long.parseLong;
 public class PostServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-        String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
+        String _op = _request.getRequestURI().split("/", 5)[3].replace("/", "");
 
         if (_op.contentEquals("details")) {
             getPostDetailsOp(_request, _response);
@@ -36,6 +36,8 @@ public class PostServlet extends AbstractServlet {
             myOrders(_request,_response);
         } else if (_op.contentEquals("myposts")){
             myPosts(_request,_response);
+        } else if (_op.contentEquals("getPostsBySubCategoryId")){
+            getAllPostsBySubCategoryId(_request, _response);
         } else {
             getAllPosts(_request, _response);
         }
@@ -74,6 +76,30 @@ public class PostServlet extends AbstractServlet {
             _result.put("data",new GetAllPostsDao(getConnection()).getAllPosts());
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "All posts fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
+            _resp.getWriter().write(_result.toString());
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
+    private void getAllPostsBySubCategoryId (HttpServletRequest _req, HttpServletResponse _resp) {
+        try {
+
+            HttpSession _session = _req.getSession();
+
+            JSONObject _result = new JSONObject();
+
+            long _subCategoryId = Long.parseLong(_req.getRequestURI().split("/", 5)[4]);
+
+            _result.put("data",new GetPostsBySubCategoryIdDao(getConnection()).getPostsBySubCategoryId(_subCategoryId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "All posts fetched from database by subcategoryId!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _resp.getWriter().write(_result.toString());
 

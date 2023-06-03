@@ -33,7 +33,7 @@ public class SubCategoryServlet extends AbstractServlet {
         if (_op.contentEquals("details")) {
             getSubCategoriesByCategoryId(_request, _response);
         }
-        else {
+        else if(_op.contentEquals("getAllSubCategories")){
             getAllSubCategories(_request, _response);
         }
 

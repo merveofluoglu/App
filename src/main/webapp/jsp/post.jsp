@@ -200,7 +200,7 @@
         getSubCategories = () => {
             $.ajax({
                 method: "GET",
-                url: "${pageContext.request.contextPath}/subcategory/getAll",
+                url: "${pageContext.request.contextPath}/subcategory/getAllSubCategories",
                 success: function (response) {
                     subcategories = JSON.parse(response).data;
                     FillDatatable();
