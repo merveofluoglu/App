@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +18,7 @@
         referrerpolicy="no-referrer" />
 </head>
 <body>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src='img[src="data:image/jpg;data.base64,' + ${user.base64} integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
 
 <!-- Navbar top -->
@@ -36,7 +37,7 @@
 <div class="sidenav">
   <div class="profile">
     <button type="submit">
-      <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" alt="buttonpng" border="0" width="100" height="100"/>
+      <img src="../resources/static/images/New_User.png" alt="pp_png" border="0" width="100" height="100"/>
     </button>
 
     <div class="name">
@@ -73,7 +74,6 @@
       <hr align="center">
     </div>
   </div>
-
 
   <div class="sidenav-url">
     <div class="url">
@@ -132,6 +132,29 @@
 <!-- End -->
 
 <script>
+  $(document).ready(function () {
+    $('img[src="data:image/jpg;data.base64,' + ${user.base64} + '"]').attr('src', "data:image/jpg;data.base64,' + ${user.base64} + '");
+  });
+
+
+  get_images = () => {
+    $.ajax({
+      method: "GET",
+      url: "${pageContext.request.contextPath}/user/getProfile",
+      success: function (response) {
+
+        let data = JSON.parse(response).data;
+        data.forEach(elem => {
+          let img = document.createElement('img');
+
+          img.src = 'data:image/jpeg;base64,' + elem.base64;
+          document.body.appendChild(img);
+
+        });
+
+      }
+    })
+  }
 
   const logout = () => {
     $.ajax({
