@@ -20,6 +20,8 @@ public class User {
 
     private byte[] ppPath;
 
+    public String base64;
+
     private boolean isDeleted;
 
     public User(){}
@@ -37,6 +39,11 @@ public class User {
         this.isDeleted = isDeleted;
     }
 
+    public User(long userId, byte[] ppPath) {
+        this.userId = userId;
+        this.ppPath = ppPath;
+    }
+
     public User(long userId, String name, String surname, String email, String password, long roleId, Timestamp creationDate, Timestamp updateDate, boolean isDeleted) {
         this.userId = userId;
         this.name = name;
@@ -48,6 +55,10 @@ public class User {
         this.updateDate = updateDate;
         this.isDeleted = isDeleted;
     }
+
+    public String getBase64() { return base64; }
+
+    public void setBase64(String base64) { this.base64 = base64; }
 
     public long getUserId() {
         return userId;
@@ -128,4 +139,8 @@ public class User {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+    public boolean hasProfilePicture() {
+        return ppPath != null && ppPath.length > 0 ;
+    }
+
 }

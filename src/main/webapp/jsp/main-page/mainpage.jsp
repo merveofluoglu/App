@@ -52,19 +52,12 @@
           <ul class="nav">
             <li class="scroll-to-section-button">
               <div class="main-button-red-login">
-                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Profile</a></div>
-              </div>
-            </li>
-
-            <li class="scroll-to-section-button">
-              <div class="main-button-red-login">
-                <div class="scroll-to-section-button"><a onclick="openModal()">Post</a></div>
-              </div>
-            </li>
-
-            <li class="scroll-to-section-button">
-              <div class="main-button-red-login">
                 <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
+              </div>
+            </li>
+            <li class="scroll-to-section-button">
+              <div class="main-button-red-login">
+                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Profile</a></div>
               </div>
             </li>
             <%
@@ -87,59 +80,8 @@
 
 <!-- ***** Header Area End ***** -->
 
-<!---------ADD POST--------->
-<form method="POST" class="form-group" enctype= "multipart/form-data" id="addForm">
-
-  <div class="modal fade" id="addPost" tabindex="-1">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Add Post</h4>
-          <button type="button" class="btn-close" target="#addPost" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" id="addModal">
-          <div class="form-group">
-            <label>Name: </label>
-            <input type="text" name="Name" id="Name" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label>Description:</label>
-            <input type="text" name="Description" id="Description" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label>Price:</label>
-            <input type="number" name="Price" id="Price" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label>Status:</label>
-            <input type="text" name="Status" id="Status" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label>Category:</label>
-            <select id="batchSelect" onchange="displaySubCategories()" class="form-control" name="CategoryId" id="CategoryId"></select>
-          </div>
-          <div class="form-group">
-            <label>Sub Category:</label>
-            <select id="batchSubCategory" class="form-control" name="SubCategoryId" id="SubCategoryId"></select>
-          </div>
-          <div class="form-group" lang="en-001" >
-            <label for="file">Post File:</label>
-            <input id="file" type="file" name="file" />
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-toolbar" target="#addPost" data-bs-dismiss="modal">Close</button>
-          <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addPost()">Add</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-
-<!---------ADD POST END--------->
-
 <!-- ***** Main Banner Area Start ***** -->
-<aside class="sidebar-nav-wrapper" style="background-color: transparent; overflow-y: auto; top: unset; position: absolute">
+<aside class="sidebar-nav-wrapper" style="background-color: transparent; width: 270px; overflow-y: auto; top: unset; position: absolute">
   <div>
     <div class="navbar-text" style="font-weight: bold;
     font-size: x-large;
@@ -165,12 +107,8 @@
 <!-- Scripts -->
 <!-- Bootstrap core JavaScript -->
 
-
-<script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/isotope.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
   let sectionFirst = document.getElementById("posts-section").innerHTML;
 
   $(document).ready(function () {
@@ -179,6 +117,7 @@
 
   let categories;
   let subcategories;
+  let posts;
 
   const logout = () => {
     $.ajax({
@@ -223,7 +162,7 @@
     return `
             <ul id="`+ categoryName +`" class="dropdown-nav collapse show">
               <li>
-                <a class="active" id="`+ subcategoryId +`"> `+ subcategoryName +`</a>
+                <a class="btn" href="" id="`+ subcategoryId +`"> `+ subcategoryName +` </a>
               </li>
             </ul>`;
   }
@@ -270,6 +209,7 @@
           sidebar.append(li);
           */
         });
+
         getAllSubCategories();
       }
     })
@@ -284,11 +224,9 @@
       method: "GET",
       url: "${pageContext.request.contextPath}/subcategory/getAllSubCategories",
       success: function (response) {
-        let subcategories2 = JSON.parse(response).data;
+        let subcategories = JSON.parse(response).data;
 
-        subcategories = subcategories2;
-
-        subcategories2.forEach(option => {
+        subcategories.forEach(option => {
 
           let categoryName = getCategoryNameById(option.categoryId);
 
@@ -296,7 +234,7 @@
 
           let category = document.getElementById(categoryName.replaceAll(" ", "-")).parentNode;
           category.innerHTML += createSubCategories(categoryName.replaceAll(" ", "-"), option.subcategoryName, option.subcategoryId);
-          document.getElementById(option.subcategoryId).onclick = function() { getPostsBySubCategory(option.subcategoryId); };
+          document.getElementById(option.subcategoryId).onclick = function() { getPostsBySubCategory.bind(this, option.subcategoryId); };
           /*
           const ul = document.createElement("ul");
           ul.className = "dropdown-nav collapse show";
@@ -313,8 +251,6 @@
           */
         });
 
-        displayCategories();
-
         getAllPosts();
       }
     })
@@ -327,7 +263,7 @@
                       <div class="product-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="images/img.jpg" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" id="cart" href=""><i class="fa fa-shopping-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" id="message-to-creator" href=""><i class="fa fa-envelope"></i></a>
                             <a class="btn btn-outline-dark btn-square" id="favourite" href=""><i class="far fa-heart"></i></a>
                             <a class="btn btn-outline-dark btn-square" id="open-post" href=""><i class="fa fa-search"></i></a>
                         </div>
@@ -350,6 +286,7 @@
               method: "GET",
               success: function (response) {
                 let data = JSON.parse(response).data;
+                posts = data;
 
                 let section = document.getElementById("posts-section");
                 section.innerHTML = sectionFirst;
@@ -358,7 +295,7 @@
                   const content = fillContent(element.name, element.description, element.price);
                   section.innerHTML += content;
                   document.getElementById("favourite").onclick = function() { addFavourite(element.postId); };
-                  document.getElementById("cart").onclick = function() { addToCart(element.postId); }
+                  document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
                   document.getElementById("open-post").onclick = function() { openPostDetails(element.postId) }
                 });
               },
@@ -391,8 +328,8 @@
 
                   const content = fillContent(element.name, element.description, element.price);
                   section.innerHTML += content;
-                  document.getElementById("favourite").onclick = function() { addFavourite(element.postId); };
-                  document.getElementById("cart").onclick = function() { addToCart(element.postId); }
+                  document.getElementById("favourite").onclick = function() { addToFavourite(element.postId); };
+                  document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
                   document.getElementById("open-post").onclick = function() { openPostDetails(element.postId) }
                 });
               },
@@ -403,158 +340,7 @@
     );
   }
 
-  const openModal = () => {
-    $("#addPost [name='Name']").val("");
-    $("#addPost [name='Description']").val("");
-    $("#addPost [name='Price']").val(null);
-    $("#addPost [name='Status']").val("");
-    $("#addPost [name='CategoryId']").val(null);
-    $("#addPost [name='SubCategoryId']").val(null);
-    $("#addPost").modal('show');
-  }
-  const addPost = () => {
-    const _data = {
-      name: $("#addPost [name='Name']").val(),
-      description: $("#addPost [name='Description']").val(),
-      price: $("#addPost [name='Price']").val(),
-      status: $("#addPost [name='Status']").val(),
-      categoryId: $("#addPost [name='CategoryId']").val(),
-      subcategoryId: $("#addPost [name='SubCategoryId']").val(),
-      file: $("#addPost [name='file']").val()
-    };
-
-    if(!checkValidity(_data)) {
-      return;
-    }
-
-    $.ajax({
-              url: "${pageContext.request.contextPath}/post/add",
-              method: "POST",
-              data: _data,
-              success: function (response) {
-                let id = JSON.parse(response).data;
-
-                let content = `<div class="form-group" style="display:none">
-                        <label>Id:</label>
-                        <input type="text" name="PostId" id="PostId" class="form-control" readonly="readonly" />
-                    </div>`;
-
-                let modalGroup = document.getElementById("addModal");
-
-                modalGroup.innerHTML += content;
-
-                $("#addPost [name='PostId']").val(id);
-
-                let frm = $('#addForm');
-
-                frm.submit(function (e) {
-
-                  e.preventDefault();
-
-                  $.ajax({
-                    type: frm.attr('method'),
-                    url: '${pageContext.request.contextPath}/postFiles/upload',
-                    data: frm.serialize(),
-                    success: function (response) {
-                      console.log('Submission was successful.');
-                      console.log(response);
-                    },
-                    error: function (response) {
-                      console.log('An error occurred.');
-                      console.log(response);
-                    },
-                  });
-                });
-
-                $('#addPost').modal('hide');
-
-                toastr.success("Post added succesfully!");
-              },
-              error: function (response) {
-                alert("error");
-              }
-            }
-    );
-  }
-
-  const addPostFiles = () => {
-
-
-  }
-
-  checkValidity = (data) => {
-
-    if(data.name == "" || data.name == null || data.name == undefined) {
-      toastr.error("Please fill all sections!");
-      return false;
-    }
-
-    if(data.description == "" || data.description == null || data.description == undefined) {
-      toastr.error("Please fill all sections!");
-      return false;
-    }
-
-    if(data.price == "" || data.price == null || data.price == undefined) {
-      toastr.error("Please fill all sections!");
-      return false;
-    }
-
-    if(data.status == "" || data.status == null || data.status == undefined) {
-      toastr.error("Please fill all sections!");
-      return false;
-    }
-
-    if(data.categoryId == "" || data.categoryId == null || data.categoryId == undefined) {
-      toastr.error("Please fill all sections!");
-      return false;
-    }
-
-    if(data.subcategoryId == "" || data.subcategoryId == null || data.subcategoryId == undefined) {
-      toastr.error("Please fill all sections!");
-      return false;
-    }
-
-    return true;
-
-  }
-
-  const displayCategories = () => {
-    const batchTrack = document.getElementById("batchSelect");
-
-    categories.forEach(option => {
-      const newOption = document.createElement("option");
-      console.log(option);
-      newOption.value = option.categoryId;
-      newOption.text = option.categoryName;
-      newOption.id = "CategoryIdOpt"
-      batchTrack.appendChild(newOption);
-    });
-  };
-
-  const displaySubCategories = () => {
-
-    removeOptions();
-
-    let categoryId = document.getElementById("batchSelect").value;
-    subCat = subcategories.filter(item => item.categoryId == categoryId);
-
-    const batchTrack = document.getElementById("batchSubCategory");
-
-    subCat.forEach(option => {
-      const newOption = document.createElement("option");
-      console.log(option);
-      newOption.value = option.subcategoryId;
-      newOption.text = option.subcategoryName;
-      newOption.id = "SubCategoryIdOpt"
-      batchTrack.appendChild(newOption);
-    });
-  };
-
-  const removeOptions = () => {
-    $("#batchSubCategory").empty();
-  }
-
-  const addToCart = (id) => {
+  const sendMessage = (userId) => {
     // Add To Cart
   }
 
@@ -562,7 +348,7 @@
     // Post details will be displayed.
   }
 
-  const addFavourite = (id) => {
+  const addToFavourite = (id) => {
     $.ajax({
               url: '${pageContext.request.contextPath}/favourite/add/' + id,
               method: "POST",
@@ -638,6 +424,8 @@
     checkSection();
   });
 </script>
+<script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
 <script src="../admin-dashboard/assets/js/main.js"></script>
 </body>

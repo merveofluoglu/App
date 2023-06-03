@@ -20,7 +20,7 @@ public class UpdateProfilePhotoByUserIdDao extends AbstractDAO {
         super(con);
     }
 
-    public int UpdateProfilePhotoByUserIdDao(long _userId, byte[] _ppPath) throws SQLException {
+    public int UpdateProfilePhotoByUserIdDao(User _userPP) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -28,8 +28,8 @@ public class UpdateProfilePhotoByUserIdDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setBytes(1, _ppPath);
-            _pstmt.setLong(2, _userId);
+            _pstmt.setBytes(1, _userPP.getPpPath());
+            _pstmt.setLong(2, _userPP.getUserId());
             _affectedRows = _pstmt.executeUpdate();
 
             if (_affectedRows != 1) {
