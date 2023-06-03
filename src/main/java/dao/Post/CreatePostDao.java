@@ -5,13 +5,14 @@ import resource.Post;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CreatePostDao extends AbstractDAO {
 
     private static final String STATEMENT = "INSERT INTO post (" +
             "post_id, name, description, user_id, customer_id, price, status, start_date, end_date, is_deleted," +
-            "is_sold, sold_date, update_date, category_id, subcategory_id) VALUES (nextval('post_seq'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "is_sold, sold_date, update_date, category_id, subcategory_id) VALUES (nextval('post_seq'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING post_id";
 
     /**
      * Creates a new DAO object.
@@ -27,10 +28,11 @@ public class CreatePostDao extends AbstractDAO {
 
     }
 
-    public String createPost(Post _post) throws SQLException {
+    public Long createPost(Post _post) throws SQLException {
 
         PreparedStatement _pstmt = null;
-        int _rs;
+        ResultSet _rs;
+        long _id = 0;
 
         try {
 
@@ -51,9 +53,13 @@ public class CreatePostDao extends AbstractDAO {
             _pstmt.setLong(13, _post.getCategoryId());
             _pstmt.setLong(14, _post.getSubcategoryId());
 
-            _rs = _pstmt.executeUpdate();
+            _rs = _pstmt.executeQuery();
 
-            if (_rs != 1) {
+            _rs.next();
+
+            _id = _rs.getLong(1);
+
+            if (_rs == null) {
                 throw new SQLException("Creation failed!");
             }
         } finally {
@@ -63,6 +69,6 @@ public class CreatePostDao extends AbstractDAO {
             con.close();
         }
 
-        return "Post Created Successfully!";
+        return _id;
     }
 }

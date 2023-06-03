@@ -52,12 +52,19 @@
           <ul class="nav">
             <li class="scroll-to-section-button">
               <div class="main-button-red-login">
-                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
+                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Profile</a></div>
               </div>
             </li>
+
             <li class="scroll-to-section-button">
               <div class="main-button-red-login">
-                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Profile</a></div>
+                <div class="scroll-to-section-button"><a onclick="openModal()">Post</a></div>
+              </div>
+            </li>
+
+            <li class="scroll-to-section-button">
+              <div class="main-button-red-login">
+                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
               </div>
             </li>
             <%
@@ -79,6 +86,57 @@
 </header>
 
 <!-- ***** Header Area End ***** -->
+
+<!---------ADD POST--------->
+<form method="POST" class="form-group" enctype= "multipart/form-data" id="addForm">
+
+  <div class="modal fade" id="addPost" tabindex="-1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Add Post</h4>
+          <button type="button" class="btn-close" target="#addPost" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="addModal">
+          <div class="form-group">
+            <label>Name: </label>
+            <input type="text" name="Name" id="Name" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Description:</label>
+            <input type="text" name="Description" id="Description" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Price:</label>
+            <input type="number" name="Price" id="Price" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Status:</label>
+            <input type="text" name="Status" id="Status" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Category:</label>
+            <select id="batchSelect" onchange="displaySubCategories()" class="form-control" name="CategoryId" id="CategoryId"></select>
+          </div>
+          <div class="form-group">
+            <label>Sub Category:</label>
+            <select id="batchSubCategory" class="form-control" name="SubCategoryId" id="SubCategoryId"></select>
+          </div>
+          <div class="form-group" lang="en-001" >
+            <label for="file">Post File:</label>
+            <input id="file" type="file" name="file" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-toolbar" target="#addPost" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addPost()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!---------ADD POST END--------->
 
 <!-- ***** Main Banner Area Start ***** -->
 <aside class="sidebar-nav-wrapper" style="background-color: transparent; overflow-y: auto; top: unset; position: absolute">
@@ -212,7 +270,6 @@
           sidebar.append(li);
           */
         });
-
         getAllSubCategories();
       }
     })
@@ -227,9 +284,11 @@
       method: "GET",
       url: "${pageContext.request.contextPath}/subcategory/getAllSubCategories",
       success: function (response) {
-        let subcategories = JSON.parse(response).data;
+        let subcategories2 = JSON.parse(response).data;
 
-        subcategories.forEach(option => {
+        subcategories = subcategories2;
+
+        subcategories2.forEach(option => {
 
           let categoryName = getCategoryNameById(option.categoryId);
 
@@ -253,6 +312,8 @@
           category.append(ul);
           */
         });
+
+        displayCategories();
 
         getAllPosts();
       }
@@ -340,6 +401,157 @@
               }
             }
     );
+  }
+
+  const openModal = () => {
+    $("#addPost [name='Name']").val("");
+    $("#addPost [name='Description']").val("");
+    $("#addPost [name='Price']").val(null);
+    $("#addPost [name='Status']").val("");
+    $("#addPost [name='CategoryId']").val(null);
+    $("#addPost [name='SubCategoryId']").val(null);
+    $("#addPost").modal('show');
+  }
+  const addPost = () => {
+    const _data = {
+      name: $("#addPost [name='Name']").val(),
+      description: $("#addPost [name='Description']").val(),
+      price: $("#addPost [name='Price']").val(),
+      status: $("#addPost [name='Status']").val(),
+      categoryId: $("#addPost [name='CategoryId']").val(),
+      subcategoryId: $("#addPost [name='SubCategoryId']").val(),
+      file: $("#addPost [name='file']").val()
+    };
+
+    if(!checkValidity(_data)) {
+      return;
+    }
+
+    $.ajax({
+              url: "${pageContext.request.contextPath}/post/add",
+              method: "POST",
+              data: _data,
+              success: function (response) {
+                let id = JSON.parse(response).data;
+
+                let content = `<div class="form-group" style="display:none">
+                        <label>Id:</label>
+                        <input type="text" name="PostId" id="PostId" class="form-control" readonly="readonly" />
+                    </div>`;
+
+                let modalGroup = document.getElementById("addModal");
+
+                modalGroup.innerHTML += content;
+
+                $("#addPost [name='PostId']").val(id);
+
+                let frm = $('#addForm');
+
+                frm.submit(function (e) {
+
+                  e.preventDefault();
+
+                  $.ajax({
+                    type: frm.attr('method'),
+                    url: '${pageContext.request.contextPath}/postFiles/upload',
+                    data: frm.serialize(),
+                    success: function (response) {
+                      console.log('Submission was successful.');
+                      console.log(response);
+                    },
+                    error: function (response) {
+                      console.log('An error occurred.');
+                      console.log(response);
+                    },
+                  });
+                });
+
+                $('#addPost').modal('hide');
+
+                toastr.success("Post added succesfully!");
+              },
+              error: function (response) {
+                alert("error");
+              }
+            }
+    );
+  }
+
+  const addPostFiles = () => {
+
+
+  }
+
+  checkValidity = (data) => {
+
+    if(data.name == "" || data.name == null || data.name == undefined) {
+      toastr.error("Please fill all sections!");
+      return false;
+    }
+
+    if(data.description == "" || data.description == null || data.description == undefined) {
+      toastr.error("Please fill all sections!");
+      return false;
+    }
+
+    if(data.price == "" || data.price == null || data.price == undefined) {
+      toastr.error("Please fill all sections!");
+      return false;
+    }
+
+    if(data.status == "" || data.status == null || data.status == undefined) {
+      toastr.error("Please fill all sections!");
+      return false;
+    }
+
+    if(data.categoryId == "" || data.categoryId == null || data.categoryId == undefined) {
+      toastr.error("Please fill all sections!");
+      return false;
+    }
+
+    if(data.subcategoryId == "" || data.subcategoryId == null || data.subcategoryId == undefined) {
+      toastr.error("Please fill all sections!");
+      return false;
+    }
+
+    return true;
+
+  }
+
+  const displayCategories = () => {
+    const batchTrack = document.getElementById("batchSelect");
+
+    categories.forEach(option => {
+      const newOption = document.createElement("option");
+      console.log(option);
+      newOption.value = option.categoryId;
+      newOption.text = option.categoryName;
+      newOption.id = "CategoryIdOpt"
+      batchTrack.appendChild(newOption);
+    });
+  };
+
+  const displaySubCategories = () => {
+
+    removeOptions();
+
+    let categoryId = document.getElementById("batchSelect").value;
+    subCat = subcategories.filter(item => item.categoryId == categoryId);
+
+    const batchTrack = document.getElementById("batchSubCategory");
+
+    subCat.forEach(option => {
+      const newOption = document.createElement("option");
+      console.log(option);
+      newOption.value = option.subcategoryId;
+      newOption.text = option.subcategoryName;
+      newOption.id = "SubCategoryIdOpt"
+      batchTrack.appendChild(newOption);
+    });
+  };
+
+  const removeOptions = () => {
+    $("#batchSubCategory").empty();
   }
 
   const addToCart = (id) => {

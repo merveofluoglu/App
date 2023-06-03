@@ -42,7 +42,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Add Post</h4>
-                <button type="button" class="btn-close" target="#addEPost" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" target="#addPost" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
