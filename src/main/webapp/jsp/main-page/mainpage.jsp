@@ -81,7 +81,7 @@
 <!-- ***** Header Area End ***** -->
 
 <!-- ***** Main Banner Area Start ***** -->
-<aside class="sidebar-nav-wrapper" style="background-color: transparent; overflow-y: auto; top: unset; position: absolute">
+<aside class="sidebar-nav-wrapper" style="background-color: transparent; width: 270px; overflow-y: auto; top: unset; position: absolute">
   <div>
     <div class="navbar-text" style="font-weight: bold;
     font-size: x-large;
@@ -110,7 +110,6 @@
 
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/isotope.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
   let sectionFirst = document.getElementById("posts-section").innerHTML;
@@ -121,6 +120,7 @@
 
   let categories;
   let subcategories;
+  let posts;
 
   const logout = () => {
     $.ajax({
@@ -237,7 +237,7 @@
 
           let category = document.getElementById(categoryName.replaceAll(" ", "-")).parentNode;
           category.innerHTML += createSubCategories(categoryName.replaceAll(" ", "-"), option.subcategoryName, option.subcategoryId);
-          document.getElementById(option.subcategoryId).onclick = function() { getPostsBySubCategory(option.subcategoryId); };
+          document.getElementById(option.subcategoryId.toString()).onclick = function() { getPostsBySubCategory.bind(this, opt); };
           /*
           const ul = document.createElement("ul");
           ul.className = "dropdown-nav collapse show";
@@ -266,7 +266,7 @@
                       <div class="product-img position-relative overflow-hidden">
                         <img class="img-fluid w-100" src="images/img.jpg" alt="">
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" id="cart" href=""><i class="fa fa-shopping-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" id="message-to-creator" href=""><i class="fa fa-envelope"></i></a>
                             <a class="btn btn-outline-dark btn-square" id="favourite" href=""><i class="far fa-heart"></i></a>
                             <a class="btn btn-outline-dark btn-square" id="open-post" href=""><i class="fa fa-search"></i></a>
                         </div>
@@ -289,6 +289,7 @@
               method: "GET",
               success: function (response) {
                 let data = JSON.parse(response).data;
+                posts = data;
 
                 let section = document.getElementById("posts-section");
                 section.innerHTML = sectionFirst;
@@ -330,8 +331,8 @@
 
                   const content = fillContent(element.name, element.description, element.price);
                   section.innerHTML += content;
-                  document.getElementById("favourite").onclick = function() { addFavourite(element.postId); };
-                  document.getElementById("cart").onclick = function() { addToCart(element.postId); }
+                  document.getElementById("favourite").onclick = function() { addToFavourite(element.postId); };
+                  document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
                   document.getElementById("open-post").onclick = function() { openPostDetails(element.postId) }
                 });
               },
@@ -342,7 +343,7 @@
     );
   }
 
-  const addToCart = (id) => {
+  const sendMessage = (userId) => {
     // Add To Cart
   }
 
@@ -350,7 +351,7 @@
     // Post details will be displayed.
   }
 
-  const addFavourite = (id) => {
+  const addToFavourite = (id) => {
     $.ajax({
               url: '${pageContext.request.contextPath}/favourite/add/' + id,
               method: "POST",
