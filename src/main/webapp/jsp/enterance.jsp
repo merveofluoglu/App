@@ -362,7 +362,6 @@
 
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/isotope.min.js"></script>
 <script>
     $(document).ready(function () {
         $('.nav li:first').addClass('active');
