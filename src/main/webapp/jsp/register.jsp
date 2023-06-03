@@ -68,14 +68,23 @@
 
 <script>
 
+    $('#reguser').submit(function (e) {
 
-    const reguser = () => {
+        let frm = $('#reguser');
+
+        e.preventDefault();
+
         const _data = {
             name: $("#reguser [name='name']").val(),
             surname: $("#reguser [name='surname']").val(),
             email: $("#reguser [name='email']").val(),
             password: $("#reguser [name='password']").val(),
         };
+
+        if(!checkValidity(_data)) {
+            return;
+        }
+
         $.ajax({
                 url: "${pageContext.request.contextPath}/user/register",
                 method: "POST",
@@ -88,6 +97,58 @@
                 }
             }
         );
+    });
+
+    const reguser = () => {
+        const _data = {
+            name: $("#reguser [name='name']").val(),
+            surname: $("#reguser [name='surname']").val(),
+            email: $("#reguser [name='email']").val(),
+            password: $("#reguser [name='password']").val(),
+        };
+
+        if(!checkValidity(_data)) {
+            return;
+        }
+
+        $.ajax({
+                url: "${pageContext.request.contextPath}/user/register",
+                method: "POST",
+                data: _data,
+                success: function (response) {
+                    toastr.success("User created successfully");
+                },
+                error: function () {
+                    alert("error");
+                }
+            }
+        );
+    }
+
+    checkValidity = (data) => {
+
+        if(data.name == "" || data.name == null || data.name == undefined) {
+            toastr.error("Please fill all sections!");
+            return false;
+        }
+
+        if(data.surname == "" || data.surname == null || data.surname == undefined) {
+            toastr.error("Please fill all sections!");
+            return false;
+        }
+
+        if(data.email == "" || data.email == null || data.email == undefined) {
+            toastr.error("Please fill all sections!");
+            return false;
+        }
+
+        if(data.password == "" || data.password == null || data.password == undefined) {
+            toastr.error("Please fill all sections!");
+            return false;
+        }
+
+        return true;
+
     }
 
 </script>
