@@ -107,11 +107,8 @@
 <!-- Scripts -->
 <!-- Bootstrap core JavaScript -->
 
-
-<script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+
   let sectionFirst = document.getElementById("posts-section").innerHTML;
 
   $(document).ready(function () {
@@ -165,7 +162,7 @@
     return `
             <ul id="`+ categoryName +`" class="dropdown-nav collapse show">
               <li>
-                <a class="active" id="`+ subcategoryId +`"> `+ subcategoryName +`</a>
+                <a class="btn" href="" id="`+ subcategoryId +`"> `+ subcategoryName +` </a>
               </li>
             </ul>`;
   }
@@ -237,7 +234,7 @@
 
           let category = document.getElementById(categoryName.replaceAll(" ", "-")).parentNode;
           category.innerHTML += createSubCategories(categoryName.replaceAll(" ", "-"), option.subcategoryName, option.subcategoryId);
-          document.getElementById(option.subcategoryId.toString()).onclick = function() { getPostsBySubCategory.bind(this, opt); };
+          document.getElementById(option.subcategoryId).onclick = function() { getPostsBySubCategory.bind(this, option.subcategoryId); };
           /*
           const ul = document.createElement("ul");
           ul.className = "dropdown-nav collapse show";
@@ -298,7 +295,7 @@
                   const content = fillContent(element.name, element.description, element.price);
                   section.innerHTML += content;
                   document.getElementById("favourite").onclick = function() { addFavourite(element.postId); };
-                  document.getElementById("cart").onclick = function() { addToCart(element.postId); }
+                  document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
                   document.getElementById("open-post").onclick = function() { openPostDetails(element.postId) }
                 });
               },
@@ -427,6 +424,8 @@
     checkSection();
   });
 </script>
+<script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
 <script src="../admin-dashboard/assets/js/main.js"></script>
 </body>
