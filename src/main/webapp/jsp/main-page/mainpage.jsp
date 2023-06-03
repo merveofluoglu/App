@@ -88,7 +88,6 @@
 <!-- ***** Header Area End ***** -->
 
 <!---------ADD POST--------->
-<form method="POST" class="form-group" enctype= "multipart/form-data" id="addForm">
 
   <div class="modal fade" id="addPost" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -122,18 +121,43 @@
             <label>Sub Category:</label>
             <select id="batchSubCategory" class="form-control" name="SubCategoryId" id="SubCategoryId"></select>
           </div>
-          <div class="form-group" lang="en-001" >
-            <label for="file">Post File:</label>
-            <input id="file" type="file" name="file" />
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-toolbar" target="#addPost" data-bs-dismiss="modal">Close</button>
-          <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addPost()">Add</button>
+          <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addPost()">Next</button>
         </div>
       </div>
     </div>
   </div>
+
+<!------------------    ADD FILE   ----------------------------------->
+
+<form method="post" class="form-group" enctype= "multipart/form-data" action="${pageContext.request.contextPath}/postFiles/upload">
+  <div class="modal fade" id="addFile" tabindex="-1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="addModalFile">Add Post</h4>
+          <button type="button" class="btn-close" target="#addPost" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="addFileModal">
+          <div class="form-group" style="display:none">
+            <label for="postId">Post Id: </label>
+            <input id="postId" type="text" class="form-control" name="postId" size="50" />
+          </div>
+
+          <div class="form-group">
+            <label for="file">File:</label>
+            <input id="file" type="file" name="file" />
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-toolbar" target="#addFile" data-bs-dismiss="modal">Close</button>
+          <input type="submit" value="Save" class="btn btn-success">
+        </div>
+      </div>
+    </div>
+  </div>
+ </div>
 </form>
 
 <!---------ADD POST END--------->
@@ -293,12 +317,12 @@
           console.log(option);
 
           let category = document.getElementById(categoryName.replaceAll(" ", "-")).parentNode;
-          category.innerHTML += createSubCategories(categoryName.replaceAll(" ", "-"), option.subcategoryName, option.subcategoryId);
-          document.getElementById(option.subcategoryId).onclick = function() { getPostsBySubCategory.bind(this, option.subcategoryId); };
-          /*
+          //category.innerHTML += createSubCategories(categoryName.replaceAll(" ", "-"), option.subcategoryName, option.subcategoryId);
+          //document.getElementById(option.subcategoryId).onclick = function() { getPostsBySubCategory.bind(this, option.subcategoryId); };
+
           const ul = document.createElement("ul");
           ul.className = "dropdown-nav collapse show";
-          ul.id = categoryName;
+          ul.id = categoryName.replaceAll(" ", "-");
           const li = document.createElement("li");
           const node = document.createElement("a");
           node.className = "active";
@@ -308,7 +332,7 @@
           li.append(node);
           ul.append(li);
           category.append(ul);
-          */
+
         });
 
         displayCategories();
@@ -409,6 +433,7 @@
     $("#addPost [name='Status']").val("");
     $("#addPost [name='CategoryId']").val(null);
     $("#addPost [name='SubCategoryId']").val(null);
+    $("#addPost [name='file']").val(null);
     $("#addPost").modal('show');
   }
   const addPost = () => {
@@ -419,7 +444,6 @@
       status: $("#addPost [name='Status']").val(),
       categoryId: $("#addPost [name='CategoryId']").val(),
       subcategoryId: $("#addPost [name='SubCategoryId']").val(),
-      file: $("#addPost [name='file']").val()
     };
 
     if(!checkValidity(_data)) {
@@ -433,39 +457,11 @@
               success: function (response) {
                 let id = JSON.parse(response).data;
 
-                let content = `<div class="form-group" style="display:none">
-                        <label>Id:</label>
-                        <input type="text" name="PostId" id="PostId" class="form-control" readonly="readonly" />
-                    </div>`;
+                $("#addPost").modal('hide');
 
-                let modalGroup = document.getElementById("addModal");
-
-                modalGroup.innerHTML += content;
-
-                $("#addPost [name='PostId']").val(id);
-
-                let frm = $('#addForm');
-
-                frm.submit(function (e) {
-
-                  e.preventDefault();
-
-                  $.ajax({
-                    type: frm.attr('method'),
-                    url: '${pageContext.request.contextPath}/postFiles/upload',
-                    data: frm.serialize(),
-                    success: function (response) {
-                      console.log('Submission was successful.');
-                      console.log(response);
-                    },
-                    error: function (response) {
-                      console.log('An error occurred.');
-                      console.log(response);
-                    },
-                  });
-                });
-
-                $('#addPost').modal('hide');
+                $("#addFile [name='postId']").val(id);
+                $("#addFile [name='file']").val("");
+                $("#addFile").modal('show');
 
                 toastr.success("Post added succesfully!");
               },
@@ -475,6 +471,29 @@
             }
     );
   }
+
+  $('#addFile').submit(function (e) {
+
+    let frm = $('#addFile');
+
+    e.preventDefault();
+
+    $.ajax({
+      type: frm.attr('method'),
+      url: "${pageContext.request.contextPath}/postFiles/upload",
+      data: frm.serialize(),
+      success: function (data) {
+
+        window.location.href = '${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp';
+        console.log('Submission was successful.');
+        console.log(data);
+      },
+      error: function (data) {
+        console.log('An error occurred.');
+        console.log(data);
+      },
+    });
+  });
 
   const addPostFiles = () => {
 
