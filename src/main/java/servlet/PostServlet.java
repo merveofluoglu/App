@@ -5,6 +5,8 @@ import dao.Favourites.GetFavouritesByPostIdDao;
 import dao.Favourites.RemoveFavouriteDao;
 import dao.Post.*;
 import dao.PostFiles.DeletePostFilesByPostIdDao;
+import dao.PostFiles.GetPostFileByPostIdDao;
+import dao.PostFiles.GetPostFilesByIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -73,7 +76,21 @@ public class PostServlet extends AbstractServlet {
 
             JSONObject _result = new JSONObject();
 
-            _result.put("data",new GetAllPostsDao(getConnection()).getAllPosts());
+            List<Post> data = new GetAllPostsDao(getConnection()).getAllPosts();
+
+            for(int i=0;i<data.size();i++) {
+
+                var post = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(data.get(i).getPostId());
+
+                if(post != null) {
+
+                    String encoded = Base64.getEncoder().encodeToString(post.getFile());
+                    data.get(i).setBase64(encoded);
+
+                }
+            }
+
+            _result.put("data", data);
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "All posts fetched from database!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 

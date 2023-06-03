@@ -241,6 +241,9 @@ public class PostFilesServlet extends AbstractServlet {
 
             _response.getWriter().write(_result.toString());
 
+            _response.sendRedirect(_request.getContextPath() + "/jsp/main-page/mainpage.jsp");
+
+
         } catch (Exception _e) {
             throw new RuntimeException(_e);
         }

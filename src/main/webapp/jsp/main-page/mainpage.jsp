@@ -342,12 +342,16 @@
     })
   }
 
-  const fillContent = (name, desc, price) => {
+  const fillContent = (element) => {
+    let src = 'data:image/jpeg;base64,'+ element.base64;
+    if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
+      src = "images/img.jpg";
+    }
     return `
                   <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                     <div class="product-item bg-light mb-4">
                       <div class="product-img position-relative overflow-hidden">
-                        <img class="img-fluid w-100" src="images/img.jpg" alt="">
+                        <img class="img-fluid w-100" src=`+ src +` alt="">
                         <div class="product-action">
                             <a class="btn btn-outline-dark btn-square" id="message-to-creator" href=""><i class="fa fa-envelope"></i></a>
                             <a class="btn btn-outline-dark btn-square" id="favourite" href=""><i class="far fa-heart"></i></a>
@@ -355,10 +359,10 @@
                         </div>
                       </div>
                     <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href="">` +name+ `</a>
-                        <h5>` +desc+ `</h5>
+                        <a class="h6 text-decoration-none text-truncate" href="">` +element.name+ `</a>
+                        <h5>` +element.desc+ `</h5>
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$`+price+`</h5><h6 class="text-muted ml-2"></h6>
+                            <h5>$`+element.price+`</h5><h6 class="text-muted ml-2"></h6>
                         </div>
                     </div>
                   </div>
@@ -378,7 +382,7 @@
                 section.innerHTML = sectionFirst;
 
                 data.forEach( element => {
-                  const content = fillContent(element.name, element.description, element.price);
+                  const content = fillContent(element);
                   section.innerHTML += content;
                   document.getElementById("favourite").onclick = function() { addFavourite(element.postId); };
                   document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
@@ -412,7 +416,7 @@
                 }
                 data.forEach( element => {
 
-                  const content = fillContent(element.name, element.description, element.price);
+                  const content = fillContent(element);
                   section.innerHTML += content;
                   document.getElementById("favourite").onclick = function() { addToFavourite(element.postId); };
                   document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
