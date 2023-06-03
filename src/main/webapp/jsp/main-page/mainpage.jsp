@@ -360,7 +360,7 @@
                       </div>
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="">` +element.name+ `</a>
-                        <h5>` +element.desc+ `</h5>
+                        <h5>` +element.description+ `</h5>
                         <div class="d-flex align-items-center justify-content-center mt-2">
                             <h5>$`+element.price+`</h5><h6 class="text-muted ml-2"></h6>
                         </div>
