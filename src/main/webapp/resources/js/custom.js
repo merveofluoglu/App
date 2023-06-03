@@ -1,5 +1,5 @@
 (function ($) {
-
+/*
     "use strict";
 
         $(window).scroll(function() {
@@ -32,7 +32,7 @@
               }
             });
 
-
+*/
     const Accordion = {
         settings: {
             // Expand the first item by default
