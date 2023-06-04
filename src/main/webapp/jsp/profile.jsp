@@ -5,9 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Page</title>
-
-  <!-- Custom Css -->
-  <link rel="stylesheet" href="../resources/static/css/profile.css">
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -21,6 +18,8 @@
   <link rel="stylesheet" href="admin-dashboard/assets/css/main.css" />
   <link rel="stylesheet" href="../resources/static/css/mainpage.css">
   <link rel="stylesheet" href="../resources/static/css/owl.css">
+  <link rel="stylesheet" href="../resources/static/css/profile.css">
+
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
@@ -36,7 +35,7 @@
   <!-- Navbar -->
   <ul>
     <li>
-      <a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp"><i class='fa fa-arrow-left fa-2x' style='color: white;scale: inherit'></i></a>
+      <a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp" style="margin-top: -13px;margin-bottom: 25px"><i class='fa fa-arrow-left fa-2x' style='color: white;scale: inherit'></i></a>
     </li>
     <li>
       <i class="fa fa-sign-out-alt fa-2x" style="color: #ffffff" onclick="logout()"></i>
@@ -49,7 +48,7 @@
 <!-- Sidenav -->
 <div class="sidenav">
   <div class="profile">
-    <img src="data:image/jpeg;base64,${user.base64}" alt="pp_png" border="0" width="50" height="50" id="profilePic"/>
+    <img src="data:image/jpeg;base64,${user.base64}" alt="pp_png" border="0" id="profilePic"/>
     <div class="name">
       ${user.name} ${user.surname}
     </div>

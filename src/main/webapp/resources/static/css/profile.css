@@ -63,12 +63,12 @@ body {
     background-color: #a12c2f;
     color: #333;
     border-bottom-right-radius: 25px;
-    height: 86%;
+    height: 100%;
     left: 0;
     overflow-x: hidden;
-    padding-top: 20px;
+    padding-top: 15px;
     position: absolute;
-    top: 70px;
+    top: 20px;
     width: 250px;
 }
 
@@ -81,12 +81,14 @@ body {
 .profile img {
     border-radius: 50%;
     box-shadow: 0px 0px 5px 1px grey;
+    width:150px;
+    height:150px;
 }
 
 .name {
     font-size: 20px;
     font-weight: bold;
-    padding-top: 20px;
+    padding-top: 5px;
     color: #ffffff;
 }
 

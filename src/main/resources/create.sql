@@ -553,12 +553,7 @@ CREATE TABLE IF NOT EXISTS public.action_log
     description text COLLATE pg_catalog."default",
     action_date timestamp without time zone,
     user_id bigint,
-    CONSTRAINT action_log_pkey PRIMARY KEY (action_id),
-    CONSTRAINT user_id FOREIGN KEY (user_id)
-        REFERENCES public.users (user_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID
+    CONSTRAINT action_log_pkey PRIMARY KEY (action_id)
 )
 
 TABLESPACE pg_default;
