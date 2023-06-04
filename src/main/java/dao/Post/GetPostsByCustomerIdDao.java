@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetPostsByCustomerIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM post WHERE customer_id = ?";
+    private static final String STATEMENT = "SELECT * FROM post WHERE customer_id = ? AND is_sold = true";
 
     /**
      * Creates a new DAO object.

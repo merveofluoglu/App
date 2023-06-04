@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GetPostsByCustomerFavouritesDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM favourites WHERE user_id = ?";
+    private static final String STATEMENT = "SELECT * FROM favourites WHERE user_id = ? AND is_sold = false AND is_deleted = false";
 
     /**
      * Creates a new DAO object.

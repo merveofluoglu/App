@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetAllPostsDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM post WHERE is_deleted = false AND is_sold = false";
+    private static final String STATEMENT = "SELECT * FROM post WHERE is_deleted = false AND user_id != ? AND is_sold = false AND (status = 'Available' OR status = 'Requested')";
 
     /**
      * Creates a new DAO object.
@@ -24,7 +24,7 @@ public class GetAllPostsDao extends AbstractDAO {
         super(con);
     }
 
-    public List<Post> getAllPosts () throws SQLException, ResourceNotFoundException {
+    public List<Post> getAllPosts (long _id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -32,6 +32,7 @@ public class GetAllPostsDao extends AbstractDAO {
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
+            _pstmt.setObject(1, _id);
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetPostsBySubCategoryIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM post WHERE subcategory_id = ? AND is_deleted = false";
+    private static final String STATEMENT = "SELECT * FROM post WHERE subcategory_id = ? AND is_deleted = false AND is_sold = false AND user_id != ? AND (status = 'Available' OR status = 'Requested')";
 
     /**
      * Creates a new DAO object.
@@ -29,7 +29,7 @@ public class GetPostsBySubCategoryIdDao extends AbstractDAO {
 
     }
 
-    public List<Post> getPostsBySubCategoryId(long _id) throws SQLException, ResourceNotFoundException {
+    public List<Post> getPostsBySubCategoryId(long _subcategoryId, long _userId) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -38,7 +38,8 @@ public class GetPostsBySubCategoryIdDao extends AbstractDAO {
         try {
 
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, _id);
+            _pstmt.setObject(1, _subcategoryId);
+            _pstmt.setObject(2, _userId);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {

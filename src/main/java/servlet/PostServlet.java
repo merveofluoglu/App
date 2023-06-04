@@ -6,7 +6,6 @@ import dao.Favourites.RemoveFavouriteDao;
 import dao.Post.*;
 import dao.PostFiles.DeletePostFilesByPostIdDao;
 import dao.PostFiles.GetPostFileByPostIdDao;
-import dao.PostFiles.GetPostFilesByIdDao;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -14,6 +13,7 @@ import org.json.JSONObject;
 import resource.ActionLog;
 import resource.Favourites;
 import resource.Post;
+import resource.PostFiles;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Enumeration;
 import java.util.List;
 
 import static java.lang.Long.parseLong;
@@ -61,8 +60,14 @@ public class PostServlet extends AbstractServlet {
             case "delete" :
                 removePost(_request, _response);
                 break;
-            case "buy" :
-                buyPost(_request, _response);
+            case "buyRequest" :
+                createBuyRequest(_request, _response);
+                break;
+            case "acceptRequest" :
+                acceptBuyRequest(_request, _response);
+                break;
+            case "rejectRequest" :
+                rejectBuyRequest(_request, _response);
                 break;
             default :
                 writeError(_response, ErrorCode.OPERATION_UNKNOWN);
@@ -76,7 +81,28 @@ public class PostServlet extends AbstractServlet {
 
             JSONObject _result = new JSONObject();
 
-            List<Post> data = new GetAllPostsDao(getConnection()).getAllPosts();
+            List<Post> data = new GetAllPostsDao(getConnection()).getAllPosts((Long) _session.getAttribute("userId"));
+    /*
+            data.stream().forEach(s -> {
+
+                // this will cause an error
+                PostFiles post = null;
+                try {
+                    post = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(s.getPostId());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } catch (ResourceNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if(post != null) {
+
+                    String encoded = Base64.getEncoder().encodeToString(post.getFile());
+                    s.setBase64(encoded);
+
+                }
+            });
+            */
 
             for(int i=0;i<data.size();i++) {
 
@@ -114,7 +140,7 @@ public class PostServlet extends AbstractServlet {
 
             long _subCategoryId = Long.parseLong(_req.getRequestURI().split("/", 5)[4]);
 
-            List<Post> data = new GetPostsBySubCategoryIdDao(getConnection()).getPostsBySubCategoryId(_subCategoryId);
+            List<Post> data = new GetPostsBySubCategoryIdDao(getConnection()).getPostsBySubCategoryId(_subCategoryId, (Long) _session.getAttribute("userId"));
 
             for(int i=0;i<data.size();i++) {
 
@@ -141,6 +167,82 @@ public class PostServlet extends AbstractServlet {
         } catch (IOException _e) {
             throw new RuntimeException(_e);
         }
+    }
+
+    private void createBuyRequest(HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            HttpSession _session = _request.getSession();
+
+            long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+            long _customerId = (long) _session.getAttribute("userId");
+
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new BuyPostByPostIdDao(getConnection()).buyPost(_postId, _customerId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id have been bought!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
+            _response.getWriter().write(_result.toString());
+
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
+    private void acceptBuyRequest(HttpServletRequest _request, HttpServletResponse _response) {
+
+        try {
+            HttpSession _session = _request.getSession();
+
+            long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new AcceptBuyRequestDao(getConnection()).acceptBuyRequest(_postId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id buy request accepted!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
+            _response.getWriter().write(_result.toString());
+
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+
+    }
+    private void rejectBuyRequest(HttpServletRequest _request, HttpServletResponse _response) {
+
+        try {
+            HttpSession _session = _request.getSession();
+
+            long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
+
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new RejectBuyRequestDao(getConnection()).rejectBuyRequest(_postId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id buy request rejected!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
+            _response.getWriter().write(_result.toString());
+
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+
     }
 
     private void updatePost(HttpServletRequest _request, HttpServletResponse _response) throws IOException {
@@ -230,31 +332,6 @@ public class PostServlet extends AbstractServlet {
         } catch (IOException _e) {
             throw new RuntimeException(_e);
         } catch (ResourceNotFoundException _e) {
-            throw new RuntimeException(_e);
-        }
-    }
-
-    private void buyPost(HttpServletRequest _request, HttpServletResponse _response) {
-        try {
-            HttpSession _session = _request.getSession();
-
-            long _postId = Long.parseLong(_request.getRequestURI().split("/", 5)[4]);
-            long _customerId = (long) _session.getAttribute("userId");
-
-            _response.setContentType("application/json");
-            _response.setStatus(HttpServletResponse.SC_OK);
-            JSONObject _result = new JSONObject();
-
-            _result.put("affectedRow", new BuyPostByPostIdDao(getConnection()).buyPost(_postId, _customerId));
-
-            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id have been bought!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
-
-            _response.getWriter().write(_result.toString());
-
-
-        } catch (SQLException _e) {
-            throw new RuntimeException(_e);
-        } catch (IOException _e) {
             throw new RuntimeException(_e);
         }
     }
@@ -350,7 +427,7 @@ public class PostServlet extends AbstractServlet {
             _post.setUserId((Long) _session.getAttribute("userId"));
             _post.setCustomerId(0);
             _post.setPrice(Double.parseDouble(_request.getParameter("price")));
-            _post.setStatus(_request.getParameter("status"));
+            _post.setStatus("Available");
             _post.setStartDate(new Timestamp(System.currentTimeMillis()));
             _post.setEndDate(Timestamp.valueOf(_post.getStartDate().toLocalDateTime().plusDays(15)));
             _post.setDeleted(false);
