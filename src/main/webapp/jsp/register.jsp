@@ -60,9 +60,11 @@
     <input type="password" placeholder="Password" name="password" id="password">
 
     <button type="submit">Sign Up</button>
+    <a href="https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&response_type=code&state=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&redirect_uri=http://localhost:8080/GoogleSignInVerifier&client_id=34703303946-snsg5p13jmullq38d0vfc24jnao8rtgm.apps.googleusercontent.com">
     <div class="social">
         <div class="go"><i class="fab fa-google fa-spin fa-sm" style="color: #d10000;"></i>Google</div>
     </div>
+    </a>
 </form>
 
 <c:choose>

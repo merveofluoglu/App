@@ -78,7 +78,7 @@
       <div class="cont_error">
 
         <h1>Oops</h1>
-        <p>There are no posts for this category.</p>
+        <p>NO POSTS FOUND!</p>
       </div>
       <div class="cont_aura_1"></div>
       <div class="cont_aura_2"></div>
