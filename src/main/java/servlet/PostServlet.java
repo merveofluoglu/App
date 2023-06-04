@@ -262,16 +262,16 @@ public class PostServlet extends AbstractServlet {
         try {
             _post.setName(_request.getParameter("name"));
             _post.setDescription(_request.getParameter("description"));
-            _post.setUserId(Long.parseLong(_request.getParameter("userId")));
+            _post.setUserId(0);
             _post.setCustomerId(0);
             _post.setPrice(Double.parseDouble(_request.getParameter("price")));
-            _post.setStatus(_request.getParameter("status"));
+            _post.setStatus("Available");
             _post.setStartDate(new Timestamp(System.currentTimeMillis()));
             _post.setEndDate(Timestamp.valueOf(_post.getStartDate().toLocalDateTime().plusDays(15)));
             _post.setDeleted(false);
             _post.setSold(false);
             _post.setSoldDate(null);
-            _post.setUpdateDate(null);
+            _post.setUpdateDate(new Timestamp(System.currentTimeMillis()));
             _post.setCategoryId(0);
             _post.setSubcategoryId(0);
 
