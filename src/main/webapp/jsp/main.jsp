@@ -40,15 +40,22 @@
 
         function expandMessages(){
             const messageBox = document.getElementById("messageBox");
-            messageBox.style.height = '300px';
-
             const chats = document.getElementById("chats");
-            chats.style.display = "block";
-
             const messages = document.getElementById("messages");
-            messages.style.display = "none";
-
             const sendMessage = document.getElementById("sendMessage");
+
+
+            if (messageBox.style.height === '300px'){
+                messageBox.style.height = '30px';
+                chats.style.display = "none";
+                messages.style.display = "none";
+                sendMessage.style.display = "none";
+                return
+            }
+
+            messageBox.style.height = '300px';
+            chats.style.display = "block";
+            messages.style.display = "none";
             sendMessage.style.display = "none";
 
             $.ajax({
@@ -124,6 +131,17 @@
             chatSection.setAttribute("style", "display: block;");
             chatSection.innerHTML = "";
 
+            const backButtonNode = document.createElement("div");
+            const backButtonTextNode = document.createTextNode("Back");
+            backButtonNode.setAttribute("class", "backButton");
+            backButtonNode.appendChild(backButtonTextNode);
+
+            backButtonNode.addEventListener("click", function(){
+                expandMessages();
+            })
+
+            chatSection.appendChild(backButtonNode);
+
             messagesList.forEach(createMessageNode)
         }
 
@@ -155,8 +173,10 @@
                     }
                 }
             );
-
-            chatSection.appendChild(messageNode);
+            const lineNode = document.createElement("div");
+            lineNode.setAttribute("class", "messageLine");
+            lineNode.appendChild(messageNode);
+            chatSection.appendChild(lineNode);
         }
 
         function sendMessage(){
@@ -195,6 +215,9 @@
             text-align: center;
             border-radius: 25px;
         }
+        .backButton{
+            background-color: greenyellow;
+        }
         #chats{
             position: relative;
             display: none;
@@ -212,6 +235,11 @@
             display: none;
             background-color: deepskyblue;
             height: 90%;
+        }
+        .messageLine{
+            display: block;
+            width: 100%;
+            height: 40px;
         }
         .message{
             display: block;
