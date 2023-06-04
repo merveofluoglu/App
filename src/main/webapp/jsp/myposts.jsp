@@ -256,7 +256,7 @@
     // Get the modal
     var modal = document.getElementById("postDetails");
     var secondmodal = document.getElementById("editPost");
-    var span = document.getElementsByClassName("close")[0];
+    var span = document.getElementsByClassName("close");
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -266,10 +266,13 @@
             secondmodal.style.display = "none";
         }
     }
-    span.onclick = function() {
-        modal.style.display = "none";
+    span[0].onclick = function() {
         secondmodal.style.display = "none";
     }
+    span[1].onclick = function() {
+        modal.style.display = "none";
+    }
+
 
     const getMyPosts = () => {
 
