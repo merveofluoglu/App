@@ -96,6 +96,12 @@
       <hr align="center">
     </div>
   </div>
+  <div class="sidenav-url">
+    <div class="url">
+      <a href="${pageContext.request.contextPath}/jsp/review.jsp" class="active">My Reviews</a>
+      <hr align="center">
+    </div>
+  </div>
 
   </div>
 
