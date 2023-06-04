@@ -33,6 +33,7 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
@@ -108,10 +109,6 @@
           <div class="form-group">
             <label>Price:</label>
             <input type="number" name="Price" id="Price" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label>Status:</label>
-            <input type="text" name="Status" id="Status" class="form-control" />
           </div>
           <div class="form-group">
             <label>Category:</label>
@@ -356,6 +353,7 @@
                             <a class="btn btn-outline-dark btn-square" id="message-to-creator" href=""><i class="fa fa-envelope"></i></a>
                             <a class="btn btn-outline-dark btn-square" id="favourite" href=""><i class="far fa-heart"></i></a>
                             <a class="btn btn-outline-dark btn-square" id="open-post" href=""><i class="fa fa-search"></i></a>
+                            <a class="btn btn-outline-dark btn-square" id="buy-request"><i class="fa fa-shopping-cart"></i></a>
                         </div>
                       </div>
                     <div class="text-center py-4">
@@ -368,6 +366,36 @@
                   </div>
                  </div>
                 `;
+  }
+
+  openSwal = (id) => {
+    Swal.fire({
+      title: 'Are you sure to buy this product?',
+      text: "Please, select yes or no!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        buyPost(id)
+      }
+    })
+  }
+
+  const buyPost = (id) => {
+    $.ajax({
+              url: '${pageContext.request.contextPath}/post/buyRequest/' + id,
+              method: "POST",
+              success: function (response) {
+                toastr.success("Your buy request sent to the post owner!");
+              },
+              error: function () {
+                alert("error");
+              }
+            }
+    );
   }
 
   const getAllPosts = () => {
@@ -387,6 +415,7 @@
                   document.getElementById("favourite").onclick = function() { addFavourite(element.postId); };
                   document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
                   document.getElementById("open-post").onclick = function() { openPostDetails(element.postId) }
+                  document.getElementById("buy-request").onclick = function() { openSwal(element.postId) }
                 });
               },
               error: function () {
@@ -434,7 +463,6 @@
     $("#addPost [name='Name']").val("");
     $("#addPost [name='Description']").val("");
     $("#addPost [name='Price']").val(null);
-    $("#addPost [name='Status']").val("");
     $("#addPost [name='CategoryId']").val(null);
     $("#addPost [name='SubCategoryId']").val(null);
     $("#addPost [name='file']").val(null);
@@ -445,7 +473,6 @@
       name: $("#addPost [name='Name']").val(),
       description: $("#addPost [name='Description']").val(),
       price: $("#addPost [name='Price']").val(),
-      status: $("#addPost [name='Status']").val(),
       categoryId: $("#addPost [name='CategoryId']").val(),
       subcategoryId: $("#addPost [name='SubCategoryId']").val(),
     };
@@ -516,11 +543,6 @@
     }
 
     if(data.price == "" || data.price == null || data.price == undefined) {
-      toastr.error("Please fill all sections!");
-      return false;
-    }
-
-    if(data.status == "" || data.status == null || data.status == undefined) {
       toastr.error("Please fill all sections!");
       return false;
     }
@@ -659,6 +681,7 @@
     checkSection();
   });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
