@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class GetPostByIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM post WHERE post_id = ? AND is_deleted = false";
+    private static final String STATEMENT = "SELECT * FROM post WHERE post_id = ? AND is_deleted = false AND is_sold = false AND (status = 'Available' OR status = 'Requested')";
 
     /**
      * Creates a new DAO object.
