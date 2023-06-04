@@ -26,6 +26,9 @@
   <!-- Navbar -->
   <ul>
     <li>
+      <a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp"><i class='fa fa-arrow-left fa-2x' style='color: white;scale: inherit'></i></a>
+    </li>
+    <li>
       <i class="fa fa-sign-out-alt fa-2x" style="color: #ffffff" onclick="logout()"></i>
     </li>
   </ul>
