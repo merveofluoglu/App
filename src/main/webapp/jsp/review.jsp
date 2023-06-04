@@ -12,13 +12,74 @@
     <title>Get Reviews</title>
     <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="author" content="damacanan">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="${pageContext.request.contextPath}/jsp/admin-dashboard/assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="../jsp/admin-dashboard/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../jsp/admin-dashboard/assets/css/lineicons.css" />
+    <link rel="stylesheet" href="admin-dashboard/assets/css/main.css" />
+    <link rel="stylesheet" href="../resources/static/css/mainpage.css">
+    <link rel="stylesheet" href="../resources/static/css/owl.css">
+    <link rel="stylesheet" href="../resources/static/css/postDetails.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+
 </head>
 <body>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
 <!---------DATATABLE--------->
-
+<!-- * Header Area Start * -->
+<header class="header-area header-sticky" style="background-color: darkred; position: inherit !important;">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- * Logo Start * -->
+                    <a href="${pageContext.request.contextPath}/jsp/profile.jsp" class="logo">
+                        DAMACANAN
+                    </a>
+                    <!-- * Logo End * -->
+                    <!-- * Menu Start * -->
+                    <ul class="nav">
+                        <li class="scroll-to-section-button">
+                            <div class="main-button-red-login">
+                                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
+                            </div>
+                        </li>
+                        <li class="scroll-to-section-button">
+                            <div class="main-button-red-login">
+                                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Back to Profile</a></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- * Menu End * -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
 <table id="Review" class="display" width="100%">
     <thead>
     <tr>
@@ -38,7 +99,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="reviewModalLabel">Add Review</h4>
+                <h4 class="modal-title" id="myModalLabel">Add Review</h4>
                 <button type="button" class="btn-close" target="#addReview" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -77,7 +138,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="reviewModalLabel">Edit Review</h4>
+                <h4 class="modal-title" id="myModalLabel">Edit Review</h4>
                 <button type="button" class="btn-close" target="#editReview" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -280,12 +341,12 @@
                                 id: 'add'
                             },
                             action: function () {
-                                $("#addPost [name='UserId']").val(null);
-                                $("#addPost [name='SellerId']").val(null);
-                                $("#addPost [name='PostId']").val(null);
-                                $("#addPost [name='Description']").val("");
-                                $("#addPost [name='Point Scale']").val("");
-                                $("#addPost").modal('show');
+                                $("#addReview [name='UserId']").val(null);
+                                $("#addReview [name='SellerId']").val(null);
+                                $("#addReview [name='PostId']").val(null);
+                                $("#addReview [name='Description']").val("");
+                                $("#addReview [name='Point Scale']").val("");
+                                $("#addReview").modal('show');
                             }
                         }
                     ]
