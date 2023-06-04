@@ -285,9 +285,7 @@ public class UserServlet extends AbstractServlet{
                     newUser.setPpPath(null);
                     JSONObject _result = new JSONObject();
                     _result.put("data", new CreateUserDAO(getConnection()).createUser(newUser));
-
                     new AddActionLogDao(getConnection()).addActionLog(new ActionLog(false, true, "New user registered!", new Timestamp(System.currentTimeMillis()), 0));
-
                     _response.getWriter().write(_result.toString());
                     _response.sendRedirect(_request.getContextPath() + "/jsp/login.jsp");
                 }
@@ -496,24 +494,45 @@ public class UserServlet extends AbstractServlet{
                 JSONObject res = new JSONObject();
                 _response.setStatus(HttpServletResponse.SC_OK);
                 User temp = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId);
-                _user.setName(_request.getParameter("name"));
-                _user.setSurname(_request.getParameter("surname"));
-                _user.setEmail(_request.getParameter("email"));
-                encoded = Base64.getEncoder().encodeToString(temp.getPpPath());
-                _user.setBase64(encoded);
-                _user.setPpPath(temp.getPpPath());
-                _user.setPassword(temp.getPassword());
-                _user.setCreationDate(temp.getCreationDate());
-                _user.setRoleId(temp.getRoleId());
-                _user.setDeleted(temp.isDeleted());
-                _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
-                JSONObject _result = new JSONObject();
-                _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
-                new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User have been updated!", new Timestamp(System.currentTimeMillis()), _userId));
-                _request.getSession().setAttribute("user", _user);
+                if(temp.getPpPath() != null){
+                    _user.setName(_request.getParameter("name"));
+                    _user.setSurname(_request.getParameter("surname"));
+                    _user.setEmail(_request.getParameter("email"));
+                    _user.setPpPath(temp.getPpPath());
+                    _user.setPassword(temp.getPassword());
+                    _user.setCreationDate(temp.getCreationDate());
+                    _user.setRoleId(temp.getRoleId());
+                    _user.setDeleted(temp.isDeleted());
+                    encoded = Base64.getEncoder().encodeToString(temp.getPpPath());
+                    _user.setBase64(encoded);
+                    _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+                    JSONObject _result = new JSONObject();
+                    _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
+                    new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User have been updated!", new Timestamp(System.currentTimeMillis()), _userId));
+                    _request.getSession().setAttribute("user", _user);
+                    _response.getWriter().write(_result.toString());
+                    _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
+                }
+                else{
+                    _user.setName(_request.getParameter("name"));
+                    _user.setSurname(_request.getParameter("surname"));
+                    _user.setEmail(_request.getParameter("email"));
+                    _user.setBase64("");
+                    _user.setPpPath(new byte[0]);
+                    _user.setPassword(temp.getPassword());
+                    _user.setCreationDate(temp.getCreationDate());
+                    _user.setRoleId(temp.getRoleId());
+                    _user.setDeleted(temp.isDeleted());
+                    _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+                    JSONObject _result = new JSONObject();
+                    _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
+                    new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User have been updated!", new Timestamp(System.currentTimeMillis()), _userId));
+                    _request.getSession().setAttribute("user", _user);
 
-                _response.getWriter().write(_result.toString());
-                _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
+                    _response.getWriter().write(_result.toString());
+                    _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
+                }
+
             }
         } catch (Exception e) {
             System.out.println("internal error");
