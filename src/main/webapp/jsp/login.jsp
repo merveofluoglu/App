@@ -65,11 +65,16 @@
 <script>
   $('#loginForm').submit(function (e) {
     let frm = $('#loginForm');
+    const _data = {
+      email: $("#loginForm [name='email']").val(),
+      password: $("#loginForm [name='password']").val(),
+
+    };
     e.preventDefault();
     $.ajax({
       type: frm.attr('method'),
       url: "${pageContext.request.contextPath}/user/login",
-      data: frm.serialize(),
+      data: _data,
       success: function (data) {
         window.location.href = '${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp';
         console.log('Submission was successful.');
@@ -77,10 +82,11 @@
       },
       error: function (data) {
         console.log('An error occurred.');
-        toastr.error(JSON.parse(data.responseText).error.message);
+        //toastr.error(JSON.parse(data.responseText).error.message);
+        /*
         setTimeout(() => {
           window.location.href = '${pageContext.request.contextPath}/jsp/login.jsp';
-        }, 5000);
+        }, 5000);*/
       },
     });
   });

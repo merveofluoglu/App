@@ -7,7 +7,7 @@
   <title>Profile Page</title>
 
   <!-- Custom Css -->
-  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="../resources/static/css/profile.css">
 
   <!-- FontAwesome 5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
