@@ -37,7 +37,6 @@ public class FavouritesServlet extends AbstractServlet{
 
     @Override
     protected void doPost(HttpServletRequest _req, HttpServletResponse _resp) throws ServletException, IOException {
-        // Will be updated!
 
         String _op = _req.getRequestURI().split("/", 5)[3];
         System.out.println(_op);
@@ -47,6 +46,9 @@ public class FavouritesServlet extends AbstractServlet{
                 break;
             case "remove" :
                 removeFavourite(_req, _resp);
+                break;
+            case "removeByUser" :
+                removeFavouriteByUserId(_req, _resp);
                 break;
             default :
                 writeError(_resp, ErrorCode.OPERATION_UNKNOWN);
@@ -126,7 +128,7 @@ public class FavouritesServlet extends AbstractServlet{
         try {
             HttpSession _session = _req.getSession();
 
-            long _postId = Long.parseLong(_req.getParameter("postId"));
+            long _postId = Long.parseLong(_req.getRequestURI().split("/", 5)[4]);
 
             _resp.setContentType("application/json");
             _resp.setStatus(HttpServletResponse.SC_OK);
@@ -134,6 +136,32 @@ public class FavouritesServlet extends AbstractServlet{
             JSONObject _result = new JSONObject();
 
             _result.put("affectedRow", new RemoveFavouritesByPostIdDao(getConnection()).removeFavouritesByPostIdDao(_postId));
+
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId + " has been removed from favourites!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+
+            _resp.getWriter().write(_result.toString());
+
+            //After jsp files prepared, request dispatcher will be implemented!!
+
+        } catch (SQLException _e) {
+            throw new RuntimeException(_e);
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
+    private void removeFavouriteByUserId(HttpServletRequest _req, HttpServletResponse _resp) {
+        try {
+            HttpSession _session = _req.getSession();
+
+            long _postId = Long.parseLong(_req.getRequestURI().split("/", 5)[4]);
+
+            _resp.setContentType("application/json");
+            _resp.setStatus(HttpServletResponse.SC_OK);
+
+            JSONObject _result = new JSONObject();
+
+            _result.put("affectedRow", new RemoveFavouriteDao(getConnection()).removeFavourite(_postId, (Long) _session.getAttribute("userId")));
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId + " has been removed from favourites!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
