@@ -11,7 +11,7 @@ package dao.Message;
         import java.util.ArrayList;
         import java.util.List;
 
-public class GetChatByRecipientIdDao extends AbstractDAO {
+public class GetChatMessages extends AbstractDAO {
 
     private static final String STATEMENT = "SELECT * FROM message WHERE (creator_id=? AND recipient_id=?) OR (creator_id=? AND recipient_id=?) ";
 
@@ -20,7 +20,7 @@ public class GetChatByRecipientIdDao extends AbstractDAO {
      *
      * @param con the connection to be used for accessing the database.
      */
-    public GetChatByRecipientIdDao(Connection con) {
+    public GetChatMessages(Connection con) {
         super(con);
     }
 

@@ -1,7 +1,8 @@
 package dao.Message;
 
 import dao.AbstractDAO;
-import resource.Message;
+import dao.User.GetUserByUseridDAO;
+import resource.User;
 import utils.ResourceNotFoundException;
 
 import java.sql.Connection;
@@ -29,7 +30,7 @@ public class GetUserChatsDao extends AbstractDAO {
 
     }
 
-    public List<Long> getChats(long _creatorId) throws SQLException, ResourceNotFoundException {
+    public List<Long> getChatIds(long _creatorId) throws SQLException, ResourceNotFoundException {
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
         List<Long> _recipients = new ArrayList<>();
@@ -53,4 +54,5 @@ public class GetUserChatsDao extends AbstractDAO {
         }
         return _recipients;
     }
+
 }
