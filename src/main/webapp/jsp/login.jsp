@@ -28,6 +28,13 @@
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -53,13 +60,13 @@
 
   <button type="submit" target="#loginForm">Log In</button>
   <div class="social">
-    <div class="go"><i class="fab fa-google"></i>  Google</div>
+    <div class="go"><i class="fab fa-google fa-spin fa-sm" style="color: #d10000;"></i>  Google</div>
   </div>
 </form>
 
 <form-small>
-  <div style="margin-left: 3px;  font-size: 12px; margin-bottom: 10px; margin-right: 5px"> Do not have an account?
-    <button-register><a href="${pageContext.request.contextPath}/jsp/register.jsp"; style="color: #1a1d20">Register</a></button-register>
+  <div style="margin-left: 55px;  font-size: 12px; margin-bottom: 10px; margin-right: 5px"> Do not have an account?
+    <button-register><a href="${pageContext.request.contextPath}/jsp/register.jsp"; style="color: #1a1d20; text-decoration:none;">Register</a></button-register>
   </div>
 </form-small>
 <script>
