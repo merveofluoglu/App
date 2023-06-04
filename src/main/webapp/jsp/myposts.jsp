@@ -28,11 +28,75 @@
           integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.min.css" rel="stylesheet">
+
 </head>
 <body>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
+<!---------EDIT POST--------->
+<div id="editPost" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="editPostClose">&times;</span>
+            <h2 style="color: white">Edit Post Details</h2>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <img src="" alt="img" id="postEditImage" width="500" height="500">
+                    </div>
+                    <div class="col">
+                        <div class="row" style="display: none">
+                            <div class="col">
+                                <label>Post Id:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postEditId" id="postEditId" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Name:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postEditName" id="postEditName" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Description:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postEditDescription" id="postEditDescription" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>Price:</label>
+                            </div>
+                            <div class="col" >
+                                <input type="number" name="postEditPrice" id="postEditPrice" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="editPost()">Edit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+</div>
 <!-- The Post Details Modal -->
 <div id="postDetails" class="modal">
     <!-- Modal content -->
@@ -148,7 +212,6 @@
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
@@ -192,15 +255,20 @@
 
     // Get the modal
     var modal = document.getElementById("postDetails");
+    var secondmodal = document.getElementById("editPost");
     var span = document.getElementsByClassName("close")[0];
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
+        else if(event.target == secondmodal){
+            secondmodal.style.display = "none";
+        }
     }
     span.onclick = function() {
         modal.style.display = "none";
+        secondmodal.style.display = "none";
     }
 
     const getMyPosts = () => {
@@ -261,7 +329,7 @@
                         aFourth.setAttribute("style","alignment: absolute");
                         const isecond = document.createElement("i");
                         isecond.className = "fa fa-edit";
-                        isecond.onclick = function() { editPost(element.postId); };
+                        isecond.onclick = function() { updatePost(element); };
                         aFourth.append(isecond);
 
                         //Link for delete post
@@ -270,7 +338,7 @@
                         aFifth.setAttribute("style","alignment: absolute");
                         const ithird = document.createElement("i");
                         ithird.className = "fa fa-trash";
-                        ithird.onclick = function() { deletePost(element.postId); };
+                        ithird.onclick = function() { openSwal(element.postId); };
                         aFifth.append(ithird);
 
 
@@ -343,15 +411,80 @@
         );
     }
 
-    const editPost = (id) => {
+    openSwal = (id) => {
+        Swal.fire({
+            title: 'Are you sure to delete this post?',
+            text: "Please, select confirm or cancel",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deletePost(id)
+            }
+        })
+    }
+    const updatePost = (element) => {
+        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+        if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
+            lolo = "images/img.jpg";
+        }
+        document.getElementById("postEditImage").src = lolo;
+        document.getElementById("postEditId").value = element.postId;
+        document.getElementById("postEditName").value= element.name;
+        document.getElementById("postEditPrice").value = element.price;
+        document.getElementById("postEditDescription").value = element.description;
+        secondmodal.style.display = "block";
+
+    }
+
+    const editPost = () => {
         // Edit the post
-        console.log("Burdayım edit");
+        const _data = {
+            postId: parseInt($("#editPost [name='postEditId']").val()),
+            name: $("#editPost [name='postEditName']").val(),
+            description: $("#editPost [name='postEditDescription']").val(),
+            price: $("#editPost [name='postEditPrice']").val(),
+
+        };
+
+        $.ajax({
+                url: '${pageContext.request.contextPath}/post/update',
+                method: "POST",
+                data: _data,
+                success: function (response) {
+                    secondmodal.style.display = "none";
+                    toastr.info("Post updated succesfully!");
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/myposts.jsp';
+                    }, 5000);
+                },
+                error: function () {
+                    alert("error");
+                }
+            }
+        );
 
     }
 
     const deletePost = (id) => {
         // Delete the post
-        console.log("Burdayım silme");
+        $.ajax({
+                url: "${pageContext.request.contextPath}/post/delete/"+id,
+                method: "POST",
+                success: function (response) {
+                    toastr.info("Post deleted succesfully!");
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/myposts.jsp';
+                    }, 5000);
+                },
+                error: function (data) {
+                    toastr.error(JSON.parse(data.responseText).error.message);
+                }
+            }
+        );
     }
 
     const openPostDetails = (element) => {
@@ -402,6 +535,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js"></script>
 
 </body>
 </html>
