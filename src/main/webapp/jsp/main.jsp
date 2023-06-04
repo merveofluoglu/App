@@ -31,7 +31,8 @@
 
         </div>
         <div id="sendMessage">
-            <input id="newMessage" type="text"><button onclick="sendMessage()">SEND</button>
+            <input style="width: 75%;" id="newMessage" type="text"><button style="width: 25%;" onclick="sendMessage()">SEND</button>
+
         </div>
         <span id="messageButton" onclick="expandMessages()">Messages</span>
     </div>
@@ -140,6 +141,35 @@
             chatSection.setAttribute("style", "display: block;");
             chatSection.innerHTML = "";
 
+
+            const recipientIdNode = document.createElement("span");
+
+
+            $.ajax({
+                    url: "${pageContext.request.contextPath}/message/message_owner",
+                    method: "GET",
+                    data: {
+                        creatorId: messagesList[0]['creatorId']
+                    },
+                    success: function (response) {
+                        if (response.data === "user"){
+                            const recipientIdTextNode = document.createTextNode(messagesList[0]['recipientId']);
+                            recipientIdNode.appendChild(recipientIdTextNode);
+                        }
+                        else{
+                            const recipientIdTextNode = document.createTextNode(messagesList[0]['creatorId']);
+                            recipientIdNode.appendChild(recipientIdTextNode);
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                }
+            );
+            recipientIdNode.setAttribute("style", "display: none;");
+            chatSection.appendChild(recipientIdNode);
+
+
             const backButtonNode = document.createElement("div");
             const backButtonTextNode = document.createTextNode("Back");
             backButtonNode.setAttribute("class", "backButton");
@@ -152,6 +182,9 @@
             chatSection.appendChild(backButtonNode);
 
             messagesList.forEach(createMessageNode)
+
+            const newMessage = document.getElementById("sendMessage");
+            newMessage.setAttribute("style", "display: block; height: 10%;");
         }
 
         function createMessageNode(messageDict){
@@ -190,19 +223,20 @@
 
         function sendMessage(){
             const message = document.getElementById("newMessage").value;
-
+            const recipientId = document.getElementById("messages").children[0].textContent;
+            console.log(recipientId)
             const _data = {
-                'recipientId': 2,
+                'recipientId': recipientId,
                 'subject': "testing",
                 'messageBody': message,
             };
-
+            console.log(_data);
             $.ajax({
                     url: "${pageContext.request.contextPath}/message/add",
                     method: "POST",
                     data: _data,
                     success: function (response) {
-                        toastr.success("Message SENT");
+                        console.log("success");
                     },
                     error: function () {
                         alert("error");
@@ -222,7 +256,6 @@
             bottom: 0;
             background-color: red;
             text-align: center;
-            border-radius: 25px;
         }
         .backButton{
             background-color: greenyellow;
@@ -243,7 +276,7 @@
         #messages{
             display: none;
             background-color: deepskyblue;
-            height: 90%;
+            height: 80%;
         }
         .messageLine{
             display: block;
@@ -264,7 +297,7 @@
         }
         #sendMessage{
             display: none;
-            height: 15px;
+            height: 10%;
         }
         #messageButton{
             position: relative;
