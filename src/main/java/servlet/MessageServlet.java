@@ -1,7 +1,7 @@
 package servlet;
 
 import dao.Message.*;
-import dao.Post.GetAllPostsDao;
+import dao.User.GetUserByUseridDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,13 +9,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.json.JSONObject;
 import resource.Message;
+import resource.User;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import static java.lang.Long.parseLong;
 
 @WebServlet(name = "MessageServlet", value = "/MessageServlet")
@@ -28,7 +31,14 @@ public class MessageServlet extends AbstractServlet {
                 getMessage(_request, _response);
             } else if (_op.contentEquals("usermessages")) {
                 getUserMessages(_request,_response);
-            } else{
+            }else if (_op.contentEquals("userchatreceivers")) {
+                getUserChatReceivers(_request,_response);
+            } else if (_op.contentEquals("messages_of_chat")) {
+                getChatMessages(_request,_response);
+            } else if (_op.contentEquals("message_owner")) {
+                getMessageOwner(_request,_response);
+            }
+            else{
                 getAllMessages(_request, _response);
             }
         } catch (Exception e){
@@ -111,14 +121,87 @@ public class MessageServlet extends AbstractServlet {
         }
     }
 
+    protected void getUserChatReceivers (HttpServletRequest _request, HttpServletResponse _response) {
+        try{
+            HttpSession _session = _request.getSession();
+            long _userId = (long) _session.getAttribute("userId");
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            JSONObject _result = new JSONObject();
+            List <User> _recipients = new ArrayList<>();
+            List<Long> _chats = new GetUserChatsDao(getConnection()).getChatIds(_userId);
+
+            for(int i=0; i<_chats.size(); i++){
+                User _recipientUser = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_chats.get(i));
+                _recipients.add(_recipientUser);
+            }
+            _result.put("data", _recipients);
+            _response.getWriter().write(_result.toString());
+
+        } catch (SQLException | IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    protected void getChatMessages (HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            HttpSession _session = _request.getSession();
+            long _userId = (long) _session.getAttribute("userId");
+            long _recipientId = Long.parseLong(_request.getParameter("recipientId"));
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            JSONObject _result = new JSONObject();
+            List <Message> _chatMessages = new GetChatMessages(getConnection()).getMessagesOfChat(_userId,_recipientId);
+
+            _result.put("data", _chatMessages);
+
+            _response.getWriter().write(_result.toString());
+
+        } catch (SQLException | IOException _e) {
+            throw new RuntimeException(_e);
+        } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void getMessageOwner (HttpServletRequest _request, HttpServletResponse _response) {
+        try {
+            HttpSession _session = _request.getSession();
+            long _userId = (long) _session.getAttribute("userId");
+            long _creatorId = Long.parseLong(_request.getParameter("creatorId"));
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            JSONObject _result = new JSONObject();
+            if(_creatorId == _userId){
+                _result.put("data", "user");
+            }else{
+                _result.put("data", "other");
+            }
+
+            _response.getWriter().write(_result.toString());
+
+        } catch (IOException _e) {
+            throw new RuntimeException(_e);
+        }
+    }
+
+
     private void addMessage(HttpServletRequest _request, HttpServletResponse _response) {
 
         Message _message = new Message();
+        HttpSession _session = _request.getSession();
 
         try {
-            _message.setCreatorId(Long.parseLong(_request.getParameter("creatorId")));
+            Random rd = new Random();
+            _message.setCreatorId((Long) _session.getAttribute("userId"));
             _message.setRecipientId(Long.parseLong(_request.getParameter("recipientId")));
-            _message.setParentMessageId(Long.parseLong(_request.getParameter("parentMessageId")));
+            _message.setParentMessageId(rd.nextLong());
             _message.setSubject(_request.getParameter("subject"));
             _message.setMessageBody(_request.getParameter("messageBody"));
             _message.setRead(false);
