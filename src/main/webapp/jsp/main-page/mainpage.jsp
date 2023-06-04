@@ -88,7 +88,7 @@
 
 <!-- ***** Header Area End ***** -->
 
-<!---------ADD POST--------->
+<!------------------    ADD POST   ----------------------------------->
 
   <div class="modal fade" id="addPost" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -135,7 +135,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="addModalFile">Add Post</h4>
-          <button type="button" class="btn-close" target="#addPost" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" target="#addFile" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="addFileModal">
           <div class="form-group" style="display:none">
@@ -157,7 +157,49 @@
  </div>
 </form>
 
-<!---------ADD POST END--------->
+<!------------------    ADD POST END   ------------------------------->
+
+<!------------------  The Post Details Modal ------------------------->
+
+<div class="modal fade" id="showPost" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="showPostModal">Post Details</h4>
+        <button type="button" class="btn-close" target="#showPost" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="showPostDiv">
+        <div class="form-group">
+          <img src="" alt="img" id="postImage" width="500" height="500">
+        </div>
+        <div class="form-group">
+          <label id="postName">Name: </label>
+        </div>
+        <div class="form-group">
+          <label id="postDesc">Description: </label>
+        </div>
+        <div class="form-group">
+          <label id="postCat">Category:</label>
+        </div>
+        <div class="form-group">
+          <label id="postSubCat">Sub Category: </label>
+        </div>
+        <div class="form-group">
+          <label id="postStatus">Status: </label>
+        </div>
+        <div class="form-group">
+          <label id="postPrice">Price: </label>
+        </div>
+        <div class="form-group">
+          <label id="postPublishDate">Publish Date: </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-toolbar" target="#showPost" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ***** Main Banner Area Start ***** -->
 <aside class="sidebar-nav-wrapper" style="background-color: transparent; width: 270px; overflow-y: auto; top: unset; position: absolute">
@@ -198,6 +240,7 @@
   let subcategories;
   let posts;
 
+
   const logout = () => {
     $.ajax({
               url: "${pageContext.request.contextPath}/user/logout",
@@ -237,15 +280,6 @@
     `;
   }
 
-  const createSubCategories = (categoryName, subcategoryName, subcategoryId) => {
-    return `
-            <ul id="`+ categoryName +`" class="dropdown-nav collapse show">
-              <li>
-                <a class="btn" href="" id="`+ subcategoryId +`"> `+ subcategoryName +` </a>
-              </li>
-            </ul>`;
-  }
-
   const getAllCategories = () => {
     $.ajax({
       method: "GET",
@@ -258,35 +292,6 @@
           let categoryName = option.categoryName;
           sidebar.innerHTML += createCategories(categoryName.replaceAll(" ", "-"));
 
-          /*
-          console.log(option);
-          const li = document.createElement("li");
-          li.className = "nav-item nav-item-has-children";
-          const node = document.createElement("a");
-          let categoryName = option.categoryName;
-          categoryName = categoryName.replaceAll(" ", "-");
-          node.text = option.categoryName;
-          node.id = categoryName;
-          node.setAttribute("data-bs-toggle", "collapse");
-          node.setAttribute("data-bs-target", "#" + categoryName);
-          node.setAttribute("aria-controls", categoryName);
-          node.setAttribute("aria-expanded", "false");
-          node.setAttribute("aria-label", "Toggle navigation");
-          node.href="#0";
-          let span = document.createElement("span");
-          span.className = "icon";
-          let svg = document.createElement("svg");
-          svg.setAttribute("viewBox", "0 0 22 22");
-          svg.setAttribute("width", "22");
-          svg.setAttribute("height", "22");
-          let path = document.createElement("path");
-          path.setAttribute("d", "M17.4167 4.58333V6.41667H13.75V4.58333H17.4167ZM8.25 4.58333V10.0833H4.58333V4.58333H8.25ZM17.4167 11.9167V17.4167H13.75V11.9167H17.4167ZM8.25 15.5833V17.4167H4.58333V15.5833H8.25ZM19.25 2.75H11.9167V8.25H19.25V2.75ZM10.0833 2.75H2.75V11.9167H10.0833V2.75ZM19.25 10.0833H11.9167V19.25H19.25V10.0833ZM10.0833 13.75H2.75V19.25H10.0833V13.75Z");
-          svg.append(path);
-          span.append(svg);
-          node.append(span);
-          li.append(node);
-          sidebar.append(li);
-          */
         });
 
         getAllSubCategories();
@@ -297,7 +302,9 @@
   getCategoryNameById = (id) => {
     return categories.filter(item => item.categoryId === id)[0].categoryName;
   }
-
+  getSubCategoryNameById = (id) => {
+    return subcategories.filter(item => item.subcategoryId === id)[0].subcategoryName;
+  }
   const getAllSubCategories = () => {
     $.ajax({
       method: "GET",
@@ -314,58 +321,123 @@
           console.log(option);
 
           let category = document.getElementById(categoryName.replaceAll(" ", "-")).parentNode;
-          //category.innerHTML += createSubCategories(categoryName.replaceAll(" ", "-"), option.subcategoryName, option.subcategoryId);
-          //document.getElementById(option.subcategoryId).onclick = function() { getPostsBySubCategory.bind(this, option.subcategoryId); };
 
           const ul = document.createElement("ul");
+
           ul.className = "dropdown-nav collapse show";
           ul.id = categoryName.replaceAll(" ", "-");
+
           const li = document.createElement("li");
           const node = document.createElement("a");
+
           node.className = "active";
           node.text = option.subcategoryName;
           node.id = option.subcategoryId;
           node.onclick = function() { getPostsBySubCategory(option.subcategoryId); };
+
           li.append(node);
           ul.append(li);
           category.append(ul);
 
-        });
-
         displayCategories();
 
         getAllPosts();
-      }
-    })
+      });
+    }
+    });
   }
 
   const fillContent = (element) => {
+    let section = document.getElementById("posts-section");
+
     let src = 'data:image/jpeg;base64,'+ element.base64;
     if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
       src = "images/img.jpg";
     }
-    return `
-                  <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                      <div class="product-img position-relative overflow-hidden">
-                        <img class="img-fluid w-100" src=`+ src +` alt="">
-                        <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" id="message-to-creator" href=""><i class="fa fa-envelope"></i></a>
-                            <a class="btn btn-outline-dark btn-square" id="favourite" href=""><i class="far fa-heart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" id="open-post" href=""><i class="fa fa-search"></i></a>
-                            <a class="btn btn-outline-dark btn-square" id="buy-request"><i class="fa fa-shopping-cart"></i></a>
-                        </div>
-                      </div>
-                    <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href="">` +element.name+ `</a>
-                        <h5>` +element.description+ `</h5>
-                        <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$`+element.price+`</h5><h6 class="text-muted ml-2"></h6>
-                        </div>
-                    </div>
-                  </div>
-                 </div>
-                `;
+
+    const divParent = document.createElement("div");
+    divParent.className = "col-lg-3 col-md-4 col-sm-6 pb-1";
+    divParent.setAttribute("style","border-style: solid; border-color: orange;");
+    const divFirstChild = document.createElement("div");
+    divFirstChild.className = "product-item bg-light mb-4";
+    divFirstChild.setAttribute("style","border-style: solid; border-color: orange;");
+    const divSecondChild = document.createElement("div");
+    divSecondChild.className = "product-img position-relative overflow-hidden";
+    const image = document.createElement("img");
+    image.className = "img-fluid w-100";
+    image.setAttribute("src",src);
+    image.setAttribute("style","width:300px; height:300px");
+    image.setAttribute("alt","pp.png");
+    const divThirdChild = document.createElement("div");
+    divThirdChild.className = "product-action";
+
+    const aFirst = document.createElement("a");
+    aFirst.className = "btn btn-outline-dark btn-square";
+    aFirst.setAttribute("style","alignment: absolute");
+    aFirst.setAttribute("id", "show-details")
+
+
+    //aFirst.onclick = onclick = function() { if(event.target.className)  openPostDetails(element); };
+
+    const i = document.createElement("i");
+    i.className = "fa fa-info-circle";
+    i.onclick =  function() { openPostDetails(element); };
+    aFirst.append(i);
+
+    const aFourth = document.createElement("a");
+    aFourth.className = "btn btn-outline-dark btn-square";
+    aFourth.setAttribute("style","alignment: absolute");
+    aFourth.onclick = function() { addToFavourite(element.postId); };
+
+    const isecond = document.createElement("i");
+    isecond.className = "far fa-heart";
+    aFourth.append(isecond);
+
+    const aFifth = document.createElement("a");
+    aFifth.className = "btn btn-outline-dark btn-square";
+    aFifth.setAttribute("style","alignment: absolute");
+    aFifth.onclick = function() { sendMessage(element.postId); };
+
+    const ithird = document.createElement("i");
+    ithird.className = "fa fa-envelope";
+    aFifth.append(ithird);
+
+    const aSixth = document.createElement("a");
+    aSixth.className = "btn btn-outline-dark btn-square";
+    aSixth.setAttribute("style","alignment: absolute");
+    aSixth.onclick = function() { openSwal(element.postId); }
+
+    const ifourth = document.createElement("i");
+    ifourth.className = "fa fa-shopping-cart";
+    aSixth.append(ifourth);
+
+    const divFourthChild = document.createElement("div");
+    divFourthChild.className = "text-center py-4";
+    const aSecond = document.createElement("a");
+    aSecond.className = "h6 text-decoration-none text-truncate";
+    aSecond.setAttribute("href","");
+    aSecond.setAttribute("id",element.postId);
+    aSecond.text = element.name;
+    const divFifthChild = document.createElement("div");
+    divFifthChild.className = "d-flex align-items-center justify-content-center mt-2";
+    const aThird = document.createElement("a");
+    aThird.className = "h6 text-decoration-none text-truncate";
+    aThird.setAttribute("href","");
+    aThird.text = element.price;
+    divFifthChild.append(aThird);
+    divFourthChild.append(aSecond);
+    divFourthChild.append(divFifthChild);
+    divThirdChild.append(aFirst);
+    divThirdChild.append(aFourth);
+    divThirdChild.append(aFifth);
+    divThirdChild.append(aSixth);
+    divSecondChild.append(image);
+    divSecondChild.append(divThirdChild);
+    divFirstChild.append(divSecondChild);
+    divFirstChild.append(divFourthChild);
+    divParent.append(divFirstChild);
+    section.append(divParent);
+
   }
 
   openSwal = (id) => {
@@ -398,6 +470,28 @@
     );
   }
 
+  const openPostDetails = (element) => {
+
+
+    let lolo = 'data:image/jpeg;base64,'+ element.base64;
+    if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
+      lolo = "images/img.jpg";
+    }
+
+    document.getElementById("postDesc").innerText += element.description;
+    document.getElementById("postName").innerText += element.name;
+    document.getElementById("postCat").innerText += getCategoryNameById(element.categoryId);
+    document.getElementById("postSubCat").innerText += getSubCategoryNameById(element.subcategoryId);
+    document.getElementById("postPublishDate").innerText += element.startDate;
+    document.getElementById("postPrice").innerText += element.price + "$";
+    document.getElementById("postStatus").innerText += element.status;
+    document.getElementById("postImage").src = lolo;
+
+    $("#showPost").modal('show');
+
+
+  }
+
   const getAllPosts = () => {
     $.ajax({
               url: "${pageContext.request.contextPath}/post/getAll",
@@ -410,12 +504,9 @@
                 section.innerHTML = sectionFirst;
 
                 data.forEach( element => {
-                  const content = fillContent(element);
-                  section.innerHTML += content;
-                  document.getElementById("favourite").onclick = function() { addFavourite(element.postId); };
-                  document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
-                  document.getElementById("open-post").onclick = function() { openPostDetails(element.postId) }
-                  document.getElementById("buy-request").onclick = function() { openSwal(element.postId) }
+
+                  fillContent(element);
+
                 });
               },
               error: function () {
@@ -445,11 +536,8 @@
                 }
                 data.forEach( element => {
 
-                  const content = fillContent(element);
-                  section.innerHTML += content;
-                  document.getElementById("favourite").onclick = function() { addToFavourite(element.postId); };
-                  document.getElementById("message-to-creator").onclick = function() { sendMessage(element.userId); }
-                  document.getElementById("open-post").onclick = function() { openPostDetails(element.postId) }
+                  fillContent(element);
+
                 });
               },
               error: function () {
@@ -468,6 +556,7 @@
     $("#addPost [name='file']").val(null);
     $("#addPost").modal('show');
   }
+
   const addPost = () => {
     const _data = {
       name: $("#addPost [name='Name']").val(),
@@ -525,10 +614,6 @@
       },
     });
   });
-
-  const addPostFiles = () => {
-
-  }
 
   checkValidity = (data) => {
 
@@ -601,18 +686,13 @@
     // Add To Cart
   }
 
-  const openPostDetails = (id) => {
-    // Post details will be displayed.
-  }
-
   const addToFavourite = (id) => {
     $.ajax({
               url: '${pageContext.request.contextPath}/favourite/add/' + id,
               method: "POST",
               success: function (response) {
                 toastr.success("Added to favourites!");
-                document.getElementById("favourite").removeClass("far fa-heart");
-                document.getElementById("favourite").addClass("fa solid fa-heart");
+
               },
               error: function () {
                 alert("error");
@@ -626,8 +706,7 @@
               method: "POST",
               success: function (response) {
                 toastr.success("Removed from favourites!");
-                document.getElementById("favourite").removeClass("fa solid fa-heart");
-                document.getElementById("favourite").addClass("far fa-heart");
+
               },
               error: function () {
                 alert("error");
