@@ -8,9 +8,19 @@
 
   <!-- Custom Css -->
   <link rel="stylesheet" href="../resources/static/css/profile.css">
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <!-- FontAwesome 5 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="admin-dashboard/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="admin-dashboard/assets/css/lineicons.css" />
+  <link rel="stylesheet" href="admin-dashboard/assets/css/main.css" />
+  <link rel="stylesheet" href="../resources/static/css/mainpage.css">
+  <link rel="stylesheet" href="../resources/static/css/owl.css">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
@@ -39,17 +49,14 @@
 <!-- Sidenav -->
 <div class="sidenav">
   <div class="profile">
-    <button type="submit">
-      <img src="../resources/static/images/New_User.png" alt="pp_png" border="0" width="100" height="100"/>
-    </button>
-
+    <img src="data:image/jpeg;base64,${user.base64}" alt="pp_png" border="0" width="50" height="50" id="profilePic"/>
     <div class="name">
       ${user.name} ${user.surname}
     </div>
   </div>
   <div class="sidenav-url">
     <div class="url">
-      <a href="${pageContext.request.contextPath}/jsp/uploadphoto.jsp" class="active">Update Profile Photo</a>
+      <a onclick="openModal()" class="active">Update Profile Photo</a>
       <hr align="center">
     </div>
   </div>
@@ -97,7 +104,30 @@
 
 </div>
 <!-- End -->
+<!------------------    ADD FILE   ----------------------------------->
 
+<form method="post" class="form-group" enctype= "multipart/form-data" action="${pageContext.request.contextPath}/user/upload">
+  <div class="modal fade" id="updatePP" tabindex="-1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="addModalFile">Upload Photo</h4>
+          <button type="button" class="btn-close" target="#updatePP" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="addFileModal">
+          <div class="form-group">
+            <label for="file">File:</label>
+            <input id="file" type="file" name="ppPath" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-toolbar" target="#updatePP" data-bs-dismiss="modal">Close</button>
+            <input type="submit" value="Save" class="btn btn-success">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 <!-- Main -->
 <div class="main">
   <h2>Profile Information</h2>
@@ -135,11 +165,7 @@
 <!-- End -->
 
 <script>
-  $(document).ready(function () {
-    $('img[src="data:image/jpg;data.base64,' + ${user.base64} + '"]').attr('src', "data:image/jpg;data.base64,' + ${user.base64} + '");
-  });
-
-
+/*
   get_images = () => {
     $.ajax({
       method: "GET",
@@ -157,7 +183,29 @@
 
       }
     })
+  }*/
+  const openModal = () =>{
+    $("#updatePP [name='file']").val("");
+    $("#updatePP").modal('show');
   }
+  $('#updatePP').submit(function (e) {
+    let frm = $('#updatePP');
+    e.preventDefault();
+    $.ajax({
+      type: frm.attr('method'),
+      data: frm.serialize(),
+      url: "${pageContext.request.contextPath}/user/upload",
+      success: function (response) {
+        $("#updatePP").modal('hide');
+        let data = JSON.parse(response).data;
+        let img = document.getElementById("profilePic");
+        img.src = 'data:image/jpeg;base64,' + data;
+      },
+      error: function (response){
+        console.log(response);
+      }
+    });
+  });
 
   const logout = () => {
     $.ajax({
@@ -197,7 +245,9 @@
     );
   }
 </script>
+  <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+  <script src="admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="admin-dashboard/assets/js/main.js"></script>
 </body>
 </html>
