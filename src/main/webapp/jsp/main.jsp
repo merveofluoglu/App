@@ -53,6 +53,15 @@
                 return
             }
 
+            loadChats();
+        }
+
+        function loadChats(){
+            const messageBox = document.getElementById("messageBox");
+            const chats = document.getElementById("chats");
+            const messages = document.getElementById("messages");
+            const sendMessage = document.getElementById("sendMessage");
+
             messageBox.style.height = '300px';
             chats.style.display = "block";
             messages.style.display = "none";
@@ -137,7 +146,7 @@
             backButtonNode.appendChild(backButtonTextNode);
 
             backButtonNode.addEventListener("click", function(){
-                expandMessages();
+                loadChats();
             })
 
             chatSection.appendChild(backButtonNode);
