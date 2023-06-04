@@ -39,13 +39,13 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close">&times;</span>
-            <h2>Details</h2>
+            <h2 style="color: white">Details</h2>
         </div>
         <div class="modal-body">
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <img src="" alt="img" id="postImage">
+                        <img src="" alt="img" id="postImage" width="500" height="500">
                     </div>
                     <div class="col">
                         <div class="row">
@@ -212,7 +212,6 @@
 
                     let section = document.getElementById("posts-section");
                     section.innerHTML = sectionFirst;
-
                     data.forEach( element => {
                         let lolo = 'data:image/jpeg;base64,'+ element.base64;
                         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
@@ -223,14 +222,16 @@
                         //document.getElementById(element.postId).onclick = function() { openPostDetails(element.postId) }
                         const divParent = document.createElement("div");
                         divParent.className = "col-lg-3 col-md-4 col-sm-6 pb-1";
+                        divParent.setAttribute("style","border-style: solid; border-color: orange;");
                         const divFirstChild = document.createElement("div");
                         divFirstChild.className = "product-item bg-light mb-4";
+                        divFirstChild.setAttribute("style","border-style: solid; border-color: orange;");
                         const divSecondChild = document.createElement("div");
                         divSecondChild.className = "product-img position-relative overflow-hidden";
                         const image = document.createElement("img");
                         image.className = "img-fluid w-100";
                         image.setAttribute("src",lolo);
-                        image.setAttribute("style","width:150px; height:150px");
+                        image.setAttribute("style","width:300px; height:300px");
                         image.setAttribute("alt","pp.png");
                         const divThirdChild = document.createElement("div");
                         divThirdChild.className = "product-action";
@@ -258,7 +259,6 @@
                         divFifthChild.append(aThird);
                         divFourthChild.append(aSecond);
                         divFourthChild.append(divFifthChild);
-
                         divThirdChild.append(aFirst);
                         divSecondChild.append(image);
                         divSecondChild.append(divThirdChild);
@@ -266,11 +266,14 @@
                         divFirstChild.append(divFourthChild);
                         divParent.append(divFirstChild);
                         section.append(divParent);
-
                     });
+
                 },
                 error: function () {
-                    alert("error");
+                    toastr.error(JSON.parse(data.responseText).error.message);
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/profile.jsp';
+                    }, 5000);
                 }
             }
         );

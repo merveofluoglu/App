@@ -23,6 +23,12 @@
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/css/signup.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/css/fontawesome.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -55,7 +61,7 @@
 
     <button type="submit">Sign Up</button>
     <div class="social">
-        <div class="go"><i class="fab fa-google"></i>Google</div>
+        <div class="go"><i class="fab fa-google fa-spin fa-sm" style="color: #d10000;"></i>Google</div>
     </div>
 </form>
 
