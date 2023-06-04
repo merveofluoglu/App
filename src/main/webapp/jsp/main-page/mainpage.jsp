@@ -448,7 +448,7 @@
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, i want to buy this product!'
     }).then((result) => {
       if (result.isConfirmed) {
         buyPost(id)
@@ -461,9 +461,9 @@
               url: '${pageContext.request.contextPath}/post/buyRequest/' + id,
               method: "POST",
               success: function (response) {
-                toastr.success("Your buy request sent to the post owner!");
+                toastr.success("Your buy request sent to the post owner! If owner accepts your product will be displayed on 'MY Posts' section of your profile!");
               },
-              error: function () {
+              error: function (response) {
                 alert("error");
               }
             }
@@ -694,8 +694,8 @@
                 toastr.success("Added to favourites!");
 
               },
-              error: function () {
-                alert("error");
+              error: function (response) {
+                toastr.info("This product is already in your favourites!");
               }
             }
     );

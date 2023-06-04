@@ -182,7 +182,7 @@ public class PostServlet extends AbstractServlet {
 
             _result.put("affectedRow", new BuyPostByPostIdDao(getConnection()).buyPost(_postId, _customerId));
 
-            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id have been bought!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
+            new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Buy request created for post with " + _postId +" post id!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
             _response.getWriter().write(_result.toString());
 
@@ -318,7 +318,7 @@ public class PostServlet extends AbstractServlet {
             List<Favourites> _favs = new ArrayList<>();
             _favs = new GetFavouritesByPostIdDao(getConnection()).getFavouritesByPostIdDao(_postId);
             for(int i=0; i<_favs.size();i++){
-                int _deletedFavs = new RemoveFavouriteDao(getConnection()).removeFavourite(_favs.get(i).getFavouriteId());
+                int _deletedFavs = new RemoveFavouriteDao(getConnection()).removeFavourite(_favs.get(i).getPostId(), _favs.get(i).getUserId());
             }
 
             _result.put("affectedRow", new DeletePostByIdDao(getConnection()).deletePost(_postId));

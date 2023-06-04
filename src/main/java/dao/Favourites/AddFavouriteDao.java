@@ -10,8 +10,8 @@ import java.sql.SQLException;
 
 public class AddFavouriteDao extends AbstractDAO {
 
-    private static final String STATEMENT = "INSERT INTO favourites ( favourite_id, user_id, post_id )" +
-            " VALUES(nextval('favourites_seq'), ?, ?)";
+    private static final String STATEMENT = "INSERT INTO favourites (user_id, post_id )" +
+            " VALUES(?, ?)";
 
     /**
      * Creates a new DAO object.

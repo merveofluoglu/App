@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class RemoveFavouriteDao extends AbstractDAO {
 
-    private static final String STATEMENT = "DELETE FROM favourites WHERE favourite_id = ?";
+    private static final String STATEMENT = "DELETE FROM favourites WHERE user_id = ? AND post_id=?";
 
     /**
      * Creates a new DAO object.
@@ -19,7 +19,7 @@ public class RemoveFavouriteDao extends AbstractDAO {
         super(con);
     }
 
-    public int removeFavourite(long post_id) throws SQLException {
+    public int removeFavourite(long _postId, long _userId) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
@@ -27,7 +27,8 @@ public class RemoveFavouriteDao extends AbstractDAO {
         try {
             _pstmt = con.prepareStatement(STATEMENT);
 
-            _pstmt.setLong(1, post_id);
+            _pstmt.setLong(1, _postId);
+            _pstmt.setLong(1, _userId);
 
             _affectedRows = _pstmt.executeUpdate();
 
