@@ -421,26 +421,18 @@ public class UserServlet extends AbstractServlet{
         User _userPP = null;
         JSONObject _result = new JSONObject();
         String encoded = "";
-
         try {
             _userPP = parseRequest(_request);
-            new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userPP);
-
+           _result.put("affectedRows", new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userPP));
             encoded = Base64.getEncoder().encodeToString(_userPP.getPpPath());
-
+            HttpSession _session = _request.getSession();
+            User _temp = (User) _session.getAttribute("user");
+            _temp.setBase64(encoded);
+            _session.setAttribute("user", _temp);
+            _response.getWriter().write(_temp.toString());
+            _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
         } catch (SQLException | ServletException | IOException e) {
             throw new RuntimeException(e);
-        }
-
-        try {
-            _result.put("data", encoded);
-
-            _response.getWriter().write(_result.toString());
-
-            _response.sendRedirect(_request.getServletContext().getContextPath() + "/jsp/profile.jsp");
-
-        } catch (Exception _e) {
-            throw new RuntimeException(_e);
         }
 
     }
@@ -472,6 +464,7 @@ public class UserServlet extends AbstractServlet{
             String name = _request.getParameter("name");
             String surname = _request.getParameter("surname");
             String email = _request.getParameter("email");
+            String encoded = "";
 
             JSONObject error = new JSONObject();
             JSONObject message = new JSONObject();
@@ -506,10 +499,19 @@ public class UserServlet extends AbstractServlet{
                 _user.setName(_request.getParameter("name"));
                 _user.setSurname(_request.getParameter("surname"));
                 _user.setEmail(_request.getParameter("email"));
+                encoded = Base64.getEncoder().encodeToString(temp.getPpPath());
+                _user.setBase64(encoded);
+                _user.setPpPath(temp.getPpPath());
+                _user.setPassword(temp.getPassword());
+                _user.setCreationDate(temp.getCreationDate());
+                _user.setRoleId(temp.getRoleId());
+                _user.setDeleted(temp.isDeleted());
                 _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
                 JSONObject _result = new JSONObject();
                 _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
                 new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User have been updated!", new Timestamp(System.currentTimeMillis()), _userId));
+                _request.getSession().setAttribute("user", _user);
+
                 _response.getWriter().write(_result.toString());
                 _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
             }
