@@ -9,7 +9,9 @@ import dao.Permission.GetAllPermissionsDao;
 import dao.Permission.GetPermissionByIdDao;
 import dao.Post.DeletePostByIdDao;
 import dao.Post.DeletePostByUserIdDao;
+import dao.Post.GetPostByIdDao;
 import dao.Post.UpdatePostByIdDao;
+import dao.PostFiles.GetPostFileByPostIdDao;
 import dao.PostFiles.GetPostFilesByIdDao;
 import dao.Review.DeleteReviewDao;
 import dao.Review.GetReviewsByUserIdDao;
@@ -206,7 +208,10 @@ public class UserServlet extends AbstractServlet{
             }
 
             if (logAccess) {
-
+                if (_user.getPpPath() != null) {
+                    String encoded = Base64.getEncoder().encodeToString(_user.getPpPath());
+                    _user.setBase64(encoded);
+                }
                 session.setAttribute("userId", _user.getUserId());
                 session.setAttribute("user",_user);
                 boolean roleCheck = _user.getRoleId() == 0;
@@ -415,22 +420,24 @@ public class UserServlet extends AbstractServlet{
 
         User _userPP = null;
         JSONObject _result = new JSONObject();
+        String encoded = "";
 
         try {
             _userPP = parseRequest(_request);
             new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userPP);
+
+            encoded = Base64.getEncoder().encodeToString(_userPP.getPpPath());
+
         } catch (SQLException | ServletException | IOException e) {
             throw new RuntimeException(e);
         }
 
         try {
-            _request.setAttribute("userPP", _userPP);
-
-            _result.put("data", _userPP);
+            _result.put("data", encoded);
 
             _response.getWriter().write(_result.toString());
 
-            _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
+            _response.sendRedirect(_request.getServletContext().getContextPath() + "/jsp/profile.jsp");
 
         } catch (Exception _e) {
             throw new RuntimeException(_e);
