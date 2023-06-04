@@ -1,25 +1,26 @@
 package dao.Message;
 
-import dao.AbstractDAO;
-import resource.Message;
-import utils.ResourceNotFoundException;
+        import dao.AbstractDAO;
+        import resource.Message;
+        import utils.ResourceNotFoundException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+        import java.sql.Connection;
+        import java.sql.PreparedStatement;
+        import java.sql.ResultSet;
+        import java.sql.SQLException;
+        import java.util.ArrayList;
+        import java.util.List;
 
-public class CheckMessageParentIdDao extends AbstractDAO {
-    private static final String STATEMENT = "SELECT * FROM message WHERE creator_id=?";
+public class GetChatByRecipientIdDao extends AbstractDAO {
+
+    private static final String STATEMENT = "SELECT * FROM message WHERE (creator_id=? AND recipient_id=?) OR (creator_id=? AND recipient_id=?) ";
 
     /**
      * Creates a new DAO object.
      *
      * @param con the connection to be used for accessing the database.
      */
-    public CheckMessageParentIdDao(Connection con) {
+    public GetChatByRecipientIdDao(Connection con) {
         super(con);
     }
 
@@ -29,7 +30,7 @@ public class CheckMessageParentIdDao extends AbstractDAO {
     }
 
 
-    public List<Message> getAllMessagesByUserId(long _userId) throws SQLException, ResourceNotFoundException {
+    public List<Message> getMessagesOfChat(long _creatorId, long recipient_id) throws SQLException, ResourceNotFoundException {
 
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
@@ -37,11 +38,14 @@ public class CheckMessageParentIdDao extends AbstractDAO {
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, _userId);
+            _pstmt.setObject(1, _creatorId);
+            _pstmt.setObject(2, recipient_id);
+            _pstmt.setObject(3, recipient_id);
+            _pstmt.setObject(4, _creatorId);
             _rs = _pstmt.executeQuery();
 
             if(!_rs.isBeforeFirst()) {
-                throw new ResourceNotFoundException("There are no messages!");
+                return _messages;
             }
 
             while (_rs.next()) {
