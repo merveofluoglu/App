@@ -119,7 +119,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ** Logo Start ** -->
-                    <a href="${pageContext.request.contextPath}/jsp/profile.jsp" class="logo">
+                    <a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp" class="logo">
                         DAMACANAN
                     </a>
                     <!-- ** Logo End ** -->
@@ -376,6 +376,21 @@
         document.getElementById("postPrice").innerText = element.price;
 
         modal.style.display = "block";
+    }
+
+    const logout = () => {
+        $.ajax({
+                url: "${pageContext.request.contextPath}/user/logout",
+                method: "GET",
+                success: function (response) {
+                    toastr.success("Successfully logged out!");
+                    window.location.href = "${pageContext.request.contextPath}/jsp/login.jsp"; // redirect
+                },
+                error: function () {
+                    alert("error");
+                }
+            }
+        );
     }
 
 
