@@ -17,11 +17,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="../admin-dashboard/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../admin-dashboard/assets/css/lineicons.css" />
+    <link rel="stylesheet" href="../jsp/admin-dashboard/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../jsp/admin-dashboard/assets/css/lineicons.css" />
     <link rel="stylesheet" href="admin-dashboard/assets/css/main.css" />
     <link rel="stylesheet" href="../resources/static/css/mainpage.css">
-    <link rel="stylesheet" href="../../resources/static/css/owl.css">
+    <link rel="stylesheet" href="../resources/static/css/owl.css">
     <link rel="stylesheet" href="../resources/static/css/postDetails.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
@@ -45,7 +45,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <img src="" alt="img">
+                        <img src="" alt="img" id="postImage">
                     </div>
                     <div class="col">
                         <div class="row">
@@ -154,8 +154,41 @@
 <script>
     let sectionFirst = document.getElementById("posts-section").innerHTML;
     $(document).ready(function () {
+        getCategories();
+        getSubCategories();
         getMyPosts();
+
     });
+
+    let categories;
+    let subcategories;
+
+    getCategories = () => {
+        $.ajax({
+            method: "GET",
+            url: "${pageContext.request.contextPath}/category/getAll",
+            success: function (response) {
+                categories = JSON.parse(response).data;
+            }
+        })
+    }
+
+    getSubCategories = () => {
+        $.ajax({
+            method: "GET",
+            url: "${pageContext.request.contextPath}/subcategory/getAllSubCategories",
+            success: function (response) {
+                subcategories = JSON.parse(response).data;
+            }
+        })
+    }
+
+    getCategoryNameById = (id) => {
+        return categories.filter(item => item.categoryId == id)[0].categoryName;
+    }
+    getSubCategoryNameById = (id) => {
+        return subcategories.filter(item => item.subcategoryId == id)[0].subcategoryName;
+    }
     // Get the modal
     var modal = document.getElementById("postDetails");
     var span = document.getElementsByClassName("close")[0];
@@ -181,6 +214,10 @@
                     section.innerHTML = sectionFirst;
 
                     data.forEach( element => {
+                        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                        if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
+                            lolo = "images/img.jpg";
+                        }
                         //const content = fillContent(element);
                         //section.innerHTML += content;
                         //document.getElementById(element.postId).onclick = function() { openPostDetails(element.postId) }
@@ -192,7 +229,8 @@
                         divSecondChild.className = "product-img position-relative overflow-hidden";
                         const image = document.createElement("img");
                         image.className = "img-fluid w-100";
-                        image.setAttribute("src","../resources/static/images/deha.jpg");
+                        image.setAttribute("src",lolo);
+                        image.setAttribute("style","width:150px; height:150px");
                         image.setAttribute("alt","pp.png");
                         const divThirdChild = document.createElement("div");
                         divThirdChild.className = "product-action";
@@ -213,12 +251,11 @@
                         aSecond.text = element.name;
                         const divFifthChild = document.createElement("div");
                         divFifthChild.className = "d-flex align-items-center justify-content-center mt-2";
-                        const headingfive = document.createElement("h5");
-                        headingfive.text = element.price;
-                        const headingsix = document.createElement("h6");
-                        headingsix.className = "text-muted ml-2";
-                        divFifthChild.append(headingfive);
-                        divFifthChild.append(headingsix);
+                        const aThird = document.createElement("a");
+                        aThird.className = "h6 text-decoration-none text-truncate";
+                        aThird.setAttribute("href","");
+                        aThird.text = element.price;
+                        divFifthChild.append(aThird);
                         divFourthChild.append(aSecond);
                         divFourthChild.append(divFifthChild);
 
@@ -281,9 +318,15 @@
             }
         );
         */
+        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+        if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
+            lolo = "images/img.jpg";
+        }
         document.getElementById("postDescription").innerText = element.description;
         document.getElementById("postName").innerText= element.name;
-        document.getElementById("postSubCategoryName").innerText = "subcate";
+        document.getElementById("postCategoryName").innerText = getCategoryNameById(element.categoryId);
+        document.getElementById("postSubCategoryName").innerText = getSubCategoryNameById(element.subcategoryId);
+        document.getElementById("postImage").src = lolo;
         let soldRegex = "Yes";
         if(element.sold == true){
             soldRegex = "Yes";
@@ -297,6 +340,8 @@
 
         modal.style.display = "block";
     }
+
+
 </script>
 
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>

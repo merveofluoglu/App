@@ -7,7 +7,7 @@
   <title>Profile Page</title>
 
   <!-- Custom Css -->
-  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="../resources/static/css/profile.css">
 
   <!-- FontAwesome 5 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
@@ -25,6 +25,9 @@
 <div class="navbar-top">
   <!-- Navbar -->
   <ul>
+    <li>
+      <a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp"><i class='fa fa-arrow-left fa-2x' style='color: white;scale: inherit'></i></a>
+    </li>
     <li>
       <i class="fa fa-sign-out-alt fa-2x" style="color: #ffffff" onclick="logout()"></i>
     </li>
