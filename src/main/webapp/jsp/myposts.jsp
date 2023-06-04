@@ -243,6 +243,23 @@
                         const i = document.createElement("i");
                         i.className = "fa fa-info-circle";
                         aFirst.append(i);
+
+                        const aFourth = document.createElement("a");
+                        aFourth.className = "btn btn-outline-dark btn-square";
+                        aFourth.setAttribute("style","alignment: absolute");
+                        aFourth.setAttribute("id","`+element.postId+`");
+                        const isecond = document.createElement("i");
+                        isecond.className = "fa fa-info-circle";
+                        aFourth.append(isecond);
+
+                        const aFifth = document.createElement("a");
+                        aFifth.className = "btn btn-outline-dark btn-square";
+                        aFifth.setAttribute("style","alignment: absolute");
+                        aFifth.setAttribute("id","`+element.postId+`");
+                        const ithird = document.createElement("i");
+                        ithird.className = "fa fa-info-circle";
+                        aFifth.append(ithird);
+
                         const divFourthChild = document.createElement("div");
                         divFourthChild.className = "text-center py-4";
                         const aSecond = document.createElement("a");
@@ -260,6 +277,8 @@
                         divFourthChild.append(aSecond);
                         divFourthChild.append(divFifthChild);
                         divThirdChild.append(aFirst);
+                        divThirdChild.append(aFourth);
+                        divThirdChild.append(aFifth);
                         divSecondChild.append(image);
                         divSecondChild.append(divThirdChild);
                         divFirstChild.append(divSecondChild);
