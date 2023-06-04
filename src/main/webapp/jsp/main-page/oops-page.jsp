@@ -45,6 +45,16 @@
           <ul class="nav">
             <li class="scroll-to-section-button">
               <div class="main-button-red-login">
+                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp">To Aplication</a></div>
+              </div>
+            </li>
+            <li class="scroll-to-section-button">
+              <div class="main-button-red-login">
+                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Profile</a></div>
+              </div>
+            </li>
+            <li class="scroll-to-section-button">
+              <div class="main-button-red-login">
                 <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
               </div>
             </li>
