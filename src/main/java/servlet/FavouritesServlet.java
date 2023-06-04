@@ -2,9 +2,12 @@ package servlet;
 
 import dao.ActionLog.AddActionLogDao;
 import dao.Favourites.AddFavouriteDao;
+import dao.Favourites.GetFavouritesByUserIdDao;
 import dao.Favourites.RemoveFavouriteDao;
 import dao.Favourites.RemoveFavouritesByPostIdDao;
+import dao.Post.GetPostByIdDao;
 import dao.Post.GetPostsByCustomerFavouritesDao;
+import dao.PostFiles.GetPostFileByPostIdDao;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,12 +17,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import resource.ActionLog;
 import resource.Favourites;
+import resource.Post;
 import utils.ErrorCode;
 import utils.ResourceNotFoundException;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 public class FavouritesServlet extends AbstractServlet{
 
@@ -62,18 +69,32 @@ public class FavouritesServlet extends AbstractServlet{
             HttpSession _session = _req.getSession();
             long _userId = (long) _session.getAttribute("userId");
 
+            List<Post> _posts = new ArrayList<>();
+
             _resp.setContentType("application/json");
             _resp.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            var data = new GetPostsByCustomerFavouritesDao(getConnection()).getPostsByCustomerFavourites(_userId);
-            _result.put("data", data);
+            var _favs = new GetFavouritesByUserIdDao(getConnection()).getFavouritesByUserIdDao(_userId);
 
-            _req.setAttribute("favourites", data);
+            for(int i=0;i<_favs.size();i++) {
+
+                var _post = new GetPostByIdDao(getConnection()).getPostById(_favs.get(i).getPostId());
+
+                var _postFile = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(_post.getPostId());
+
+                if(_postFile != null) {
+
+                    String encoded = Base64.getEncoder().encodeToString(_postFile.getFile());
+
+                    _post.setBase64(encoded);
+                }
+
+                _posts.add(_post);
+            }
+            _result.put("data", _posts);
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User favourites fetched!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
-
-            _req.getServletContext().getRequestDispatcher("/jsp/get_favourites.jsp").forward(_req,_resp);
 
             _resp.getWriter().write(_result.toString());
 
@@ -86,8 +107,6 @@ public class FavouritesServlet extends AbstractServlet{
         } catch (ResourceNotFoundException _e) {
             throw new RuntimeException(_e);
         } catch (IOException _e) {
-            throw new RuntimeException(_e);
-        } catch (ServletException _e) {
             throw new RuntimeException(_e);
         }
     }
