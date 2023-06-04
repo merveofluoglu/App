@@ -27,7 +27,6 @@
         referrerpolicy="no-referrer" />
 </head>
 <body>
-<script src='img[src="data:image/jpg;data.base64,' + ${user.base64} integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
 
 
 <!-- Navbar top -->
@@ -154,6 +153,11 @@
           <td>:</td>
           <td>${user.creationDate}</td>
         </tr>
+        <tr>
+          <td>Updated Last</td>
+          <td>:</td>
+          <td>${user.updateDate}</td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -247,6 +251,5 @@
   <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
-  <script src="admin-dashboard/assets/js/main.js"></script>
 </body>
 </html>

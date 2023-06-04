@@ -89,11 +89,11 @@
       },
       error: function (data) {
         console.log('An error occurred.');
-        //toastr.error(JSON.parse(data.responseText).error.message);
-        /*
+        toastr.error(JSON.parse(data.responseText).error.message);
+
         setTimeout(() => {
           window.location.href = '${pageContext.request.contextPath}/jsp/login.jsp';
-        }, 5000);*/
+        }, 5000);
       },
     });
   });
