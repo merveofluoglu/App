@@ -193,9 +193,11 @@
         <div class="form-group">
           <label id="postPublishDate">Publish Date: </label>
         </div>
+        <!--
         <div class="form-group">
           <a id="postUser">: </a>
         </div>
+        -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-toolbar" target="#showPost" data-bs-dismiss="modal">Close</button>
@@ -460,7 +462,7 @@
     const aThird = document.createElement("a");
     aThird.className = "h6 text-decoration-none text-truncate";
     aThird.setAttribute("href","");
-    aThird.text = element.price;
+    aThird.text = element.price + '$';
     divFifthChild.append(aThird);
     divFourthChild.append(aSecond);
     divFourthChild.append(divFifthChild);
