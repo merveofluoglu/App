@@ -285,122 +285,250 @@
                     let section = document.getElementById("posts-section");
                     section.innerHTML = sectionFirst;
                     data.forEach( element => {
-                        let lolo = 'data:image/jpeg;base64,'+ element.base64;
-                        if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-                            lolo = "images/img.jpg";
+
+                        if (element.status == "Requested"){
+                            let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                            if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
+                                lolo = "images/img.jpg";
+                            }
+                            //const content = fillContent(element);
+                            //section.innerHTML += content;
+                            //document.getElementById(element.postId).onclick = function() { openPostDetails(element.postId) }
+                            /*
+                            const divAnimatedFirst = document.createElement("div");
+                            divAnimatedFirst.className = "relative group border border-secondary overflow-hidden";
+                            const divAnimatedSecond = document.createElement("div");
+                            divAnimatedSecond.className = "w-96 h-96 bg-top bg-cover transition duration-700 group-hover:-translate-y-full flex flex-col justify-end items-center card-bounce";
+                            */
+
+                            //Main Paren Div
+                            const divParent = document.createElement("div");
+                            divParent.className = "col-lg-3 col-md-4 col-sm-6 pb-1 group duration-200 group-hover:-translate-y-full flex flex-col justify-end items-center card-bounce";
+
+                            //First Div Child - includes image and icons
+                            const divFirstChild = document.createElement("div");
+                            divFirstChild.className = "product-item mb-4";
+                            divFirstChild.setAttribute("style","border-style: solid; border-color: orange;");
+
+                            //Second Div Child includes image
+                            const divSecondChild = document.createElement("div");
+                            divSecondChild.className = "product-img position-relative overflow-hidden";
+                            const image = document.createElement("img");
+                            image.className = "img-fluid w-100";
+                            image.setAttribute("src",lolo);
+                            image.setAttribute("style","width:300px; height:300px");
+                            image.setAttribute("alt","pp.png");
+
+
+                            //Third Div Child includes icons - Show/Edit/Delete
+                            const divThirdChild = document.createElement("div");
+                            divThirdChild.className = "product-action";
+
+                            //Link for Show Details
+                            const aFirst = document.createElement("a");
+                            aFirst.className = "btn btn-outline-dark btn-square";
+                            aFirst.setAttribute("style","alignment: absolute");
+                            const i = document.createElement("i");
+                            i.className = "fa fa-info-circle";
+                            i.onclick = function() { openPostDetails(element); };
+                            aFirst.append(i);
+
+                            //Link for Edit post
+                            const aFourth = document.createElement("a");
+                            aFourth.className = "btn btn-outline-dark btn-square";
+                            aFourth.setAttribute("style","alignment: absolute");
+                            const isecond = document.createElement("i");
+                            isecond.className = "fa fa-edit";
+                            isecond.onclick = function() { updatePost(element); };
+                            aFourth.append(isecond);
+
+                            //Link for delete post
+                            const aFifth = document.createElement("a");
+                            aFifth.className = "btn btn-outline-dark btn-square";
+                            aFifth.setAttribute("style","alignment: absolute");
+                            const ithird = document.createElement("i");
+                            ithird.className = "fa fa-trash";
+                            ithird.onclick = function() { openSwal(element.postId); };
+                            aFifth.append(ithird);
+
+                            const aSixth = document.createElement("a");
+                            aSixth.className = "btn btn-outline-dark btn-square";
+                            aSixth.setAttribute("style","alignment: absolute");
+                            const ifourth = document.createElement("i");
+                            ifourth.className = "fa fa-bell";
+                            ifourth.onclick = function() { openSwalSecond(element.postId); };
+                            aSixth.append(ifourth);
+
+                            //Fourth Div Child includes name and price of the post
+                            const divFourthChild = document.createElement("div");
+                            divFourthChild.className = "text-center py-4";
+                            const aSecond = document.createElement("a");
+
+                            //Name of the post
+                            aSecond.className = "h6 text-decoration-none text-truncate";
+                            aSecond.setAttribute("href","");
+                            aSecond.setAttribute("id","`+element.postId+`");
+                            aSecond.text = element.name;
+
+                            //Fifth Div Child includes price of the post
+                            const divFifthChild = document.createElement("div");
+                            divFifthChild.className = "d-flex align-items-center justify-content-center mt-2";
+                            //Price of the post
+                            const aThird = document.createElement("a");
+                            aThird.className = "h6 text-decoration-none text-truncate";
+                            aThird.setAttribute("href","");
+                            aThird.text = element.price;
+
+                            //Put the price tag into fifth
+                            divFifthChild.append(aThird);
+
+                            //Put the name tag into fourth
+                            divFourthChild.append(aSecond);
+
+                            //Put the fifth into fourth
+                            divFourthChild.append(divFifthChild);
+
+                            //Put icons to the third
+                            divThirdChild.append(aFirst);
+                            divThirdChild.append(aFourth);
+                            divThirdChild.append(aFifth);
+                            divThirdChild.append(aSixth);
+
+                            //put image to the second
+                            divSecondChild.append(image);
+
+                            //put icons to the second
+                            divSecondChild.append(divThirdChild);
+
+                            //put second to the first
+                            divFirstChild.append(divSecondChild);
+
+                            //put fifth to the first
+                            divFirstChild.append(divFourthChild);
+
+                            //put first to the parent
+                            divParent.append(divFirstChild);
+                            /*
+                            divAnimatedSecond.append(divParent);
+
+                            divAnimatedFirst.append(divAnimatedSecond);
+                            */
+                            //put parent to the section
+                            section.append(divParent);
                         }
-                        //const content = fillContent(element);
-                        //section.innerHTML += content;
-                        //document.getElementById(element.postId).onclick = function() { openPostDetails(element.postId) }
+                        else{
+                            let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                            if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
+                                lolo = "images/img.jpg";
+                            }
+                            //const content = fillContent(element);
+                            //section.innerHTML += content;
+                            //document.getElementById(element.postId).onclick = function() { openPostDetails(element.postId) }
 
-                        //Main Paren Div
-                        const divParent = document.createElement("div");
-                        divParent.className = "col-lg-3 col-md-4 col-sm-6 pb-1";
-                        divParent.setAttribute("style","border-style: solid; border-color: orange;");
+                            //Main Paren Div
+                            const divParent = document.createElement("div");
+                            divParent.className = "col-lg-3 col-md-4 col-sm-6 pb-1";
+                            divParent.setAttribute("style","border-style: solid; border-color: orange;");
 
-                        //First Div Child - includes image and icons
-                        const divFirstChild = document.createElement("div");
-                        divFirstChild.className = "product-item mb-4";
-                        divFirstChild.setAttribute("style","border-style: solid; border-color: orange;");
+                            //First Div Child - includes image and icons
+                            const divFirstChild = document.createElement("div");
+                            divFirstChild.className = "product-item mb-4";
+                            divFirstChild.setAttribute("style","border-style: solid; border-color: orange;");
 
-                        //Second Div Child includes image
-                        const divSecondChild = document.createElement("div");
-                        divSecondChild.className = "product-img position-relative overflow-hidden";
-                        const image = document.createElement("img");
-                        image.className = "img-fluid w-100";
-                        image.setAttribute("src",lolo);
-                        image.setAttribute("style","width:300px; height:300px");
-                        image.setAttribute("alt","pp.png");
-
-
-                        //Third Div Child includes icons - Show/Edit/Delete
-                        const divThirdChild = document.createElement("div");
-                        divThirdChild.className = "product-action";
-
-                        //Link for Show Details
-                        const aFirst = document.createElement("a");
-                        aFirst.className = "btn btn-outline-dark btn-square";
-                        aFirst.setAttribute("style","alignment: absolute");
-                        const i = document.createElement("i");
-                        i.className = "fa fa-info-circle";
-                        i.onclick = function() { openPostDetails(element); };
-                        aFirst.append(i);
-
-                        //Link for Edit post
-                        const aFourth = document.createElement("a");
-                        aFourth.className = "btn btn-outline-dark btn-square";
-                        aFourth.setAttribute("style","alignment: absolute");
-                        const isecond = document.createElement("i");
-                        isecond.className = "fa fa-edit";
-                        isecond.onclick = function() { updatePost(element); };
-                        aFourth.append(isecond);
-
-                        //Link for delete post
-                        const aFifth = document.createElement("a");
-                        aFifth.className = "btn btn-outline-dark btn-square";
-                        aFifth.setAttribute("style","alignment: absolute");
-                        const ithird = document.createElement("i");
-                        ithird.className = "fa fa-trash";
-                        ithird.onclick = function() { openSwal(element.postId); };
-                        aFifth.append(ithird);
+                            //Second Div Child includes image
+                            const divSecondChild = document.createElement("div");
+                            divSecondChild.className = "product-img position-relative overflow-hidden";
+                            const image = document.createElement("img");
+                            image.className = "img-fluid w-100";
+                            image.setAttribute("src",lolo);
+                            image.setAttribute("style","width:300px; height:300px");
+                            image.setAttribute("alt","pp.png");
 
 
-                        const pFirst = document.createElement("p");
-                        pFirst.setAttribute("style","alignment: absolute; font-weight:bold; color:red");
-                        pFirst.text = element.status;
+                            //Third Div Child includes icons - Show/Edit/Delete
+                            const divThirdChild = document.createElement("div");
+                            divThirdChild.className = "product-action";
 
-                        //Fourth Div Child includes name and price of the post
-                        const divFourthChild = document.createElement("div");
-                        divFourthChild.className = "text-center py-4";
-                        const aSecond = document.createElement("a");
+                            //Link for Show Details
+                            const aFirst = document.createElement("a");
+                            aFirst.className = "btn btn-outline-dark btn-square";
+                            aFirst.setAttribute("style","alignment: absolute");
+                            const i = document.createElement("i");
+                            i.className = "fa fa-info-circle";
+                            i.onclick = function() { openPostDetails(element); };
+                            aFirst.append(i);
 
-                        //Name of the post
-                        aSecond.className = "h6 text-decoration-none text-truncate";
-                        aSecond.setAttribute("href","");
-                        aSecond.setAttribute("id","`+element.postId+`");
-                        aSecond.text = element.name;
+                            //Link for Edit post
+                            const aFourth = document.createElement("a");
+                            aFourth.className = "btn btn-outline-dark btn-square";
+                            aFourth.setAttribute("style","alignment: absolute");
+                            const isecond = document.createElement("i");
+                            isecond.className = "fa fa-edit";
+                            isecond.onclick = function() { updatePost(element); };
+                            aFourth.append(isecond);
 
-                        //Fifth Div Child includes price of the post
-                        const divFifthChild = document.createElement("div");
-                        divFifthChild.className = "d-flex align-items-center justify-content-center mt-2";
-                        //Price of the post
-                        const aThird = document.createElement("a");
-                        aThird.className = "h6 text-decoration-none text-truncate";
-                        aThird.setAttribute("href","");
-                        aThird.text = element.price;
+                            //Link for delete post
+                            const aFifth = document.createElement("a");
+                            aFifth.className = "btn btn-outline-dark btn-square";
+                            aFifth.setAttribute("style","alignment: absolute");
+                            const ithird = document.createElement("i");
+                            ithird.className = "fa fa-trash";
+                            ithird.onclick = function() { openSwal(element.postId); };
+                            aFifth.append(ithird);
 
-                        //Put the price tag into fifth
-                        divFifthChild.append(aThird);
+                            //Fourth Div Child includes name and price of the post
+                            const divFourthChild = document.createElement("div");
+                            divFourthChild.className = "text-center py-4";
+                            const aSecond = document.createElement("a");
 
-                        //Put the name tag into fourth
-                        divFourthChild.append(aSecond);
+                            //Name of the post
+                            aSecond.className = "h6 text-decoration-none text-truncate";
+                            aSecond.setAttribute("href","");
+                            aSecond.setAttribute("id","`+element.postId+`");
+                            aSecond.text = element.name;
 
-                        //Put the fifth into fourth
-                        divFourthChild.append(divFifthChild);
+                            //Fifth Div Child includes price of the post
+                            const divFifthChild = document.createElement("div");
+                            divFifthChild.className = "d-flex align-items-center justify-content-center mt-2";
+                            //Price of the post
+                            const aThird = document.createElement("a");
+                            aThird.className = "h6 text-decoration-none text-truncate";
+                            aThird.setAttribute("href","");
+                            aThird.text = element.price;
 
-                        //Put icons to the third
-                        divThirdChild.append(aFirst);
-                        divThirdChild.append(aFourth);
-                        divThirdChild.append(aFifth);
-                        divThirdChild.append(pFirst);
+                            //Put the price tag into fifth
+                            divFifthChild.append(aThird);
 
-                        //put image to the second
-                        divSecondChild.append(image);
+                            //Put the name tag into fourth
+                            divFourthChild.append(aSecond);
 
-                        //put icons to the second
-                        divSecondChild.append(divThirdChild);
+                            //Put the fifth into fourth
+                            divFourthChild.append(divFifthChild);
 
-                        //put second to the first
-                        divFirstChild.append(divSecondChild);
+                            //Put icons to the third
+                            divThirdChild.append(aFirst);
+                            divThirdChild.append(aFourth);
+                            divThirdChild.append(aFifth);
 
-                        //put fifth to the first
-                        divFirstChild.append(divFourthChild);
+                            //put image to the second
+                            divSecondChild.append(image);
 
-                        //put first to the parent
-                        divParent.append(divFirstChild);
+                            //put icons to the second
+                            divSecondChild.append(divThirdChild);
 
-                        //put parent to the section
-                        section.append(divParent);
+                            //put second to the first
+                            divFirstChild.append(divSecondChild);
+
+                            //put fifth to the first
+                            divFirstChild.append(divFourthChild);
+
+                            //put first to the parent
+                            divParent.append(divFirstChild);
+
+                            //put parent to the section
+                            section.append(divParent);
+                        }
+
                     });
 
                 },
@@ -426,6 +554,26 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 deletePost(id)
+            }
+        })
+    }
+
+    openSwalSecond = (id) => {
+        Swal.fire({
+            title: 'Do you want ot accept the purchase request?',
+            text: "Please, select Accept or Reject",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Accept',
+            cancelButtonText: 'Reject'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                acceptRequest(id)
+            }
+            else{
+                rejectRequest(id)
             }
         })
     }
@@ -479,6 +627,42 @@
                 method: "POST",
                 success: function (response) {
                     toastr.info("Post deleted succesfully!");
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/myposts.jsp';
+                    }, 5000);
+                },
+                error: function (data) {
+                    toastr.error(JSON.parse(data.responseText).error.message);
+                }
+            }
+        );
+    }
+
+    const acceptRequest = (id) => {
+        // Delete the post
+        $.ajax({
+                url: "${pageContext.request.contextPath}/post/acceptRequest/"+id,
+                method: "POST",
+                success: function (response) {
+                    toastr.info("Purchase request accepted sucessfully!");
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/myposts.jsp';
+                    }, 5000);
+                },
+                error: function (data) {
+                    toastr.error(JSON.parse(data.responseText).error.message);
+                }
+            }
+        );
+    }
+
+    const rejectRequest = (id) => {
+        // Delete the post
+        $.ajax({
+                url: "${pageContext.request.contextPath}/post/rejectRequest/"+id,
+                method: "POST",
+                success: function (response) {
+                    toastr.info("Purchase request rejected sucessfully!");
                     setTimeout(() => {
                         window.location.href = '${pageContext.request.contextPath}/jsp/myposts.jsp';
                     }, 5000);

@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class RejectBuyRequestDao extends AbstractDAO {
-    private static final String STATEMENT = "UPDATE post SET status = 'Available' AND customer_id = 0 WHERE post_id = ?";
+    private static final String STATEMENT = "UPDATE post SET status = 'Available', customer_id = 0 WHERE post_id = ?";
 
     /**
      * Creates a new DAO object.
