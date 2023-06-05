@@ -58,6 +58,14 @@
                                 <input type="text" name="postEditId" id="postEditId" class="form-control" readonly="readonly" />
                             </div>
                         </div>
+                        <div class="row" style="display: none">
+                            <div class="col">
+                                <label>User Id:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postEditUserId" id="postEditUserId" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col">
                                 <label>Name:</label>
@@ -213,7 +221,6 @@
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <script>
     let sectionFirst = document.getElementById("posts-section").innerHTML;
     $(document).ready(function () {
@@ -634,9 +641,10 @@
 
                     });
 
+
                 },
                 error: function () {
-
+                    toastr.error("You have not add any post yet!!!");
                 }
             }
         );
@@ -690,6 +698,7 @@
         document.getElementById("postEditName").value= element.name;
         document.getElementById("postEditPrice").value = element.price;
         document.getElementById("postEditDescription").value = element.description;
+        document.getElementById("postEditUserId").value = element.userId;
         secondmodal.style.display = "block";
 
     }
@@ -701,6 +710,8 @@
             name: $("#editPost [name='postEditName']").val(),
             description: $("#editPost [name='postEditDescription']").val(),
             price: $("#editPost [name='postEditPrice']").val(),
+            userId : parseInt($("#editPost [name='postEditUserId']").val()),
+
 
         };
 
