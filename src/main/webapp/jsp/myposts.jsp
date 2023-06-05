@@ -294,9 +294,9 @@
                     data.forEach( element=> {
 
                         if (element.status == "Requested"){
-                            let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                            let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
                             if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-                                lolo = "images/img.jpg";
+                                lolo = "main-page/images/img.jpg";
                             }
                             //const content = fillContent(element);
                             //section.innerHTML += content;
@@ -523,9 +523,9 @@
 
                         }
                         else{
-                            let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                            let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
                             if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-                                lolo = "images/img.jpg";
+                                lolo = "main-page/images/img.jpg";
                             }
                             //const content = fillContent(element);
                             //section.innerHTML += content;
@@ -689,9 +689,9 @@
         })
     }
     const updatePost = (element) => {
-        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+        let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-            lolo = "images/img.jpg";
+            lolo = "main-page/images/img.jpg";
         }
         document.getElementById("postEditImage").src = lolo;
         document.getElementById("postEditId").value = element.postId;
@@ -790,9 +790,9 @@
     }
 
     const openPostDetails = (element) => {
-        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+        let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-            lolo = "images/img.jpg";
+            lolo = "main-page/images/img.jpg";
         }
         document.getElementById("postDescription").innerText = element.description;
         document.getElementById("postName").innerText= element.name;
