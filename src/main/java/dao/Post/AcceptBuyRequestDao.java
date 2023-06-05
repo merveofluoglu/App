@@ -5,10 +5,11 @@ import dao.AbstractDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class AcceptBuyRequestDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE post SET status = 'Sold', is_sold = true WHERE post_id = ?";
+    private static final String STATEMENT = "UPDATE post SET status = 'Sold', is_sold = true, sold_date=? WHERE post_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -24,14 +25,16 @@ public class AcceptBuyRequestDao extends AbstractDAO {
 
     }
 
-    public int acceptBuyRequest(long _id) throws SQLException {
+    public int acceptBuyRequest(long _id, Timestamp _time) throws SQLException {
 
         PreparedStatement _pstmt = null;
         int _affectedRows = 0;
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
-            _pstmt.setObject(1, _id);
+            _pstmt.setObject(1, _time);
+            _pstmt.setObject(2, _id);
+
 
             _affectedRows = _pstmt.executeUpdate();
 
