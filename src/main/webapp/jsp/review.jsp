@@ -148,7 +148,7 @@
                     dom: "Bfrtip",
                     columns: [
                         { title: "Reviewer Name", data: "reviewId"},
-                        { title: "Reviewer Surnam", data: "userId"},
+                        { title: "Reviewer Surname", data: "userId"},
                         { title: "Reviewer Email", data: "sellerId"},
                         { title: "Post Id", data: "postId" },
                         { title: "Description", data: "description" },
@@ -159,7 +159,20 @@
         });
 
     }
-
+    const logout = () => {
+        $.ajax({
+                url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/user/logout",
+                method: "GET",
+                success: function (response) {
+                    toastr.success("Successfully logged out!");
+                    window.location.href = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/jsp/login.jsp"; // redirect
+                },
+                error: function () {
+                    alert("error");
+                }
+            }
+        );
+    }
 
 
 </script>
