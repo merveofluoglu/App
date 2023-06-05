@@ -355,7 +355,7 @@
                         const aThird = document.createElement("a");
                         aThird.className = "h6 text-decoration-none text-truncate";
                         aThird.setAttribute("href","");
-                        aThird.text = element.price;
+                        aThird.text = element.price + "€";
 
                         //Put the price tag into fifth
                         divFifthChild.append(aThird);

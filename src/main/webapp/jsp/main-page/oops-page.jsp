@@ -37,7 +37,7 @@
       <div class="col-12">
         <nav class="main-nav">
           <!-- ***** Logo Start ***** -->
-          <a href="${pageContext.request.contextPath}/jsp/enterance.jsp" class="logo">
+          <a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp" class="logo">
             DAMACANAN
           </a>
           <!-- ***** Logo End ***** -->

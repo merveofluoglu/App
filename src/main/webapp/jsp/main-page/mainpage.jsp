@@ -45,7 +45,7 @@
       <div class="col-12">
         <nav class="main-nav">
           <!-- ***** Logo Start ***** -->
-          <a href="${pageContext.request.contextPath}/jsp/enterance.jsp" class="logo">
+          <a href="${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp" class="logo">
             DAMACANAN
           </a>
           <!-- ***** Logo End ***** -->
@@ -193,11 +193,9 @@
         <div class="form-group">
           <label id="postPublishDate">Publish Date: </label>
         </div>
-        <!--
         <div class="form-group">
-          <a id="postUser">: </a>
+          <label id="postUser">User: </label>
         </div>
-        -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-toolbar" target="#showPost" data-bs-dismiss="modal">Close</button>
@@ -246,7 +244,6 @@
 <!-- Bootstrap core JavaScript -->
 
 <script>
-
   let sectionFirst = document.getElementById("posts-section").innerHTML;
 
   $(document).ready(function () {
@@ -279,7 +276,9 @@
               url: "${pageContext.request.contextPath}/user/getAll",
               method: "GET",
               success: function (response) {
-                users = JSON.parse(data).data
+                users = JSON.parse(response).data
+
+                getAllPosts();
               },
               error: function () {
                 alert("error");
@@ -334,6 +333,7 @@
   getCategoryNameById = (id) => {
     return categories.filter(item => item.categoryId === id)[0].categoryName;
   }
+
   getSubCategoryNameById = (id) => {
     return subcategories.filter(item => item.subcategoryId === id)[0].subcategoryName;
   }
@@ -380,13 +380,13 @@
 
         displayCategories();
 
-        getAllPosts();
+        getAllUsers();
     },
 
     });
   }
 
-  const fillContent = (element) => {
+  const fillContent = (element, user) => {
     let section = document.getElementById("posts-section");
 
     let src = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
@@ -420,7 +420,7 @@
 
     const i = document.createElement("i");
     i.className = "fa fa-info-circle";
-    i.onclick =  function() { openPostDetails(element); };
+    i.onclick =  function() { openPostDetails(element, user); };
     aFirst.append(i);
 
     const aFourth = document.createElement("a");
@@ -462,7 +462,7 @@
     const aThird = document.createElement("a");
     aThird.className = "h6 text-decoration-none text-truncate";
     aThird.setAttribute("href","");
-    aThird.text = element.price + '$';
+    aThird.text = element.price + '€';
     divFifthChild.append(aThird);
     divFourthChild.append(aSecond);
     divFourthChild.append(divFifthChild);
@@ -509,7 +509,7 @@
     );
   }
 
-  const openPostDetails = (element) => {
+  const openPostDetails = (element, user) => {
 
 
     let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
@@ -524,10 +524,10 @@
     document.getElementById("postPublishDate").innerText = "Publish Date: " + element.startDate;
     document.getElementById("postPrice").innerText = "Price: " + element.price + "$";
     document.getElementById("postStatus").innerText = "Status: " + element.status;
+    document.getElementById("postUser").innerText = "By " + user.name + " " + user.surname;
     document.getElementById("postImage").src = lolo;
 
     $("#showPost").modal('show');
-
 
   }
 
@@ -544,9 +544,9 @@
 
                 data.forEach( element => {
 
-                  //let user = getUserDataByUserId(element.userId);
+                  let user = getUserDataByUserId(element.userId);
 
-                  fillContent(element);
+                  fillContent(element, user);
 
                 });
               },
@@ -577,7 +577,9 @@
                 }
                 data.forEach( element => {
 
-                  fillContent(element);
+                  let user = getUserDataByUserId(element.userId);
+
+                  fillContent(element, user);
 
                 });
               },
