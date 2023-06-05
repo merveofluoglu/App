@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 public class GetUserByUseridDAO extends AbstractDAO{
-    private static final String STATEMENT = "SELECT * FROM users WHERE users.user_id = ?";
+    private static final String STATEMENT = "SELECT * FROM users WHERE user_id = ?";
 
     /**
      * Creates a new DAO object.
