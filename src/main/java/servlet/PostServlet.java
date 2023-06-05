@@ -112,6 +112,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -150,6 +151,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -356,6 +358,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -395,6 +398,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -471,6 +475,7 @@ public class PostServlet extends AbstractServlet {
             if(post != null) {
                 String encoded = Base64.getEncoder().encodeToString(post.getFile());
                 data.setBase64(encoded);
+                data.setFileMediaType(post.getFileMediaType());
             }
 
             _result.put("data", data);
