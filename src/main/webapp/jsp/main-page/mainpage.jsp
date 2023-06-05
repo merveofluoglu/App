@@ -193,6 +193,11 @@
         <div class="form-group">
           <label id="postPublishDate">Publish Date: </label>
         </div>
+        <!--
+        <div class="form-group">
+          <a id="postUser">: </a>
+        </div>
+        -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-toolbar" target="#showPost" data-bs-dismiss="modal">Close</button>
@@ -251,6 +256,7 @@
   let categories;
   let subcategories;
   let posts;
+  let users;
 
 
   const logout = () => {
@@ -260,6 +266,20 @@
               success: function (response) {
                 toastr.success("Successfully logged out!");
                 window.location.href = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/jsp/enterance.jsp"; // redirect
+              },
+              error: function () {
+                alert("error");
+              }
+            }
+    );
+  }
+
+  const getAllUsers = () => {
+    $.ajax({
+              url: "${pageContext.request.contextPath}/user/getAll",
+              method: "GET",
+              success: function (response) {
+                users = JSON.parse(data).data
               },
               error: function () {
                 alert("error");
@@ -317,6 +337,11 @@
   getSubCategoryNameById = (id) => {
     return subcategories.filter(item => item.subcategoryId === id)[0].subcategoryName;
   }
+
+  getUserDataByUserId = (id) => {
+    return users.filter(item => item.userId === id)[0];
+  }
+
   const getAllSubCategories = () => {
     $.ajax({
       method: "GET",
@@ -437,7 +462,7 @@
     const aThird = document.createElement("a");
     aThird.className = "h6 text-decoration-none text-truncate";
     aThird.setAttribute("href","");
-    aThird.text = element.price;
+    aThird.text = element.price + '$';
     divFifthChild.append(aThird);
     divFourthChild.append(aSecond);
     divFourthChild.append(divFifthChild);
@@ -492,13 +517,13 @@
       lolo = "images/img.jpg";
     }
 
-    document.getElementById("postDesc").innerText += element.description;
-    document.getElementById("postName").innerText += element.name;
-    document.getElementById("postCat").innerText += getCategoryNameById(element.categoryId);
-    document.getElementById("postSubCat").innerText += getSubCategoryNameById(element.subcategoryId);
-    document.getElementById("postPublishDate").innerText += element.startDate;
-    document.getElementById("postPrice").innerText += element.price + "$";
-    document.getElementById("postStatus").innerText += element.status;
+    document.getElementById("postDesc").innerText = "Description: " + element.description;
+    document.getElementById("postName").innerText = "Name: " + element.name;
+    document.getElementById("postCat").innerText = "Category: " + getCategoryNameById(element.categoryId);
+    document.getElementById("postSubCat").innerText = "Sub Category: " + getSubCategoryNameById(element.subcategoryId);
+    document.getElementById("postPublishDate").innerText = "Publish Date: " + element.startDate;
+    document.getElementById("postPrice").innerText = "Price: " + element.price + "$";
+    document.getElementById("postStatus").innerText = "Status: " + element.status;
     document.getElementById("postImage").src = lolo;
 
     $("#showPost").modal('show');
@@ -518,6 +543,8 @@
                 section.innerHTML = sectionFirst;
 
                 data.forEach( element => {
+
+                  //let user = getUserDataByUserId(element.userId);
 
                   fillContent(element);
 
