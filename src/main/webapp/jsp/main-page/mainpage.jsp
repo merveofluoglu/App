@@ -410,7 +410,7 @@
     const aFifth = document.createElement("a");
     aFifth.className = "btn btn-outline-dark btn-square";
     aFifth.setAttribute("style","alignment: absolute");
-    aFifth.onclick = function() { sendMessageToPostUser(element.postId); };
+    aFifth.onclick = function() { sendMessageToPostUser(element.userId); };
 
     const ithird = document.createElement("i");
     ithird.className = "fa fa-envelope";
