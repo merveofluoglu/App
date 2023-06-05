@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class AcceptBuyRequestDao extends AbstractDAO {
 
-    private static final String STATEMENT = "UPDATE post SET status = 'Sold' AND is_sold = true WHERE post_id = ?";
+    private static final String STATEMENT = "UPDATE post SET status = 'Sold', is_sold = true WHERE post_id = ?";
 
     /**
      * Creates a new DAO object.

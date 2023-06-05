@@ -202,7 +202,7 @@
 </div>
 
 <!-- ***** Main Banner Area Start ***** -->
-<aside class="sidebar-nav-wrapper" style="background-color: transparent; width: 270px; overflow-y: auto; top: unset; position: absolute">
+<aside class="sidebar-nav-wrapper" style="background-color: transparent; width: 270px; height: max-content; top: unset; position: absolute">
   <div>
     <div class="navbar-text" style="font-weight: bold;
     font-size: x-large;
@@ -351,11 +351,13 @@
           ul.append(li);
           category.append(ul);
 
+      });
+
         displayCategories();
 
         getAllPosts();
-      });
-    }
+    },
+
     });
   }
 

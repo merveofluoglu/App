@@ -10,8 +10,8 @@ import java.sql.SQLException;
 public class UpdatePostByIdDao extends AbstractDAO {
 
     private static final String STATEMENT =
-            "UPDATE post SET name = ?, description = ?, customer_id = ?, price = ?, status = ?, is_deleted = ?, is_sold = ?," +
-                    "sold_date = ?, update_date = ? WHERE post_id = ?";
+            "UPDATE post SET name = ?, description = ?, price = ?," +
+                    "update_date = ? WHERE post_id = ?";
 
     /**
      * Creates a new DAO object.
@@ -32,14 +32,9 @@ public class UpdatePostByIdDao extends AbstractDAO {
             _pstmt = con.prepareStatement(STATEMENT);
             _pstmt.setString(1, _post.getName());
             _pstmt.setString(2, _post.getDescription());
-            _pstmt.setLong(3, _post.getCustomerId());
-            _pstmt.setDouble(4, _post.getPrice());
-            _pstmt.setString(5, _post.getStatus());
-            _pstmt.setBoolean(6, _post.isDeleted());
-            _pstmt.setBoolean(7, _post.isSold());
-            _pstmt.setTimestamp(8, _post.getSoldDate());
-            _pstmt.setTimestamp(9, _post.getUpdateDate());
-            _pstmt.setLong(10, _postId);
+            _pstmt.setDouble(3, _post.getPrice());
+            _pstmt.setTimestamp(4, _post.getUpdateDate());
+            _pstmt.setLong(5, _postId);
 
             _affectedRows = _pstmt.executeUpdate();
 
