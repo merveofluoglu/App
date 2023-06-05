@@ -364,7 +364,7 @@
   const fillContent = (element) => {
     let section = document.getElementById("posts-section");
 
-    let src = 'data:image/jpeg;base64,'+ element.base64;
+    let src = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
     if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
       src = "images/img.jpg";
     }
@@ -487,7 +487,7 @@
   const openPostDetails = (element) => {
 
 
-    let lolo = 'data:image/jpeg;base64,'+ element.base64;
+    let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
     if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
       lolo = "images/img.jpg";
     }
