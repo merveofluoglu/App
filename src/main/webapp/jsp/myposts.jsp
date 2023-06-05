@@ -58,6 +58,14 @@
                                 <input type="text" name="postEditId" id="postEditId" class="form-control" readonly="readonly" />
                             </div>
                         </div>
+                        <div class="row" style="display: none">
+                            <div class="col">
+                                <label>User Id:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postEditUserId" id="postEditUserId" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col">
                                 <label>Name:</label>
@@ -191,12 +199,12 @@
                     <ul class="nav">
                         <li class="scroll-to-section-button">
                             <div class="main-button-red-login">
-                                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
+                                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Back to Profile</a></div>
                             </div>
                         </li>
                         <li class="scroll-to-section-button">
                             <div class="main-button-red-login">
-                                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Back to Profile</a></div>
+                                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
                             </div>
                         </li>
                     </ul>
@@ -213,7 +221,6 @@
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <script>
     let sectionFirst = document.getElementById("posts-section").innerHTML;
     $(document).ready(function () {
@@ -281,15 +288,18 @@
                 method: "GET",
                 success: function (response) {
                     let data = response.data;
+                    if(data.length === 0) {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/main-page/oops-page.jsp';
+                    }
                     data = data.reverse();
                     let section = document.getElementById("posts-section");
                     section.innerHTML = sectionFirst;
                     data.forEach( element=> {
 
                         if (element.status == "Requested"){
-                            let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                            let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
                             if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-                                lolo = "images/img.jpg";
+                                lolo = "main-page/images/img.jpg";
                             }
                             //const content = fillContent(element);
                             //section.innerHTML += content;
@@ -420,9 +430,9 @@
                             section.append(divParent);
                         }
                         else if(element.status == 'Sold'){
-                            let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                            let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
                             if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-                                lolo = "images/img.jpg";
+                                lolo = "main-page/images/img.jpg";
                             }
                             //const content = fillContent(element);
                             //section.innerHTML += content;
@@ -516,9 +526,9 @@
 
                         }
                         else{
-                            let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                            let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
                             if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-                                lolo = "images/img.jpg";
+                                lolo = "main-page/images/img.jpg";
                             }
                             //const content = fillContent(element);
                             //section.innerHTML += content;
@@ -634,9 +644,10 @@
 
                     });
 
+
                 },
                 error: function () {
-
+                    toastr.error("You have not add any post yet!!!");
                 }
             }
         );
@@ -681,15 +692,16 @@
         })
     }
     const updatePost = (element) => {
-        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+        let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-            lolo = "images/img.jpg";
+            lolo = "main-page/images/img.jpg";
         }
         document.getElementById("postEditImage").src = lolo;
         document.getElementById("postEditId").value = element.postId;
         document.getElementById("postEditName").value= element.name;
         document.getElementById("postEditPrice").value = element.price;
         document.getElementById("postEditDescription").value = element.description;
+        document.getElementById("postEditUserId").value = element.userId;
         secondmodal.style.display = "block";
 
     }
@@ -701,6 +713,8 @@
             name: $("#editPost [name='postEditName']").val(),
             description: $("#editPost [name='postEditDescription']").val(),
             price: $("#editPost [name='postEditPrice']").val(),
+            userId : parseInt($("#editPost [name='postEditUserId']").val()),
+
 
         };
 
@@ -779,9 +793,9 @@
     }
 
     const openPostDetails = (element) => {
-        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+        let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-            lolo = "images/img.jpg";
+            lolo = "main-page/images/img.jpg";
         }
         document.getElementById("postDescription").innerText = element.description;
         document.getElementById("postName").innerText= element.name;

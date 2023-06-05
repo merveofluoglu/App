@@ -34,6 +34,16 @@
 
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <script>
+    function preventBack() {
+      window.history.forward();
+    }
+
+    setTimeout("preventBack()", 0);
+    window.onunload = function() {
+      null
+    };
+  </script>
 
 </head>
 <body>
@@ -72,6 +82,7 @@
   </div>
 </form-small>
 <script>
+
   $('#loginForm').submit(function (e) {
     let frm = $('#loginForm');
     const _data = {

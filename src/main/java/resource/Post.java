@@ -19,6 +19,8 @@ public class Post {
     private long categoryId;
     private long subcategoryId;
     private String base64;
+    private String fileMediaType;
+
 
     public Post() {}
 
@@ -171,4 +173,8 @@ public class Post {
     public void setBase64(String base64) {
         this.base64 = base64;
     }
+
+    public String getFileMediaType() { return fileMediaType; }
+
+    public void setFileMediaType(String fileMediaType) { this.fileMediaType = fileMediaType; }
 }

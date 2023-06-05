@@ -59,7 +59,7 @@
 
             <li class="scroll-to-section-button">
               <div class="main-button-red-login">
-                <div class="scroll-to-section-button"><a onclick="openModal()">Post</a></div>
+                <div class="scroll-to-section-button"><a onclick="openModal()">Add Post</a></div>
               </div>
             </li>
 
@@ -193,6 +193,11 @@
         <div class="form-group">
           <label id="postPublishDate">Publish Date: </label>
         </div>
+        <!--
+        <div class="form-group">
+          <a id="postUser">: </a>
+        </div>
+        -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-toolbar" target="#showPost" data-bs-dismiss="modal">Close</button>
@@ -251,6 +256,7 @@
   let categories;
   let subcategories;
   let posts;
+  let users;
 
 
   const logout = () => {
@@ -260,6 +266,20 @@
               success: function (response) {
                 toastr.success("Successfully logged out!");
                 window.location.href = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/jsp/enterance.jsp"; // redirect
+              },
+              error: function () {
+                alert("error");
+              }
+            }
+    );
+  }
+
+  const getAllUsers = () => {
+    $.ajax({
+              url: "${pageContext.request.contextPath}/user/getAll",
+              method: "GET",
+              success: function (response) {
+                users = JSON.parse(data).data
               },
               error: function () {
                 alert("error");
@@ -317,6 +337,11 @@
   getSubCategoryNameById = (id) => {
     return subcategories.filter(item => item.subcategoryId === id)[0].subcategoryName;
   }
+
+  getUserDataByUserId = (id) => {
+    return users.filter(item => item.userId === id)[0];
+  }
+
   const getAllSubCategories = () => {
     $.ajax({
       method: "GET",
@@ -364,7 +389,7 @@
   const fillContent = (element) => {
     let section = document.getElementById("posts-section");
 
-    let src = 'data:image/jpeg;base64,'+ element.base64;
+    let src = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
     if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
       src = "images/img.jpg";
     }
@@ -410,7 +435,7 @@
     const aFifth = document.createElement("a");
     aFifth.className = "btn btn-outline-dark btn-square";
     aFifth.setAttribute("style","alignment: absolute");
-    aFifth.onclick = function() { sendMessageToPostUser(element.postId); };
+    aFifth.onclick = function() { sendMessageToPostUser(element.userId); };
 
     const ithird = document.createElement("i");
     ithird.className = "fa fa-envelope";
@@ -437,7 +462,7 @@
     const aThird = document.createElement("a");
     aThird.className = "h6 text-decoration-none text-truncate";
     aThird.setAttribute("href","");
-    aThird.text = element.price;
+    aThird.text = element.price + '$';
     divFifthChild.append(aThird);
     divFourthChild.append(aSecond);
     divFourthChild.append(divFifthChild);
@@ -487,18 +512,18 @@
   const openPostDetails = (element) => {
 
 
-    let lolo = 'data:image/jpeg;base64,'+ element.base64;
+    let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
     if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
       lolo = "images/img.jpg";
     }
 
-    document.getElementById("postDesc").innerText += element.description;
-    document.getElementById("postName").innerText += element.name;
-    document.getElementById("postCat").innerText += getCategoryNameById(element.categoryId);
-    document.getElementById("postSubCat").innerText += getSubCategoryNameById(element.subcategoryId);
-    document.getElementById("postPublishDate").innerText += element.startDate;
-    document.getElementById("postPrice").innerText += element.price + "$";
-    document.getElementById("postStatus").innerText += element.status;
+    document.getElementById("postDesc").innerText = "Description: " + element.description;
+    document.getElementById("postName").innerText = "Name: " + element.name;
+    document.getElementById("postCat").innerText = "Category: " + getCategoryNameById(element.categoryId);
+    document.getElementById("postSubCat").innerText = "Sub Category: " + getSubCategoryNameById(element.subcategoryId);
+    document.getElementById("postPublishDate").innerText = "Publish Date: " + element.startDate;
+    document.getElementById("postPrice").innerText = "Price: " + element.price + "$";
+    document.getElementById("postStatus").innerText = "Status: " + element.status;
     document.getElementById("postImage").src = lolo;
 
     $("#showPost").modal('show');
@@ -518,6 +543,8 @@
                 section.innerHTML = sectionFirst;
 
                 data.forEach( element => {
+
+                  //let user = getUserDataByUserId(element.userId);
 
                   fillContent(element);
 
@@ -596,8 +623,6 @@
                 $("#addFile [name='postId']").val(id);
                 $("#addFile [name='file']").val("");
                 $("#addFile").modal('show');
-
-                toastr.success("Post added succesfully!");
               },
               error: function (response) {
                 alert("error");
@@ -619,6 +644,7 @@
       success: function (data) {
 
         window.location.href = '${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp';
+        toastr.success("Post added succesfully!");
         console.log('Submission was successful.');
         console.log(data);
       },

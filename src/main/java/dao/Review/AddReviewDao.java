@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class AddReviewDao extends AbstractDAO {
 
     private static final String STATEMENT = "INSERT INTO reviews (review_id, user_id, seller_id, " +
-            "post_id, point_scale, description, create_date, is_deleted) VALUES ((nextval('review_seq'), ?, ?, ?, ?, ?, ?, ?)";
+            "post_id, point_scale, description, create_date, is_deleted) VALUES (nextval('review_seq'), ?, ?, ?, ?, ?, ?, ?)";
 
     /**
      * Creates a new DAO object.

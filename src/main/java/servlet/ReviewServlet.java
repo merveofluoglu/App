@@ -22,7 +22,7 @@ public class ReviewServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
         String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
 
-        if (_op.contentEquals("details_by_post_id")) {
+        if (_op.contentEquals("detailsByUserId")) {
             getReviewDetailsByPostId(_request, _response);
         }
         else {
@@ -32,16 +32,16 @@ public class ReviewServlet extends AbstractServlet {
     @Override
     protected void doPost(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
 
-        String _op = _request.getRequestURI().split("/", 4)[3];
+        String _op = _request.getRequestURI().split("/", 5)[3];
         System.out.println(_op);
         switch (_op) {
-            case "protected/add" :
+            case "add" :
                 addReview(_request, _response);
                 break;
             case "update" :
                 updateReview(_request, _response);
                 break;
-            case "protected/delete" :
+            case "delete" :
                 removeReview(_request, _response);
                 break;
             default :
@@ -100,7 +100,7 @@ public class ReviewServlet extends AbstractServlet {
     }
     private void addReview(HttpServletRequest _request, HttpServletResponse _response) {
 
-        Reviews _review = null;
+        Reviews _review = new Reviews();
 
         try {
             _review.setDescription(_request.getParameter("description"));
@@ -126,7 +126,7 @@ public class ReviewServlet extends AbstractServlet {
 
     private void getReviewDetailsByPostId (HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _id = parseLong(_request.getParameter("postId"));
+            long _id = parseLong(_request.getParameter("userId"));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 

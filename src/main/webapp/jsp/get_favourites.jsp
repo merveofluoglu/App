@@ -127,12 +127,12 @@
                     <ul class="nav">
                         <li class="scroll-to-section-button">
                             <div class="main-button-red-login">
-                                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
+                                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Back to Profile</a></div>
                             </div>
                         </li>
                         <li class="scroll-to-section-button">
                             <div class="main-button-red-login">
-                                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Back to Profile</a></div>
+                                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
                             </div>
                         </li>
                     </ul>
@@ -217,9 +217,9 @@
                     let section = document.getElementById("posts-section");
                     section.innerHTML = sectionFirst;
                     data.forEach( element => {
-                        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+                        let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
                         if(element.base64 === null || element.base64 === undefined || element.base64 === "") {
-                            lolo = "images/img.jpg";
+                            lolo = "main-page/images/img.jpg";
                         }
                         //const content = fillContent(element);
                         //section.innerHTML += content;
@@ -366,9 +366,9 @@
     }
 
     const openPostDetails = (element) => {
-        let lolo = 'data:image/jpeg;base64,'+ element.base64;
+        let lolo = 'data:image/'+element.fileMediaType+';base64,'+ element.base64;
         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
-            lolo = "images/img.jpg";
+            lolo = "main-page/images/img.jpg";
         }
         document.getElementById("postDescription").innerText = element.description;
         document.getElementById("postName").innerText= element.name;

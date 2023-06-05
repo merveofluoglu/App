@@ -112,6 +112,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -150,6 +151,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -205,7 +207,7 @@ public class PostServlet extends AbstractServlet {
             _response.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            _result.put("affectedRow", new AcceptBuyRequestDao(getConnection()).acceptBuyRequest(_postId));
+            _result.put("affectedRow", new AcceptBuyRequestDao(getConnection()).acceptBuyRequest(_postId,new Timestamp(System.currentTimeMillis())));
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id buy request accepted!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
@@ -356,6 +358,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -395,6 +398,7 @@ public class PostServlet extends AbstractServlet {
 
                     String encoded = Base64.getEncoder().encodeToString(post.getFile());
                     data.get(i).setBase64(encoded);
+                    data.get(i).setFileMediaType(post.getFileMediaType());
 
                 }
             }
@@ -471,6 +475,7 @@ public class PostServlet extends AbstractServlet {
             if(post != null) {
                 String encoded = Base64.getEncoder().encodeToString(post.getFile());
                 data.setBase64(encoded);
+                data.setFileMediaType(post.getFileMediaType());
             }
 
             _result.put("data", data);

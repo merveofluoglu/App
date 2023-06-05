@@ -46,15 +46,14 @@ import static org.postgresql.core.Oid.JSON;
 /**
  * It's a servlet that handles all the requests that are sent to the server with the path `/user`
  */
-@MultipartConfig(fileSizeThreshold = 128 * 3 * 1024,
-        maxFileSize = 1024 * 1024,
-        maxRequestSize = 1024 * 1024 * 5)
+@MultipartConfig(fileSizeThreshold=1024*1024*10,
+        maxFileSize=1024*1024*10, maxRequestSize=1024*1024*5*5)
 @WebServlet(name = "UserServlet", value = "/UserServlet")
 public class UserServlet extends AbstractServlet{
 
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-        String operation = _request.getRequestURI().split("/", 4)[3].replace("/", "");
+        String operation = _request.getRequestURI().split("/", 5)[3].replace("/", "");
         //String sessionRole = _request.getSession().getAttribute("role").toString();
         if (operation.contentEquals("userById")) {
             getUserDetailsByIdOp(_request, _response);
@@ -211,8 +210,10 @@ public class UserServlet extends AbstractServlet{
                 if (_user.getPpPath() != null) {
                     String encoded = Base64.getEncoder().encodeToString(_user.getPpPath());
                     _user.setBase64(encoded);
+                    _user.setFileMediaType(_user.getFileMediaType());
                 }
                 session.setAttribute("userId", _user.getUserId());
+                session.setAttribute("password", _user.getPassword());
                 session.setAttribute("user",_user);
                 boolean roleCheck = _user.getRoleId() == 0;
                 if (roleCheck){
@@ -374,13 +375,12 @@ public class UserServlet extends AbstractServlet{
         try {
             HttpSession _session = _request.getSession();
             long _userId = (long) _session.getAttribute("userId");
-            String password = _request.getParameter("password");
-            _response.setContentType("application/json");
             JSONObject res = new JSONObject();
-            _response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = _response.getWriter();
 
-            res.put("data", new ChangePasswordDao(getConnection()).ChangePasswordDao(_userId,password));
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            res.put("data", new ChangePasswordDao(getConnection()).ChangePasswordDao(_userId, _request.getParameter("password")));
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User changed password!", new Timestamp(System.currentTimeMillis()), _userId));
 
             _response.getWriter().write(res.toString());
@@ -419,13 +419,16 @@ public class UserServlet extends AbstractServlet{
         User _userPP = null;
         JSONObject _result = new JSONObject();
         String encoded = "";
+        String fileMediaType = "";
         try {
             _userPP = parseRequest(_request);
            _result.put("affectedRows", new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userPP));
             encoded = Base64.getEncoder().encodeToString(_userPP.getPpPath());
+            fileMediaType = _userPP.getFileMediaType();
             HttpSession _session = _request.getSession();
             User _temp = (User) _session.getAttribute("user");
             _temp.setBase64(encoded);
+            _temp.setFileMediaType(fileMediaType);
             _session.setAttribute("user", _temp);
             _response.getWriter().write(_temp.toString());
             _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
@@ -461,7 +464,6 @@ public class UserServlet extends AbstractServlet{
             long _userId = Long.parseLong(_request.getParameter("userId"));
             String name = _request.getParameter("name");
             String surname = _request.getParameter("surname");
-            String email = _request.getParameter("email");
             String encoded = "";
 
             JSONObject error = new JSONObject();
@@ -479,10 +481,6 @@ public class UserServlet extends AbstractServlet{
                 errorCount++;
                 System.out.println(errorCount);
             }
-            if (!Validator.isValidEmail(email)) {
-                errorCount++;
-                System.out.println(errorCount);
-            }
             if(errorCount >= 1){
                 _response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
                 out.print(error);
@@ -497,7 +495,7 @@ public class UserServlet extends AbstractServlet{
                 if(temp.getPpPath() != null){
                     _user.setName(_request.getParameter("name"));
                     _user.setSurname(_request.getParameter("surname"));
-                    _user.setEmail(_request.getParameter("email"));
+                    _user.setEmail(temp.getEmail());
                     _user.setPpPath(temp.getPpPath());
                     _user.setPassword(temp.getPassword());
                     _user.setCreationDate(temp.getCreationDate());
@@ -505,6 +503,7 @@ public class UserServlet extends AbstractServlet{
                     _user.setDeleted(temp.isDeleted());
                     encoded = Base64.getEncoder().encodeToString(temp.getPpPath());
                     _user.setBase64(encoded);
+                    _user.setFileMediaType(temp.getFileMediaType());
                     _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
                     JSONObject _result = new JSONObject();
                     _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
@@ -516,8 +515,9 @@ public class UserServlet extends AbstractServlet{
                 else{
                     _user.setName(_request.getParameter("name"));
                     _user.setSurname(_request.getParameter("surname"));
-                    _user.setEmail(_request.getParameter("email"));
+                    _user.setEmail(temp.getEmail());
                     _user.setBase64("");
+                    _user.setFileMediaType("");
                     _user.setPpPath(new byte[0]);
                     _user.setPassword(temp.getPassword());
                     _user.setCreationDate(temp.getCreationDate());
@@ -544,7 +544,7 @@ public class UserServlet extends AbstractServlet{
 
         // This method returns a permission.
         try {
-            long _userId = parseLong(_request.getParameter("userId"));
+            long _userId = Long.parseLong(_request.getRequestURI().split("/", 5)[4].replace("/", ""));
             JSONObject _result = new JSONObject();
             _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId));
             _response.setContentType("application/json");
@@ -571,6 +571,7 @@ public class UserServlet extends AbstractServlet{
             User users = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId);
             String encoded = Base64.getEncoder().encodeToString(users.getPpPath());
             users.setBase64(encoded);
+            users.setFileMediaType(users.getFileMediaType());
 
             _result.put("data", users);
             _response.setContentType("application/json");

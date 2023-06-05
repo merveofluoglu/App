@@ -38,10 +38,6 @@
                     <label>Surname: </label>
                     <input type="text" class="form-control" name="surname" size="50" value="${user.surname}" />
                 </div>
-                <div class="form-group">
-                    <label>Email: </label>
-                    <input type="text" class="form-control" name="email" size="50" value="${user.email}"/>
-                </div>
                 <input type="submit" value="Save" class="btn btn-success">
             </form>
         </div>
