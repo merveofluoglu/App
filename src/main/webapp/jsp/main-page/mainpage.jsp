@@ -699,8 +699,7 @@
 
   const sendMessageToPostUser = (userId) => {
     // Add To Cart
-    console.log("Called");
-    loadSelectedChatPage([], userId);
+    loadSelectedChatMessages(userId);
   }
 
   const addToFavourite = (id) => {
@@ -871,7 +870,12 @@
                 recipientId: recipientIdVal
               },
               success: function (response) {
-                loadSelectedChatPage(response.data, response.data[0]['recipientId'])
+                if(response.data.length === 0){
+                  loadSelectedChatPage([], recipientIdVal)
+                }
+                else{
+                  loadSelectedChatPage(response.data, recipientIdVal)
+                }
               },
               error: function () {
                 alert("error, couldn't get messages of chat");
@@ -955,7 +959,6 @@
     const messageTextNode = document.createTextNode(messageDict["messageBody"]);
     messageNode.appendChild(messageTextNode);
 
-    console.log("Checking the owner of" + messageDict['recipientId']);
 
     $.ajax({
               url: "${pageContext.request.contextPath}/message/message_owner",
