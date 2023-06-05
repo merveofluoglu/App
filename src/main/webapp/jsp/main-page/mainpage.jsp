@@ -408,7 +408,7 @@
     const aFifth = document.createElement("a");
     aFifth.className = "btn btn-outline-dark btn-square";
     aFifth.setAttribute("style","alignment: absolute");
-    aFifth.onclick = function() { sendMessage(element.postId); };
+    aFifth.onclick = function() { sendMessageToPostUser(element.postId); };
 
     const ithird = document.createElement("i");
     ithird.className = "fa fa-envelope";
@@ -694,11 +694,13 @@
     $("#batchSubCategory").empty();
   }
 
-  /*
-  const sendMessage = (userId) => {
+
+  const sendMessageToPostUser = (userId) => {
     // Add To Cart
+    console.log("Called");
+    loadSelectedChatPage([], userId);
   }
-  */
+
   const addToFavourite = (id) => {
     $.ajax({
               url: '${pageContext.request.contextPath}/favourite/add/' + id,
@@ -867,7 +869,7 @@
                 recipientId: recipientIdVal
               },
               success: function (response) {
-                loadSelectedChatPage(response.data)
+                loadSelectedChatPage(response.data, response.data[0]['recipientId'])
               },
               error: function () {
                 alert("error, couldn't get messages of chat");
@@ -876,7 +878,10 @@
     );
   }
 
-  function loadSelectedChatPage(messagesList){
+  function loadSelectedChatPage(messagesList, recipientId){
+    const messageBox = document.getElementById("messageBox");
+    messageBox.setAttribute("style", "height: 300px;")
+
     const chats = document.getElementById("chats");
     chats.setAttribute("style", "display: none;");
 
@@ -887,28 +892,34 @@
 
     const recipientIdNode = document.createElement("span");
 
-
-    $.ajax({
-              url: "${pageContext.request.contextPath}/message/message_owner",
-              method: "GET",
-              data: {
-                creatorId: messagesList[0]['creatorId']
-              },
-              success: function (response) {
-                if (response.data === "user"){
-                  const recipientIdTextNode = document.createTextNode(messagesList[0]['recipientId']);
-                  recipientIdNode.appendChild(recipientIdTextNode);
+    if( !recipientId ){
+      $.ajax({
+                url: "${pageContext.request.contextPath}/message/message_owner",
+                method: "GET",
+                data: {
+                  creatorId: messagesList[0]['creatorId']
+                },
+                success: function (response) {
+                  if (response.data === "user"){
+                    const recipientIdTextNode = document.createTextNode(messagesList[0]['recipientId']);
+                    recipientIdNode.appendChild(recipientIdTextNode);
+                  }
+                  else{
+                    const recipientIdTextNode = document.createTextNode(messagesList[0]['creatorId']);
+                    recipientIdNode.appendChild(recipientIdTextNode);
+                  }
+                },
+                error: function () {
+                  alert("error");
                 }
-                else{
-                  const recipientIdTextNode = document.createTextNode(messagesList[0]['creatorId']);
-                  recipientIdNode.appendChild(recipientIdTextNode);
-                }
-              },
-              error: function () {
-                alert("error");
               }
-            }
-    );
+      );
+    }
+    else{
+      const recipientIdTextNode = document.createTextNode(recipientId);
+      recipientIdNode.appendChild(recipientIdTextNode);
+    }
+
     recipientIdNode.setAttribute("style", "display: none;");
     chatSection.appendChild(recipientIdNode);
 
