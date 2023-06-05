@@ -60,39 +60,31 @@
   </div>
   <div class="sidenav-url">
     <div class="url">
-      <a href="${pageContext.request.contextPath}/jsp/changePassword.jsp" class="active">Change My Password</a>
+      <a onclick="openPasswordModal()" class="active">Change My Password</a>
       <hr align="center">
     </div>
   </div>
-    <div class="sidenav-url">
-      <div class="url">
-        <a href="${pageContext.request.contextPath}/jsp/updateprofile.jsp" class="active">Edit Profile Information</a>
-        <hr align="center">
-      </div>
+  <div class="sidenav-url">
+    <div class="url">
+      <a href="${pageContext.request.contextPath}/jsp/updateprofile.jsp" class="active">Edit Profile Information</a>
+      <hr align="center">
     </div>
-      <div class="sidenav-url">
-        <div class="url">
-          <a href="${pageContext.request.contextPath}/jsp/get_favourites.jsp" class="active">Favourites</a>
-          <hr align="center">
-        </div>
-      </div>
+  </div>
+  <div class="sidenav-url">
+    <div class="url">
+      <a href="${pageContext.request.contextPath}/jsp/get_favourites.jsp" class="active">Favourites</a>
+      <hr align="center">
+    </div>
+  </div>
   <div class="sidenav-url">
     <div class="url">
       <a href="${pageContext.request.contextPath}/jsp/myposts.jsp" class="active">My Posts</a>
       <hr align="center">
     </div>
   </div>
-
   <div class="sidenav-url">
     <div class="url">
       <a href="${pageContext.request.contextPath}/jsp/myorders.jsp" class="active">My Orders</a>
-      <hr align="center">
-    </div>
-  </div>
-
-  <div class="sidenav-url">
-    <div class="url">
-      <a href="${pageContext.request.contextPath}/jsp/usermessages.jsp" class="active">My Messages</a>
       <hr align="center">
     </div>
   </div>
@@ -102,11 +94,8 @@
       <hr align="center">
     </div>
   </div>
-
-  </div>
-
-
 </div>
+
 <!-- End -->
 <!------------------    ADD FILE   ----------------------------------->
 
@@ -132,6 +121,31 @@
     </div>
   </div>
 </form>
+
+<!------------------    CHANGE PASSWORD   ----------------------------------->
+
+  <div class="modal fade" id="changePassword" tabindex="-1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="changePass">Upload Photo</h4>
+          <button type="button" class="btn-close" target="#updatePP" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="changePassModal">
+          <div class="form-group">
+            <label for="password">New Password: </label>
+            <input id="password" name="password" type="password"/><br/><br/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-toolbar" target="#updatePP" data-bs-dismiss="modal">Close</button>
+            <input onclick="changePassword()" value="Save" class="btn btn-danger">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 <!-- Main -->
 <div class="main">
   <h2>Profile Information</h2>
@@ -197,6 +211,12 @@
     $("#updatePP [name='file']").val("");
     $("#updatePP").modal('show');
   }
+
+  const openPasswordModal = () =>{
+    $("#changePassword [name='password']").val("");
+    $("#changePassword").modal('show');
+  }
+
   $('#updatePP').submit(function (e) {
     let frm = $('#updatePP');
     e.preventDefault();
@@ -215,6 +235,24 @@
       }
     });
   });
+
+  changePassword = () => {
+    const _data = {
+      password: parseInt($("#changePassword [name='password']").val()),
+    };
+    $.ajax({
+      type: 'POST',
+      data: _data,
+      url: "${pageContext.request.contextPath}/user/changepassword",
+      success: function (response) {
+        $("#changePassword").modal('hide');
+        toast.success("Password changed!");
+      },
+      error: function (response){
+        toastr.error("Your old password is incorrect! Please try again.")
+      }
+    });
+  }
 
   const logout = () => {
     $.ajax({
