@@ -502,41 +502,16 @@ ALTER SEQUENCE public.message_seq
 
 CREATE TABLE IF NOT EXISTS public.favourites
 (
-    favourite_id bigint NOT NULL,
-    user_id bigint,
-    post_id bigint,
-    CONSTRAINT favourites_pkey PRIMARY KEY (favourite_id),
-    CONSTRAINT post_id FOREIGN KEY (post_id)
-        REFERENCES public.post (post_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT user_id FOREIGN KEY (user_id)
-        REFERENCES public.users (user_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-)
+    user_id bigint NOT NULL,
+    post_id bigint NOT NULL,
+    CONSTRAINT favourites_pkey PRIMARY KEY (user_id, post_id)
+    INCLUDE(user_id, post_id)
+    )
 
-TABLESPACE pg_default;
+    TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.favourites
     OWNER to postgres;
-
-
-
--- SEQUENCE: public.favourites_seq
-
--- DROP SEQUENCE IF EXISTS public.favourites_seq;
-
-CREATE SEQUENCE IF NOT EXISTS public.favourites_seq
-    INCREMENT 1
-    START 1
-    MINVALUE 1
-    MAXVALUE 9223372036854775807
-    CACHE 1
-    OWNED BY favourites.favourite_id;
-
-ALTER SEQUENCE public.favourites_seq
-    OWNER TO postgres;
 
 
 

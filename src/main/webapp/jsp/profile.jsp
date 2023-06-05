@@ -72,7 +72,7 @@
     </div>
       <div class="sidenav-url">
         <div class="url">
-          <a href="${pageContext.request.contextPath}/jsp/get_favourites.jsp" class="active">Favorites</a>
+          <a href="${pageContext.request.contextPath}/jsp/get_favourites.jsp" class="active">Favourites</a>
           <hr align="center">
         </div>
       </div>

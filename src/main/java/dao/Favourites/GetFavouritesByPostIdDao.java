@@ -43,7 +43,6 @@ public class GetFavouritesByPostIdDao extends AbstractDAO {
             while (_rs.next()) {
                 _favs.add(
                         new Favourites(
-                                _rs.getLong("favourite_id"),
                                 _rs.getLong("post_id"),
                                 _rs.getLong("user_id")
                         )
