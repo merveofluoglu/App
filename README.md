@@ -79,10 +79,13 @@ shopping, to prevent fraud and being deceived with defective products.
 <a name="screenshots"></a>
 
 ## Screenshots [![](./docs/img/pin.svg)](#screenshots)
-<a name="login" href=""><img align="center" alt="Login Screen" src="Homework_2/Presentation/Logos and Graphics/UI/login.PNG" style="width:100%;height:100%"/></a>
-<a name="home_page" href=""><img align="center" alt="Home Page Screen" src="Homework_2/Presentation/Logos and Graphics/UI/home_page.PNG" style="width:100%;height:100%"/></a>
-<a name="appointments" href=""><img align="center" alt="Appointments Screen" src="Homework_2/Presentation/Logos and Graphics/UI/appointments.PNG" style="width:100%;height:100%"/></a>
-<a name="profile" href=""><img align="center" alt="Profile Screen" src="Homework_2/Presentation/Logos and Graphics/UI/profile.PNG" style="width:100%;height:100%"/></a>
+<a name="enterance_page" href=""><img align="center" alt="Enterance Page" src="src/main/webapp/resources/static/images/enterance_page.jpg" style="width:100%;height:100%"/></a><p>
+<a name="aboutus_page" href=""><img align="center" alt="About Us" src="src/main/webapp/resources/static/images/aboutus_page.jpg" style="width:100%;height:100%"/></a><p>
+<a name="contactus_page" href=""><img align="center" alt="Contact Us" src="src/main/webapp/resources/static/images/contactus_page.jpg" style="width:100%;height:100%"/></a><p>
+<a name="register_page" href=""><img align="center" alt="Register Page" src="src/main/webapp/resources/static/images/register_page.jpg" style="width:100%;height:100%"/></a><p>
+<a name="login_page" href=""><img align="center" alt="Login Page" src="src/main/webapp/resources/static/images/login_page.jpg" style="width:100%;height:100%"/></a><p>
+<a name="main_page" href=""><img align="center" alt="Main Page" src="src/main/webapp/resources/static/images/main_page.jpg" style="width:100%;height:100%"/></a><p>
+<a name="profile_page" href=""><img align="center" alt="Profile Page" src="src/main/webapp/resources/static/images/profile_page.jpg" style="width:100%;height:100%"/></a>
 ---
 
 <a name="whatsdone"></a>
