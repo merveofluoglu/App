@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 public class GetAllUsersDAO extends AbstractDAO{
 
-    private static final String STATEMENT = "SELECT * FROM users WHERE role_id=1 AND is_deleted=false";
+    private static final String STATEMENT = "SELECT * FROM users WHERE is_deleted=false";
 
     /**
      * Creates a new DAO object.
