@@ -464,7 +464,6 @@ public class UserServlet extends AbstractServlet{
             long _userId = Long.parseLong(_request.getParameter("userId"));
             String name = _request.getParameter("name");
             String surname = _request.getParameter("surname");
-            String email = _request.getParameter("email");
             String encoded = "";
 
             JSONObject error = new JSONObject();
@@ -482,10 +481,6 @@ public class UserServlet extends AbstractServlet{
                 errorCount++;
                 System.out.println(errorCount);
             }
-            if (!Validator.isValidEmail(email)) {
-                errorCount++;
-                System.out.println(errorCount);
-            }
             if(errorCount >= 1){
                 _response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
                 out.print(error);
@@ -500,7 +495,7 @@ public class UserServlet extends AbstractServlet{
                 if(temp.getPpPath() != null){
                     _user.setName(_request.getParameter("name"));
                     _user.setSurname(_request.getParameter("surname"));
-                    _user.setEmail(_request.getParameter("email"));
+                    _user.setEmail(temp.getEmail());
                     _user.setPpPath(temp.getPpPath());
                     _user.setPassword(temp.getPassword());
                     _user.setCreationDate(temp.getCreationDate());
@@ -520,7 +515,7 @@ public class UserServlet extends AbstractServlet{
                 else{
                     _user.setName(_request.getParameter("name"));
                     _user.setSurname(_request.getParameter("surname"));
-                    _user.setEmail(_request.getParameter("email"));
+                    _user.setEmail(temp.getEmail());
                     _user.setBase64("");
                     _user.setFileMediaType("");
                     _user.setPpPath(new byte[0]);
