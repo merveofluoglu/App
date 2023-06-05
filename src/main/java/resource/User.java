@@ -24,6 +24,8 @@ public class User {
 
     private boolean isDeleted;
 
+    public String fileMediaType;
+
     public User(){}
 
     public User(long userId, String name, String surname, String email, String password, long roleId, Timestamp creationDate, Timestamp updateDate, byte[] ppPath, boolean isDeleted) {
@@ -143,4 +145,11 @@ public class User {
         return ppPath != null && ppPath.length > 0 ;
     }
 
+    public String getFileMediaType() {
+        return fileMediaType;
+    }
+
+    public void setFileMediaType(String fileMediaType) {
+        this.fileMediaType = fileMediaType;
+    }
 }

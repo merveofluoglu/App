@@ -211,6 +211,7 @@ public class UserServlet extends AbstractServlet{
                 if (_user.getPpPath() != null) {
                     String encoded = Base64.getEncoder().encodeToString(_user.getPpPath());
                     _user.setBase64(encoded);
+                    _user.setFileMediaType(_user.getFileMediaType());
                 }
                 session.setAttribute("userId", _user.getUserId());
                 session.setAttribute("user",_user);
@@ -419,13 +420,16 @@ public class UserServlet extends AbstractServlet{
         User _userPP = null;
         JSONObject _result = new JSONObject();
         String encoded = "";
+        String fileMediaType = "";
         try {
             _userPP = parseRequest(_request);
            _result.put("affectedRows", new UpdateProfilePhotoByUserIdDao(getConnection()).UpdateProfilePhotoByUserIdDao(_userPP));
             encoded = Base64.getEncoder().encodeToString(_userPP.getPpPath());
+            fileMediaType = _userPP.getFileMediaType();
             HttpSession _session = _request.getSession();
             User _temp = (User) _session.getAttribute("user");
             _temp.setBase64(encoded);
+            _temp.setFileMediaType(fileMediaType);
             _session.setAttribute("user", _temp);
             _response.getWriter().write(_temp.toString());
             _response.sendRedirect(_request.getContextPath() + "/jsp/profile.jsp");
@@ -505,6 +509,7 @@ public class UserServlet extends AbstractServlet{
                     _user.setDeleted(temp.isDeleted());
                     encoded = Base64.getEncoder().encodeToString(temp.getPpPath());
                     _user.setBase64(encoded);
+                    _user.setFileMediaType(temp.getFileMediaType());
                     _user.setUpdateDate(new Timestamp(System.currentTimeMillis()));
                     JSONObject _result = new JSONObject();
                     _result.put("data", new UpdateUserByIdDAO(getConnection()).UpdateUserByIdDAO(_userId, _user));
@@ -518,6 +523,7 @@ public class UserServlet extends AbstractServlet{
                     _user.setSurname(_request.getParameter("surname"));
                     _user.setEmail(_request.getParameter("email"));
                     _user.setBase64("");
+                    _user.setFileMediaType("");
                     _user.setPpPath(new byte[0]);
                     _user.setPassword(temp.getPassword());
                     _user.setCreationDate(temp.getCreationDate());
@@ -571,6 +577,7 @@ public class UserServlet extends AbstractServlet{
             User users = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId);
             String encoded = Base64.getEncoder().encodeToString(users.getPpPath());
             users.setBase64(encoded);
+            users.setFileMediaType(users.getFileMediaType());
 
             _result.put("data", users);
             _response.setContentType("application/json");
