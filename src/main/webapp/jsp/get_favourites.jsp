@@ -384,7 +384,7 @@
         }
         document.getElementById("postStatus").innerText = element.status;
         document.getElementById("postCreationDate").innerText = element.startDate;
-        document.getElementById("postPrice").innerText = element.price;
+        document.getElementById("postPrice").innerText = element.price + "€";
 
         modal.style.display = "block";
     }

@@ -128,7 +128,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="changePass">Upload Photo</h4>
+          <h4 class="modal-title" id="changePass">Change Password</h4>
           <button type="button" class="btn-close" target="#updatePP" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="changePassModal">

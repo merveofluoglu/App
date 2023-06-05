@@ -491,7 +491,7 @@
                             const aThird = document.createElement("a");
                             aThird.className = "h6 text-decoration-none text-truncate";
                             aThird.setAttribute("href","");
-                            aThird.text = element.price;
+                            aThird.text = element.price + "€";
 
                             //Put the price tag into fifth
                             divFifthChild.append(aThird);
@@ -606,7 +606,7 @@
                             const aThird = document.createElement("a");
                             aThird.className = "h6 text-decoration-none text-truncate";
                             aThird.setAttribute("href","");
-                            aThird.text = element.price;
+                            aThird.text = element.price + "€";
 
                             //Put the price tag into fifth
                             divFifthChild.append(aThird);
@@ -699,7 +699,7 @@
         document.getElementById("postEditImage").src = lolo;
         document.getElementById("postEditId").value = element.postId;
         document.getElementById("postEditName").value= element.name;
-        document.getElementById("postEditPrice").value = element.price;
+        document.getElementById("postEditPrice").value = element.price + "€";
         document.getElementById("postEditDescription").value = element.description;
         document.getElementById("postEditUserId").value = element.userId;
         secondmodal.style.display = "block";
@@ -712,10 +712,8 @@
             postId: parseInt($("#editPost [name='postEditId']").val()),
             name: $("#editPost [name='postEditName']").val(),
             description: $("#editPost [name='postEditDescription']").val(),
-            price: $("#editPost [name='postEditPrice']").val(),
+            price: $("#editPost [name='postEditPrice']").val().split("€")[0],
             userId : parseInt($("#editPost [name='postEditUserId']").val()),
-
-
         };
 
         $.ajax({
@@ -811,7 +809,7 @@
         }
         document.getElementById("postStatus").innerText = element.status;
         document.getElementById("postCreationDate").innerText = element.startDate;
-        document.getElementById("postPrice").innerText = element.price;
+        document.getElementById("postPrice").innerText = element.price + "€";
 
         modal.style.display = "block";
     }

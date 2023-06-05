@@ -82,27 +82,6 @@ public class PostServlet extends AbstractServlet {
             JSONObject _result = new JSONObject();
 
             List<Post> data = new GetAllPostsDao(getConnection()).getAllPosts((Long) _session.getAttribute("userId"));
-    /*
-            data.stream().forEach(s -> {
-
-                // this will cause an error
-                PostFiles post = null;
-                try {
-                    post = new GetPostFileByPostIdDao(getConnection()).getPostFileByPostId(s.getPostId());
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                } catch (ResourceNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-
-                if(post != null) {
-
-                    String encoded = Base64.getEncoder().encodeToString(post.getFile());
-                    s.setBase64(encoded);
-
-                }
-            });
-            */
 
             for(int i=0;i<data.size();i++) {
 
