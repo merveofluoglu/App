@@ -138,7 +138,7 @@
             <div class="row">
                 <div class="col">
                     <b>Description:</b>
-                    <p id="orderDescription">...</p>
+                    <p id="orderDescription">....</p>
                 </div>
             </div>
         </div>
