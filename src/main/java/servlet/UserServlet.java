@@ -46,9 +46,8 @@ import static org.postgresql.core.Oid.JSON;
 /**
  * It's a servlet that handles all the requests that are sent to the server with the path `/user`
  */
-@MultipartConfig(fileSizeThreshold = 128 * 3 * 1024,
-        maxFileSize = 1024 * 1024,
-        maxRequestSize = 1024 * 1024 * 5)
+@MultipartConfig(fileSizeThreshold=1024*1024*10,
+        maxFileSize=1024*1024*10, maxRequestSize=1024*1024*5*5)
 @WebServlet(name = "UserServlet", value = "/UserServlet")
 public class UserServlet extends AbstractServlet{
 
@@ -214,6 +213,7 @@ public class UserServlet extends AbstractServlet{
                     _user.setFileMediaType(_user.getFileMediaType());
                 }
                 session.setAttribute("userId", _user.getUserId());
+                session.setAttribute("password", _user.getPassword());
                 session.setAttribute("user",_user);
                 boolean roleCheck = _user.getRoleId() == 0;
                 if (roleCheck){
@@ -375,13 +375,12 @@ public class UserServlet extends AbstractServlet{
         try {
             HttpSession _session = _request.getSession();
             long _userId = (long) _session.getAttribute("userId");
-            String password = _request.getParameter("password");
-            _response.setContentType("application/json");
             JSONObject res = new JSONObject();
-            _response.setStatus(HttpServletResponse.SC_OK);
-            PrintWriter out = _response.getWriter();
 
-            res.put("data", new ChangePasswordDao(getConnection()).ChangePasswordDao(_userId,password));
+            _response.setContentType("application/json");
+            _response.setStatus(HttpServletResponse.SC_OK);
+
+            res.put("data", new ChangePasswordDao(getConnection()).ChangePasswordDao(_userId, _request.getParameter("password")));
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "User changed password!", new Timestamp(System.currentTimeMillis()), _userId));
 
             _response.getWriter().write(res.toString());

@@ -55,12 +55,12 @@
                     <ul class="nav">
                         <li class="scroll-to-section-button">
                             <div class="main-button-red-login">
-                                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
+                                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Back to Profile</a></div>
                             </div>
                         </li>
                         <li class="scroll-to-section-button">
                             <div class="main-button-red-login">
-                                <div class="scroll-to-section-button"><a href="${pageContext.request.contextPath}/jsp/profile.jsp">Back to Profile</a></div>
+                                <div class="scroll-to-section-button"><a onclick="logout()">Log out</a></div>
                             </div>
                         </li>
                     </ul>
@@ -206,6 +206,9 @@
                 method: "GET",
                 success: function (response) {
                     let data = response.data;
+                    if(data.length === 0) {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/main-page/oops-page.jsp';
+                    }
                     let section = document.getElementById("order-section");
                     section.innerHTML = sectionFirst;
                     data.forEach( element => {
