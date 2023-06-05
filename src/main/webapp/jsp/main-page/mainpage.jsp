@@ -224,6 +224,18 @@
   </div>
 </div>
 <!-- ***** Main Banner Area End ***** -->
+<div class="sticky" id="messageBox">
+  <div id="chats">
+  </div>
+  <div id="messages">
+
+  </div>
+  <div id="sendMessage">
+    <input id="newMessage" type="text"><button id="sendButton" onclick="sendMessage()">Send</button>
+
+  </div>
+  <span id="messageButton" onclick="expandMessages()">Messages</span>
+</div>
 
 <!-- Scripts -->
 <!-- Bootstrap core JavaScript -->
@@ -684,10 +696,11 @@
     $("#batchSubCategory").empty();
   }
 
+  /*
   const sendMessage = (userId) => {
     // Add To Cart
   }
-
+  */
   const addToFavourite = (id) => {
     $.ajax({
               url: '${pageContext.request.contextPath}/favourite/add/' + id,
@@ -767,4 +780,323 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="../admin-dashboard/assets/js/bootstrap.bundle.min.js"></script>
 <script src="../admin-dashboard/assets/js/main.js"></script>
+
+<script>
+
+
+  function expandMessages(){
+    const messageBox = document.getElementById("messageBox");
+    const chats = document.getElementById("chats");
+    const messages = document.getElementById("messages");
+    const sendMessage = document.getElementById("sendMessage");
+
+
+    if (messageBox.style.height === '300px'){
+      messageBox.style.height = '30px';
+      chats.style.display = "none";
+      messages.style.display = "none";
+      sendMessage.style.display = "none";
+      return
+    }
+
+    loadChats();
+  }
+
+  function loadChats(){
+    const messageBox = document.getElementById("messageBox");
+    const chats = document.getElementById("chats");
+    const messages = document.getElementById("messages");
+    const sendMessage = document.getElementById("sendMessage");
+
+    messageBox.style.height = '300px';
+    chats.style.display = "block";
+    messages.style.display = "none";
+    sendMessage.style.display = "none";
+
+    $.ajax({
+              url: "${pageContext.request.contextPath}/message/userchatreceivers",
+              method: "GET",
+              data: {},
+              success: function (response) {
+                showChat(response.data);
+              },
+              error: function () {
+                alert("error, couldn't get user chats");
+              }
+            }
+    );
+  }
+
+  function showChat(chatsReceivers){
+    const chatsBox = document.getElementById('chats');
+    chatsBox.innerHTML = "";
+
+    for (let i = 0; i < chatsReceivers.length; i++) {
+      chatsBox.appendChild(createChatNode(chatsReceivers[i]));
+    }
+  }
+
+  function createChatNode(recipientDict){
+    const receiver = recipientDict['name'] + " " + recipientDict['surname'];
+    const chatNode = document.createElement("div");
+
+    const receiverNameNode = document.createElement("span");
+    const receiverTextNode = document.createTextNode(receiver);
+    receiverNameNode.appendChild(receiverTextNode);
+
+    const receiverId = document.createElement("span");
+    const receiverIdTextNode = document.createTextNode(recipientDict['userId']);
+    receiverId.appendChild(receiverIdTextNode);
+    receiverId.setAttribute("style", "display: none;");
+
+    chatNode.appendChild(receiverNameNode);
+    chatNode.appendChild(receiverId);
+
+    chatNode.addEventListener("click", function (){
+      const recipientIdVal = chatNode.children[1].textContent;
+      loadSelectedChatMessages(recipientIdVal);
+    } )
+
+    chatNode.setAttribute("class", "chat");
+    return chatNode;
+  }
+
+  function loadSelectedChatMessages(recipientIdVal){
+    $.ajax({
+              url: "${pageContext.request.contextPath}/message/messages_of_chat",
+              method: "GET",
+              data: {
+                recipientId: recipientIdVal
+              },
+              success: function (response) {
+                loadSelectedChatPage(response.data)
+              },
+              error: function () {
+                alert("error, couldn't get messages of chat");
+              }
+            }
+    );
+  }
+
+  function loadSelectedChatPage(messagesList){
+    const chats = document.getElementById("chats");
+    chats.setAttribute("style", "display: none;");
+
+    const chatSection = document.getElementById("messages");
+    chatSection.setAttribute("style", "display: block;");
+    chatSection.innerHTML = "";
+
+
+    const recipientIdNode = document.createElement("span");
+
+
+    $.ajax({
+              url: "${pageContext.request.contextPath}/message/message_owner",
+              method: "GET",
+              data: {
+                creatorId: messagesList[0]['creatorId']
+              },
+              success: function (response) {
+                if (response.data === "user"){
+                  const recipientIdTextNode = document.createTextNode(messagesList[0]['recipientId']);
+                  recipientIdNode.appendChild(recipientIdTextNode);
+                }
+                else{
+                  const recipientIdTextNode = document.createTextNode(messagesList[0]['creatorId']);
+                  recipientIdNode.appendChild(recipientIdTextNode);
+                }
+              },
+              error: function () {
+                alert("error");
+              }
+            }
+    );
+    recipientIdNode.setAttribute("style", "display: none;");
+    chatSection.appendChild(recipientIdNode);
+
+
+    const backButtonNode = document.createElement("div");
+    const backButtonTextNode = document.createTextNode("Back");
+    backButtonNode.setAttribute("class", "backButton");
+    backButtonNode.appendChild(backButtonTextNode);
+
+    backButtonNode.addEventListener("click", function(){
+      loadChats();
+    })
+
+    const messageSection = document.createElement("div");
+    messageSection.setAttribute("id", "messagesSection");
+
+    chatSection.appendChild(backButtonNode);
+    chatSection.appendChild(messageSection);
+    messagesList.forEach(createMessageNode)
+
+    messageSection.scrollTop = messageSection.scrollHeight;
+
+    const newMessage = document.getElementById("sendMessage");
+    newMessage.setAttribute("style", "display: block; height: 10%;");
+  }
+
+  function createMessageNode(messageDict){
+    const messagesSection = document.getElementById("messagesSection");
+
+    const messageNode = document.createElement("span");
+    const messageTextNode = document.createTextNode(messageDict["messageBody"]);
+    messageNode.appendChild(messageTextNode);
+
+    console.log("Checking the owner of" + messageDict['recipientId']);
+
+    $.ajax({
+              url: "${pageContext.request.contextPath}/message/message_owner",
+              method: "GET",
+              data: {
+                creatorId: messageDict['creatorId']
+              },
+              success: function (response) {
+                if (response.data === "user"){
+                  messageNode.setAttribute("class", "message userMessage");
+                }
+                else{
+                  messageNode.setAttribute("class", "message otherMessage");
+                }
+              },
+              error: function () {
+                alert("error");
+              }
+            }
+    );
+    const lineNode = document.createElement("div");
+    lineNode.setAttribute("class", "messageLine");
+    lineNode.appendChild(messageNode);
+    messagesSection.appendChild(lineNode);
+  }
+
+  function sendMessage(){
+    const message = document.getElementById("newMessage").value;
+    const recipientId = document.getElementById("messages").children[0].textContent;
+
+    const _data = {
+      'recipientId': recipientId,
+      'subject': "testing",
+      'messageBody': message,
+    };
+
+    $.ajax({
+              url: "${pageContext.request.contextPath}/message/add",
+              method: "POST",
+              data: _data,
+              success: function (response) {
+                loadSelectedChatMessages(recipientId);
+                document.getElementById("newMessage").value ="";
+              },
+              error: function () {
+                alert("error");
+              }
+            }
+    );
+  }
+
+</script>
+
+<style>
+  #messageBox {
+    position: fixed;
+    float: right;
+    height: 30px;
+    width: 300px;
+    bottom: 0;
+    right: 0;
+    background-color: darkred;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkred;
+  }
+  .backButton{
+    background-color: darkred;
+    color: white;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  #chats{
+    position: relative;
+    display: none;
+    height: 90%;
+    background-color: #f5f5f5;
+  }
+  .chat{
+    position: relative;
+    border-width: 2px;
+    border-style: solid;
+    background-color: white;
+    cursor: pointer;
+    margin-bottom: 3px;
+  }
+  #messages{
+    display: none;
+    height: 80%;
+    background-color: white;
+  }
+  #messagesSection{
+    overflow: scroll;
+    height: 80%;
+  }
+  .messageLine{
+    display: block;
+    width: 100%;
+    height: 40px;
+  }
+  .message{
+    display: block;
+    padding: 2px 1px 2px 1px;
+    border-radius: 15px;
+    background-color: #f5f5f5;
+    position: relative;
+  }
+  .userMessage{
+    color: black;
+    float: left;
+    left: 10px;
+
+  }
+  .otherMessage{
+    color: darkred;
+    float: right;
+    right: 10px;
+
+  }
+  #sendMessage{
+    display: none;
+    height: 10%;
+    background-color: white;
+  }
+  #newMessage{
+    position: relative;
+    width: 70%;
+    height: 95%;
+    border-radius: 10px;
+    border-width: 1px;
+  }
+  #sendButton{
+    position: relative;
+    width: 20%;
+    height: 95%;
+    left: 10px;
+    right: 5px;
+    color: white;
+    background-color: darkred;
+    border-radius: 15px;
+    border-width: 1px;
+  }
+  #messageButton{
+    position: relative;
+    display: block;
+    height: 10%;
+    width: 100%;
+    color: white;
+    cursor: pointer;
+  }
+
+</style>
+
 </body>
