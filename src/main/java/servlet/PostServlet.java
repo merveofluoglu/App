@@ -207,7 +207,7 @@ public class PostServlet extends AbstractServlet {
             _response.setStatus(HttpServletResponse.SC_OK);
             JSONObject _result = new JSONObject();
 
-            _result.put("affectedRow", new AcceptBuyRequestDao(getConnection()).acceptBuyRequest(_postId));
+            _result.put("affectedRow", new AcceptBuyRequestDao(getConnection()).acceptBuyRequest(_postId,new Timestamp(System.currentTimeMillis())));
 
             new AddActionLogDao(getConnection()).addActionLog(new ActionLog(true, false, "Post with " + _postId +" post id buy request accepted!", new Timestamp(System.currentTimeMillis()), (Long) _session.getAttribute("userId")));
 
