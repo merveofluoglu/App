@@ -78,34 +78,18 @@
     </div>
 </div>
 
-
-<%--<table id="MyOrders" class="display" width="100%">
-    <thead>
-    <tr>
-        <th id="PostId">Id</th>
-        <th id="Name">Name</th>
-        <th id="Description">Description</th>
-        <th id="UserId">User Id</th>
-        <th id="CustomerId">Customer Id</th>
-        <th id="Price">Price</th>
-        <th id="Status">Status</th>
-        <th id="CategoryId">Category</th>
-        <th id="SubCategoryId">Sub Category</th>
-    </tr>
-    </thead>
-</table>--%>
 <div id="postDetails" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
         <div class="modal-header">
             <span class="close">&times;</span>
-            <h2>Details</h2>
+            <h2 style="color:white">Details</h2>
         </div>
         <div class="modal-body">
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <img src="" alt="img" id="orderImage">
+                        <img src="" alt="img" id="orderImage" width="500" height="500">
                     </div>
                     <div class="col">
                         <div class="row">
@@ -222,10 +206,8 @@
                 method: "GET",
                 success: function (response) {
                     let data = response.data;
-
                     let section = document.getElementById("order-section");
                     section.innerHTML = sectionFirst;
-
                     data.forEach( element => {
                         let lolo = 'data:image/jpeg;base64,'+ element.base64;
                         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
@@ -234,50 +216,88 @@
                         //const content = fillContent(element);
                         //section.innerHTML += content;
                         //document.getElementById(element.postId).onclick = function() { openPostDetails(element.postId) }
+
+                        //Main Paren Div
                         const divParent = document.createElement("div");
-                        divParent.className = "col-lg-3 col-md-4 col-sm-6 pb-1";
+                        divParent.className = "col-lg-3 col-md-4 col-sm-6 pb-1 img__wrapper";
+
+
+                        //First Div Child - includes image and icons
                         const divFirstChild = document.createElement("div");
-                        divFirstChild.className = "product-item bg-light mb-4";
+                        divFirstChild.className = "product-item mb-4";
+                        divFirstChild.setAttribute("style","border-style: solid; border-color: orange;");
+
+                        //Second Div Child includes image
                         const divSecondChild = document.createElement("div");
                         divSecondChild.className = "product-img position-relative overflow-hidden";
                         const image = document.createElement("img");
                         image.className = "img-fluid w-100";
                         image.setAttribute("src",lolo);
-                        image.setAttribute("style","width:150px; height:150px");
+                        image.setAttribute("style","width:300px; height:300px");
                         image.setAttribute("alt","pp.png");
+
+
+                        //Third Div Child includes icons - Show/Edit/Delete
                         const divThirdChild = document.createElement("div");
                         divThirdChild.className = "product-action";
-                        divThirdChild.onclick = function() { openPostDetails(element); };
+
+                        //Link for Show Details
                         const aFirst = document.createElement("a");
                         aFirst.className = "btn btn-outline-dark btn-square";
                         aFirst.setAttribute("style","alignment: absolute");
-                        aFirst.setAttribute("id","`+element.postId+`");
                         const i = document.createElement("i");
                         i.className = "fa fa-info-circle";
+                        i.onclick = function() { openPostDetails(element); };
                         aFirst.append(i);
+
+                        //Fourth Div Child includes name and price of the post
                         const divFourthChild = document.createElement("div");
                         divFourthChild.className = "text-center py-4";
                         const aSecond = document.createElement("a");
+
+                        //Name of the post
                         aSecond.className = "h6 text-decoration-none text-truncate";
                         aSecond.setAttribute("href","");
                         aSecond.setAttribute("id","`+element.postId+`");
                         aSecond.text = element.name;
+
+                        //Fifth Div Child includes price of the post
                         const divFifthChild = document.createElement("div");
                         divFifthChild.className = "d-flex align-items-center justify-content-center mt-2";
+                        //Price of the post
                         const aThird = document.createElement("a");
                         aThird.className = "h6 text-decoration-none text-truncate";
                         aThird.setAttribute("href","");
                         aThird.text = element.price;
+
+                        //Put the price tag into fifth
                         divFifthChild.append(aThird);
+
+                        //Put the name tag into fourth
                         divFourthChild.append(aSecond);
+
+                        //Put the fifth into fourth
                         divFourthChild.append(divFifthChild);
 
+                        //Put icons to the third
                         divThirdChild.append(aFirst);
+
+                        //put image to the second
                         divSecondChild.append(image);
+
+                        //put icons to the second
                         divSecondChild.append(divThirdChild);
+
+                        //put second to the first
                         divFirstChild.append(divSecondChild);
+
+                        //put fifth to the first
                         divFirstChild.append(divFourthChild);
+
+                        //put first to the parent
                         divParent.append(divFirstChild);
+
+                        //put parent to the section
                         section.append(divParent);
 
                     });
@@ -329,7 +349,7 @@
             soldRegex = "No";
         }
         document.getElementById("orderStatus").innerText = element.status;
-        document.getElementById("orderDate").innerText = element.sold_date;
+        document.getElementById("orderDate").innerText = element.soldDate;
         modal.style.display = "block";
     }
 </script>
