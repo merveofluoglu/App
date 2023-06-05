@@ -146,6 +146,75 @@
         </div>
     </div>
 </div>
+
+<!---------EDIT POST--------->
+<div id="postReview" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" id="postReviewClose">&times;</span>
+            <h2 style="color: white">Rate the Seller</h2>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="row" style="display: none">
+                            <div class="col">
+                                <label>Post Id:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postReviewId" id="postReviewId" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="row" style="display: none">
+                            <div class="col">
+                                <label>User Id:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postReviewUserId" id="postReviewUserId" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+
+                        <div class="row" style="display: none">
+                            <div class="col">
+                                <label>Seller Id:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text" name="postReviewSellerId" id="postReviewSellerId" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Comment:</label>
+                            </div>
+                            <div class="col">
+                                <input type="text-area" name="postReviewDescription" id="postReviewDescription" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label>Scale:</label>
+                            </div>
+                            <div class="col" >
+                                <input type="range" name="postReviewEditScale" id="postReviewEditScale" min="0" max="100" value="90" step="10" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="giveReview()">Edit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+</div>
 <script src="${pageContext.request.contextPath}/resources/js/owl-carousel.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -189,15 +258,22 @@
     }
 
     var modal = document.getElementById("postDetails");
-    var span = document.getElementsByClassName("close")[0];
+    var secondmodal = document.getElementById("postReview");
+    var span = document.getElementsByClassName("close");
 
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";
         }
+        else if(event.target == secondmodal){
+            secondmodal.style.display = "none";
+        }
     }
-    span.onclick = function() {
+    span[0].onclick = function() {
         modal.style.display = "none";
+    }
+    span[1].onclick = function() {
+        secondmodal.style.display = "none";
     }
 
     const getMyOrders = () => {
@@ -253,6 +329,14 @@
                         i.onclick = function() { openPostDetails(element); };
                         aFirst.append(i);
 
+                        const sSecond = document.createElement("a");
+                        sSecond.className = "btn btn-outline-dark btn-square";
+                        sSecond.setAttribute("style","alignment: absolute");
+                        const iSecond = document.createElement("i");
+                        iSecond.className = "fa fa-star";
+                        iSecond.onclick = function() { openReview(element); };
+                        sSecond.append(iSecond);
+
                         //Fourth Div Child includes name and price of the post
                         const divFourthChild = document.createElement("div");
                         divFourthChild.className = "text-center py-4";
@@ -284,6 +368,7 @@
 
                         //Put icons to the third
                         divThirdChild.append(aFirst);
+                        divThirdChild.append(sSecond);
 
                         //put image to the second
                         divSecondChild.append(image);
@@ -312,28 +397,6 @@
         );
     }
 
-    const fillContent = (element) => {
-        return `
-                  <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                      <div class="product-img position-relative overflow-hidden">
-                        <img class="img-fluid w-100" src="../resources/static/images/deha.jpg" alt="">
-                        <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" style=" margin-left: 50px" id="`+element.postId+`" href=""><i class="fa fa-info-circle"></i></a>
-                        </div>
-                      </div>
-                    <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href="">` +element.name+ `</a>
-                        <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>$`+element.price+`</h5>
-                            <h6 class="text-muted ml-2"></h6>
-                        </div>
-                    </div>
-                  </div>
-                 </div>
-                `;
-    }
-
     const openPostDetails = (element) => {
         let lolo = 'data:image/jpeg;base64,'+ element.base64;
         if(element.base64 == null || element.base64 == undefined || element.base64 == "") {
@@ -355,6 +418,44 @@
         document.getElementById("orderDate").innerText = element.soldDate;
         modal.style.display = "block";
     }
+
+    const openReview = (element) => {
+        document.getElementById("postReviewId").value = element.postId;
+        document.getElementById("postReviewUserId").value = element.userId;
+        document.getElementById("postReviewSellerId").value = element.customerId;
+        secondmodal.style.display = "block";
+    }
+
+    const giveReview = () => {
+        // Edit the post
+        const _data = {
+            postId: parseInt($("#postReview [name='postReviewId']").val()),
+            userId: parseInt($("#postReview [name='postReviewUserId']").val()),
+            sellerId: parseInt($("#postReview [name='postReviewSellerId']").val()),
+            description: $("#postReview [name='postReviewDescription']").val(),
+            pointScale : parseFloat($("#postReview [name='postReviewEditScale']").val()),
+        };
+
+        $.ajax({
+                url: '${pageContext.request.contextPath}/review/add',
+                method: "POST",
+                data: _data,
+                success: function (response) {
+                    secondmodal.style.display = "none";
+                    toastr.info("Review information added sucessfully!");
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/myorders.jsp';
+                    }, 5000);
+                },
+                error: function () {
+                    alert("error");
+                }
+            }
+        );
+
+    }
+
+
 </script>
 
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
