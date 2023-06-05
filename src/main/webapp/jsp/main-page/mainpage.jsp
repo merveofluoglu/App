@@ -59,7 +59,7 @@
 
             <li class="scroll-to-section-button">
               <div class="main-button-red-login">
-                <div class="scroll-to-section-button"><a onclick="openModal()">Post</a></div>
+                <div class="scroll-to-section-button"><a onclick="openModal()">Add Post</a></div>
               </div>
             </li>
 
@@ -596,8 +596,6 @@
                 $("#addFile [name='postId']").val(id);
                 $("#addFile [name='file']").val("");
                 $("#addFile").modal('show');
-
-                toastr.success("Post added succesfully!");
               },
               error: function (response) {
                 alert("error");
@@ -619,6 +617,7 @@
       success: function (data) {
 
         window.location.href = '${pageContext.request.contextPath}/jsp/main-page/mainpage.jsp';
+        toastr.success("Post added succesfully!");
         console.log('Submission was successful.');
         console.log(data);
       },
