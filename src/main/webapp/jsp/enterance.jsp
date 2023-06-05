@@ -285,7 +285,7 @@
                     <div class="item">
                         <img src="${pageContext.request.contextPath}/resources/static/images/samet.jpg" alt="Samet" style="border-top-left-radius: 20px; border-top-right-radius: 20px">
                         <div class="down-content">
-                            <h4>Sametcan Zorlu</h4>
+                            <h4>Sametcan Ozturk</h4>
                             <h4>MSc Student ICT for Internet and Multimedia</h4>
                         </div>
                     </div>
