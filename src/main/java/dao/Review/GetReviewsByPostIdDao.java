@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GetReviewsByPostIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM reviews WHERE user_id = ?";
+    private static final String STATEMENT = "SELECT * FROM reviews WHERE post_id = ?";
 
     public GetReviewsByPostIdDao(Connection con) { super(con); }
 

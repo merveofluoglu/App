@@ -83,9 +83,9 @@
 <table id="Review" class="display" width="100%">
     <thead>
     <tr>
-        <th id="ReviewId">Review Id</th>
-        <th id="UserId">User Id</th>
-        <th id="SellerId">Seller Id</th>
+        <th id="ReviewerName">Reviewer Name</th>
+        <th id="ReviewerSurname">Reviewer Surname</th>
+        <th id="ReviewerEmail">Reviewer Email</th>
         <th id="PostId">Post Id</th>
         <th id="Description">Description</th>
         <th id="PointScale">Point Scale</th>
@@ -93,182 +93,27 @@
     </thead>
 </table>
 
-<!---------ADD REVIEW--------->
-
-<div class="modal fade" id="addReview" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Add Review</h4>
-                <button type="button" class="btn-close" target="#addReview" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>User Id:</label>
-                    <input type="number" name="UserId" id="UserId" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Seller Id:</label>
-                    <input type="number" name="SellerId" id="SellerId" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Post Id:</label>
-                    <input type="number" name="PostId" id="PostId" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Description:</label>
-                    <input type="text" name="Description" id="Description" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Point Scale:</label>
-                    <input type="number" name="PointScale" id="PointScale" class="form-control" />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-toolbar" target="#addReview" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-success" id="add" data-dismiss="modal" onclick="addReview()">Add</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!---------EDIT REVIEW--------->
-
-<div class="modal fade" id="editReview" tabindex="-1">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Edit Review</h4>
-                <button type="button" class="btn-close" target="#editReview" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group" style="display:none">
-                    <label>Id:</label>
-                    <input type="text" name="ReviewId" id="ReviewId" class="form-control" readonly="readonly" />
-                </div>
-                <div class="form-group">
-                    <label>User Id:</label>
-                    <input type="number" name="UserId" id="UserId" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Seller Id:</label>
-                    <input type="number" name="SellerId" id="SellerId" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Post Id:</label>
-                    <input type="number" name="PostId" id="PostId" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Description:</label>
-                    <input type="text" name="Description" id="Description" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Point Scale:</label>
-                    <input type="number" name="PointScale" id="PointScale" class="form-control" />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-toolbar" target="#editReview" data-bs-dismiss="modal">Close</button>
-                <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="updateReview()">Edit</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!---------DELETE REVIEW--------->
-
-<div id="dialog" class="modal fade" role="dialog" style="display:none">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Delete Review</h3>
-                <button type="button" class="btn-close" target="#dialog" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to delete this review?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-toolbar" target="#dialog" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="confirm" class="btn btn-danger">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     $(document).ready(function () {
-        FillDatatable();
+        getAllUsers();
     });
 
     var table;
+    let user;
 
-    const addReview = () => {
-        const _data = {
-            userId: $("#addReview [name='UserId']").val(),
-            sellerId: $("#addReview [name='SellerId']").val(),
-            postId: $("#addReview [name='PostId']").val(),
-            description: $("#addReview [name='Description']").val(),
-            pointScale: $("#addReview [name='PointScale']").val()
-        };
+    const getAllUsers = () => {
         $.ajax({
-                url: "${pageContext.request.contextPath}/review/add",
-                method: "POST",
-                data: _data,
-                success: function (response) {
-                    $('#addReview').modal('hide');
-                    table.destroy();
-                    FillDatatable();
-                    toastr.success("Review added succesfully!");
-                },
-                error: function () {
-                    alert("error");
-                }
+            url: '${pageContext.request.contextPath}/user/getAll',
+            method: "GET",
+            success: function (data) {
+                user = JSON.parse(data).data;
+                FillDatatable();
             }
-        );
+        });
     }
 
-    const removeReview = (id) => {
-        $.ajax({
-                url: '${pageContext.request.contextPath}/review/delete/' + id,
-                method: "POST",
-                success: function (response) {
-                    table.destroy();
-                    FillDatatable();
-                    toastr.error("Review deleted succesfully!");
-                },
-                error: function () {
-                    alert("error");
-                }
-            }
-        );
-    }
-
-    const updateReview = () => {
-
-        const _data = {
-            reviewId: parseInt($("#editReview [name='ReviewId']").val()),
-            userId: $("#editReview [name='UserId']").val(),
-            sellerId: $("#editReview [name='SellerId']").val(),
-            postId: $("#editReview [name='PostId']").val(),
-            description: $("#editReview [name='Description']").val(),
-            pointScale: $("#editReview [name='PointScale']").val()
-        };
-
-        $.ajax({
-                url: '${pageContext.request.contextPath}/review/update',
-                method: "POST",
-                data: _data,
-                success: function (response) {
-                    $('#editReview').modal('hide');
-                    table.destroy();
-                    FillDatatable();
-                    toastr.info("Review updated succesfully!");
-                },
-                error: function () {
-                    alert("error");
-                }
-            }
-        );
+    const getUserDataByUserId = (id) => {
+        return user.filter(item => item.userId == id)[0];
     }
 
     const FillDatatable = () => {
@@ -279,86 +124,37 @@
         let _selectedPostId;
         let _selectedDescription;
         let _selectedPointScale;
+        let userName = "";
+        let userSurname = "";
+        let userEmail = "";
 
         $.ajax({
-            url: '${pageContext.request.contextPath}/review/getAll',
+            url: '${pageContext.request.contextPath}/review/getAll/${user.userId}',
             method: "GET",
             success: function (data) {
+                let _data = data.data;
+                _data.forEach(element => {
+
+                    let _user = getUserDataByUserId(element.userId);
+
+                    element.reviewId = _user.name;
+                    element.userId = _user.surname;
+                    element.sellerId = _user.email;
+                })
 
                 table = $('#Review').DataTable({
-                    data: JSON.parse(data).data,
+                    data: _data,
                     bDestroy: true,
                     dom: "Bfrtip",
                     columns: [
-                        { title: "Id", data: "reviewId" },
-                        { title: "User Id", data: "userId" },
-                        { title: "Seller Id", data: "sellerId" },
+                        { title: "Reviewer Name", data: "reviewId"},
+                        { title: "Reviewer Surnam", data: "userId"},
+                        { title: "Reviewer Email", data: "sellerId"},
                         { title: "Post Id", data: "postId" },
                         { title: "Description", data: "description" },
                         { title: "Point Scale", data: "pointScale" }
                     ],
-                    select: true,
-                    buttons: [{
-                        text: "Delete",
-                        atr: {
-                            id: 'delete'
-                        },
-                        action: function () {
-                            if (_selectedId == 0)
-                                alert("Please select a row!");
-                            else {
-                                $("#dialog").modal('show');
-
-                                $("#confirm").off('click').click(function () {
-                                    $('#dialog').modal('hide');
-                                    removeReview(_selectedId);
-                                });
-                            }
-                        }
-                    },
-                        {
-                            text: "Edit",
-                            atr: {
-                                id: 'edit'
-                            },
-                            action: function () {
-                                if (_selectedId == 0)
-                                    alert("Please select a row!");
-                                else {
-                                    $("#editReview [name='ReviewId']").val(_selectedId);
-                                    $("#editReview [name='UserId']").val(_selectedUserId);
-                                    $("#editReview [name='SellerId']").val(_selectedSellerId);
-                                    $("#editReview [name='PostId']").val(_selectedPostId);
-                                    $("#editReview [name='Description']").val(_selectedDescription);
-                                    $("#editReview [name='PointScale']").val(_selectedPointScale);
-                                    $("#editReview").modal('show');
-                                }
-                            }
-                        },
-                        {
-                            text: "Add Review",
-                            atr: {
-                                id: 'add'
-                            },
-                            action: function () {
-                                $("#addReview [name='UserId']").val(null);
-                                $("#addReview [name='SellerId']").val(null);
-                                $("#addReview [name='PostId']").val(null);
-                                $("#addReview [name='Description']").val("");
-                                $("#addReview [name='Point Scale']").val("");
-                                $("#addReview").modal('show');
-                            }
-                        }
-                    ]
-                }).off("select")
-                    .on("select", function (e, dt, type, indexes) {
-                        _selectedId = dt.data().reviewId;
-                        _selectedUserId = dt.data().userId;
-                        _selectedSellerId = dt.data().sellerId;
-                        _selectedPostId = dt.data().postId;
-                        _selectedDescription = dt.data().description;
-                        _selectedPointScale = dt.data().pointScale;
-                    });
+                })
             }
         });
 

@@ -20,7 +20,7 @@ import static java.lang.Long.parseLong;
 public class ReviewServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-        String _op = _request.getRequestURI().split("/", 4)[3].replace("/", "");
+        String _op = _request.getRequestURI().split("/", 5)[3].replace("/", "");
 
         if (_op.contentEquals("detailsByUserId")) {
             getReviewDetailsByPostId(_request, _response);
@@ -146,12 +146,14 @@ public class ReviewServlet extends AbstractServlet {
 
     private void getReviewDetailsByUserId (HttpServletRequest _request, HttpServletResponse _response) {
         try {
-            long _id = parseLong(_request.getParameter("userId"));
+            HttpSession _session = _request.getSession();
+
+            long _userId = Long.parseLong(_request.getRequestURI().split("/", 5)[4].replace("/", ""));
             _response.setContentType("application/json");
             _response.setStatus(HttpServletResponse.SC_OK);
 
             JSONObject _result = new JSONObject();
-            _result.put("data", new GetReviewsByUserIdDao(getConnection()).getReviewsByUserId(_id));
+            _result.put("data", new GetReviewsByUserIdDao(getConnection()).getReviewsByUserId(_userId));
 
             _response.getWriter().write(_result.toString());
 
