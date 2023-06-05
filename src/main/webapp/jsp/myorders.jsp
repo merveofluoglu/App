@@ -180,6 +180,7 @@
         $.ajax({
             method: "GET",
             url: "${pageContext.request.contextPath}/category/getAll",
+            async:false,
             success: function (response) {
                 categories = JSON.parse(response).data;
             }
