@@ -130,10 +130,25 @@ public class MessageServlet extends AbstractServlet {
 
             JSONObject _result = new JSONObject();
             List <User> _recipients = new ArrayList<>();
-            List<Long> _chats = new GetUserChatsDao(getConnection()).getChatIds(_userId);
+            List <Long> _recipientIds = new ArrayList<>();
+            List<Message> _chats = new GetUserChatsDao(getConnection()).getChatIds(_userId);
 
             for(int i=0; i<_chats.size(); i++){
-                User _recipientUser = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_chats.get(i));
+                Long creator_id = _chats.get(i).getCreatorId();
+                Long recipient_id = _chats.get(i).getRecipientId();
+                if(creator_id == _userId){
+                    if(!_recipientIds.contains(recipient_id)){
+                        _recipientIds.add(recipient_id);
+                    }
+                }
+                else{
+                    if(!_recipientIds.contains(creator_id)){
+                        _recipientIds.add(creator_id);
+                    }
+                }
+            }
+            for(int i=0; i<_recipientIds.size(); i++){
+                User _recipientUser = new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_recipientIds.get(i));
                 _recipients.add(_recipientUser);
             }
             _result.put("data", _recipients);

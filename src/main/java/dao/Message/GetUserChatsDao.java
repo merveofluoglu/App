@@ -2,6 +2,7 @@ package dao.Message;
 
 import dao.AbstractDAO;
 import dao.User.GetUserByUseridDAO;
+import resource.Message;
 import resource.User;
 import utils.ResourceNotFoundException;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class GetUserChatsDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT DISTINCT recipient_id FROM message WHERE creator_id=?";
+    private static final String STATEMENT = "SELECT * FROM message WHERE creator_id=? or recipient_id=?";
 
     /**
      * Creates a new DAO object.
@@ -30,18 +31,32 @@ public class GetUserChatsDao extends AbstractDAO {
 
     }
 
-    public List<Long> getChatIds(long _creatorId) throws SQLException, ResourceNotFoundException {
+    public List<Message> getChatIds(long _creatorId) throws SQLException, ResourceNotFoundException {
         PreparedStatement _pstmt = null;
         ResultSet _rs = null;
-        List<Long> _recipients = new ArrayList<>();
+        List<Message> _messages = new ArrayList<>();
+
 
         try {
             _pstmt = con.prepareStatement(STATEMENT);
             _pstmt.setObject(1, _creatorId);
+            _pstmt.setObject(2, _creatorId);
             _rs = _pstmt.executeQuery();
 
             while (_rs.next()) {
-                _recipients.add(_rs.getLong("recipient_id"));
+                _messages.add(
+                        new Message(
+                                _rs.getLong("message_id"),
+                                _rs.getLong("creator_id"),
+                                _rs.getLong("recipient_id"),
+                                _rs.getLong("parent_message_id"),
+                                _rs.getString("subject"),
+                                _rs.getString("message_body"),
+                                _rs.getBoolean("is_read"),
+                                _rs.getTimestamp("creation_date"),
+                                _rs.getTimestamp("expiration_date")
+                        )
+                );
             }
         }finally {
             if (_rs != null) {
@@ -52,7 +67,7 @@ public class GetUserChatsDao extends AbstractDAO {
             }
             con.close();
         }
-        return _recipients;
+        return _messages;
     }
 
 }
