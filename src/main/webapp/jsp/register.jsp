@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>Register</title>
     <!-- Custom Css -->
     <link rel="stylesheet" href="/jsp/profile.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -99,6 +99,9 @@
                 data: _data,
                 success: function (response) {
                     toastr.success("User created successfully");
+                    setTimeout(() => {
+                        window.location.href = '${pageContext.request.contextPath}/jsp/login.jsp';
+                    }, 5000);
                 },
                 error: function () {
                     alert("error");
