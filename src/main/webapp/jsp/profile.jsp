@@ -47,7 +47,7 @@
 <!-- Sidenav -->
 <div class="sidenav">
   <div class="profile">
-    <img src="data:image/jpeg;base64,${user.base64}" alt="pp_png" border="0" id="profilePic"/>
+    <img src="data:image/${user.fileMediaType};base64,${user.base64}" alt="pp_png" border="0" id="profilePic"/>
     <div class="name">
       ${user.name} ${user.surname}
     </div>
