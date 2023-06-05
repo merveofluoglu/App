@@ -14,7 +14,7 @@ import java.util.Queue;
 
 public class GetReviewsByUserIdDao extends AbstractDAO {
 
-    private static final String STATEMENT = "SELECT * FROM reviews WHERE user_id = ?";
+    private static final String STATEMENT = "SELECT * FROM reviews WHERE seller_id = ?";
 
     /**
      * Creates a new DAO object.
