@@ -198,12 +198,12 @@
                                 <label>Scale:</label>
                             </div>
                             <div class="col" >
-                                <input type="range" name="postReviewEditScale" id="postReviewEditScale" min="0" max="100" value="90" step="10" class="form-control"/>
+                                <input type="range" name="postReviewEditScale" id="postReviewEditScale" min="0" max="100" value="90" step="10" class="form-control" style="color: darkred"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary" id="edit" data-dismiss="modal" onclick="giveReview()">Edit</button>
+                                <button class="btn btn-danger" id="edit" data-dismiss="modal" onclick="giveReview()">Edit</button>
                             </div>
                         </div>
 
@@ -421,8 +421,8 @@
 
     const openReview = (element) => {
         document.getElementById("postReviewId").value = element.postId;
-        document.getElementById("postReviewUserId").value = element.userId;
-        document.getElementById("postReviewSellerId").value = element.customerId;
+        document.getElementById("postReviewUserId").value = element.customerId;
+        document.getElementById("postReviewSellerId").value = element.userId;
         secondmodal.style.display = "block";
     }
 
@@ -453,6 +453,20 @@
             }
         );
 
+    }
+    const logout = () => {
+        $.ajax({
+                url: window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/user/logout",
+                method: "GET",
+                success: function (response) {
+                    toastr.success("Successfully logged out!");
+                    window.location.href = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2)) + "/jsp/login.jsp"; // redirect
+                },
+                error: function () {
+                    alert("error");
+                }
+            }
+        );
     }
 
 
