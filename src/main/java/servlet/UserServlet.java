@@ -53,7 +53,7 @@ public class UserServlet extends AbstractServlet{
 
     @Override
     protected void doGet(HttpServletRequest _request, HttpServletResponse _response) throws ServletException, IOException {
-        String operation = _request.getRequestURI().split("/", 4)[3].replace("/", "");
+        String operation = _request.getRequestURI().split("/", 5)[3].replace("/", "");
         //String sessionRole = _request.getSession().getAttribute("role").toString();
         if (operation.contentEquals("userById")) {
             getUserDetailsByIdOp(_request, _response);
@@ -544,7 +544,7 @@ public class UserServlet extends AbstractServlet{
 
         // This method returns a permission.
         try {
-            long _userId = parseLong(_request.getParameter("userId"));
+            long _userId = Long.parseLong(_request.getRequestURI().split("/", 5)[4].replace("/", ""));
             JSONObject _result = new JSONObject();
             _result.put("data", new GetUserByUseridDAO(getConnection()).GetUserByUseridDAO(_userId));
             _response.setContentType("application/json");
