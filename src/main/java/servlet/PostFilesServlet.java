@@ -25,7 +25,8 @@ import java.util.List;
 
 import static java.lang.Long.parseLong;
 
-@MultipartConfig
+@MultipartConfig(fileSizeThreshold=1024*1024*10,
+        maxFileSize=1024*1024*10, maxRequestSize=1024*1024*5*5)
 @WebServlet(name = "PostFiles", value = "/PostFiles")
 public class PostFilesServlet extends AbstractServlet {
 
